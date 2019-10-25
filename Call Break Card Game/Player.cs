@@ -133,7 +133,7 @@ namespace Call_Break_Card_Game
                     foreach (Card card in Cards)
                     {
                         //add all the cards with matching suit
-                        if ((int)card.Suit == CardIDtoSuit(leadCardID))
+                        if ((int)card.Suit == Game.CardIDtoSuit(leadCardID))
                         {
                             list.Add(card.ID);
                         }
@@ -169,7 +169,7 @@ namespace Call_Break_Card_Game
                         int numberOfGreaterSuits = 0;
                         foreach (int cardIndex in list)
                         {
-                            if (CardIDtoNumber(cardIndex) > CardIDtoNumber(leadCardID))
+                            if (Game.CardIDtoNumber(cardIndex) > Game.CardIDtoNumber(leadCardID))
                             {
                                 numberOfGreaterSuits++;
                             }
@@ -184,7 +184,7 @@ namespace Call_Break_Card_Game
                             //add cards which has both matching suits and greater ranking then the lead card
                             foreach (Card card in Cards)
                             {
-                                if (((int)card.Suit == CardIDtoSuit(leadCardID) && CardIDtoNumber(card.ID) > CardIDtoNumber(leadCardID)))
+                                if (((int)card.Suit == Game.CardIDtoSuit(leadCardID) && Game.CardIDtoNumber(card.ID) > Game.CardIDtoNumber(leadCardID)))
                                 {
                                     list.Add(card.ID);
                                 }
@@ -193,24 +193,24 @@ namespace Call_Break_Card_Game
                     }
                 }
                 //when there is higher ranking card than lead card in the table
-                else if (CardIDtoValue(powerCardID) > CardIDtoValue(leadCardID))
+                else if (Game.CardIDtoValue(powerCardID) > Game.CardIDtoValue(leadCardID))
                 {
                     foreach (Card card in Cards)
                     {
                         //add all the cards with matching suit
-                        if ((int)card.Suit == CardIDtoSuit(leadCardID))
+                        if ((int)card.Suit == Game.CardIDtoSuit(leadCardID))
                         {
                             list.Add(card.ID);
                         }
                     }
 
                     //when power card has same suit as the lead card
-                    if (CardIDtoSuit(powerCardID) == CardIDtoSuit(leadCardID))
+                    if (Game.CardIDtoSuit(powerCardID) == Game.CardIDtoSuit(leadCardID))
                     {
                         foreach (Card card in Cards)
                         {
                             //add all the cards with matching suit
-                            if ((int)card.Suit == CardIDtoSuit(powerCardID))
+                            if ((int)card.Suit == Game.CardIDtoSuit(powerCardID))
                             {
                                 list.Add(card.ID);
                             }
@@ -255,7 +255,7 @@ namespace Call_Break_Card_Game
                             int numberOfGreaterSuits = 0;
                             foreach (int cardIndex in list)
                             {
-                                if (CardIDtoNumber(cardIndex) > CardIDtoNumber(powerCardID))
+                                if (Game.CardIDtoNumber(cardIndex) > Game.CardIDtoNumber(powerCardID))
                                 {
                                     numberOfGreaterSuits++;
                                 }
@@ -270,7 +270,7 @@ namespace Call_Break_Card_Game
                                 //add cards which has both matching suits and greater ranking then the lead card
                                 foreach (Card card in Cards)
                                 {
-                                    if (((int)card.Suit == CardIDtoSuit(powerCardID) && CardIDtoNumber(card.ID) > CardIDtoNumber(powerCardID)))
+                                    if (((int)card.Suit == Game.CardIDtoSuit(powerCardID) && Game.CardIDtoNumber(card.ID) > Game.CardIDtoNumber(powerCardID)))
                                     {
                                         list.Add(card.ID);
                                     }
@@ -279,7 +279,7 @@ namespace Call_Break_Card_Game
                         }
                     }
                     //when the power card has spade suit
-                    else if (CardIDtoSuit(powerCardID) > CardIDtoSuit(leadCardID))
+                    else if (Game.CardIDtoSuit(powerCardID) > Game.CardIDtoSuit(leadCardID))
                     {
                         if (list.Count == 0)
                         {
@@ -330,78 +330,6 @@ namespace Call_Break_Card_Game
             }
             return list;
         }
-
-        /// <summary>
-        /// Converts cardID to card number
-        /// </summary>
-        /// <param name="cardID"></param>
-        /// <returns>Returns -1 if invalid ID</returns>
-        public static int CardIDtoNumber(int cardID)
-        {
-            if (cardID >= 0 && cardID < 52)
-            {
-                return (cardID % 13);
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
-        /// <summary>
-        /// Converts cardID to card suit
-        /// </summary>
-        /// <param name="cardID"></param>
-        /// <returns>Return -1 if invalid ID</returns>
-        public static int CardIDtoSuit(int cardID)
-        {
-            if (cardID >= 0 && cardID < 52)
-            {
-                return (cardID - (int)(CardIDtoNumber(cardID))) / 13;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
-
-        /// <summary>
-        /// Converts cardID number into card
-        /// </summary>
-        /// <param name="cardID">Unique ID of the card ranging 0-51</param>
-        /// <returns>Corresponding card of given ID, returns null if invalid ID</returns>
-        public static Card CardIDtoCard(int cardID)
-        {
-            if (cardID >= 0 && cardID < 52)
-            {
-                return (new Card((Card.CardNumber)CardIDtoNumber(cardID), (Card.CardSuit)CardIDtoSuit(cardID)));
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        /// <summary>
-        /// Converts CardID to card value
-        /// </summary>
-        /// <param name="cardID">CardID of the said card</param>
-        /// <returns>Return number ranging 0-25, returns -1 if invalid cardID</returns>
-        public static int CardIDtoValue(int cardID)
-        {
-            if (cardID >= 0 && cardID < 52)
-            {
-                return CardIDtoCard(cardID).Value;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
-
 
         /// <summary>
         /// Player type human or computer

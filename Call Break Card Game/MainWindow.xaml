@@ -7,9 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500.194" Width="729.6">
     <Grid>
-        <Label x:Name ="lblTest" Content="Label" HorizontalAlignment="Left" Margin="225,59,0,0" VerticalAlignment="Top" Height="35" Width="136"/>
+        <Label x:Name ="lblTest" Content="Label" HorizontalAlignment="Left" Margin="322,57,0,0" VerticalAlignment="Top" Height="35" Width="321"/>
         <ListBox x:Name ="lbTest" HorizontalAlignment="Left" Height="333" Margin="81,114,0,0" VerticalAlignment="Top" Width="197"/>
-        <Button x:Name ="btnShuffle" Content="Shuffle Deck" HorizontalAlignment="Left" Margin="322,114,0,0" VerticalAlignment="Top" Width="75" Click="btnShuffle_Click"/>
+        <Button x:Name ="btnShuffle" Content="Find Playables" HorizontalAlignment="Left" Margin="322,114,0,0" VerticalAlignment="Top" Width="87" Click="btnShuffle_Click"/>
+        <ListBox x:Name="lbPlayables" HorizontalAlignment="Left" Height="333" Margin="443,114,0,0" VerticalAlignment="Top" Width="200"/>
+        <Button x:Name="btnRedeal" Content="Deal Again!" HorizontalAlignment="Left" Margin="90,89,0,0" VerticalAlignment="Top" Width="87" Height="20" Click="btnRedeal_Click"/>
 
     </Grid>
 </Window>

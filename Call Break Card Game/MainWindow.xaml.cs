@@ -46,15 +46,71 @@ namespace Call_Break_Card_Game
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
-            lbTest.Items.Clear();
+            lbPlayables.Items.Clear();
 
-            player.playCard(0);
-            lblTest.Content = player.LastPlayedCard.Name;
-            
-            for (int i = 0; i < player.CardCount; i++)
+            Random rnd = new Random();
+
+            int b=0, a=0;
+            bool duplicate = false;
+
+            List<int> indexCards = new List<int>();
+            do
+            {
+                Random rnd1 = new Random(rnd.Next(9999999)+b+999);
+                Random rnd2 = new Random(rnd.Next(9999999) + a);
+
+                foreach (Card card in player.Cards)
+                {
+                    b = rnd1.Next(52);
+                    a = rnd2.Next(52);
+
+                    if (a == card.ID || b == card.ID || a == b)
+                    {
+                        duplicate = true;
+                        break;
+                    }
+                    duplicate = false;
+                }
+            } while (duplicate);
+           
+
+            if ( Game.CardIDtoValue(a)> Game.CardIDtoValue(b) && Game.CardIDtoSuit(a) == 3)
+            {
+                indexCards = player.ListPlayableCards(b, a);
+                lblTest.Content = "Lead: "+Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(a).Name;
+            }
+            else
+            {
+                indexCards = player.ListPlayableCards(b, b);
+                lblTest.Content = "Lead: " + Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(b).Name;
+            }
+
+            foreach(int id in indexCards)
+            {
+                lbPlayables.Items.Add(Game.CardIDtoCard(id).Name);
+            }
+        }        
+
+        private void btnRedeal_Click(object sender, RoutedEventArgs e)
+        {
+            lbTest.Items.Clear();
+            player.Cards.Clear();
+
+            deck.ShuffleDeck();
+
+            for (int i = 0; i < deck.Cards.Count; i += 4)
+            {
+                player.Cards.Add(deck.Cards[i]);
+            }
+
+            player.sortCards();
+            for (int i = 0; i < player.Cards.Count; i++)
             {
                 lbTest.Items.Add(player.Cards[i].Name);
             }
         }
+
+
     }
 }
+
