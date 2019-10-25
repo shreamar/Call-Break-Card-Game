@@ -114,22 +114,155 @@ namespace Call_Break_Card_Game
 
         public List<int> ListPlayableCards(int leadCardID, int powerCardID)
         {
-            List<int> list = new List<int>();
+            List<int> list = new List<int>();            
 
             //validity of card ID
-            if(leadCardID>=0 && leadCardID < 52 && powerCardID>=0 && powerCardID<52)
+            if (leadCardID>=0 && leadCardID < 52 && powerCardID>=0 && powerCardID<52)
             {
+                //when leading card is the highest ranking card on the table
+                if(leadCardID == powerCardID)
+                {
+                    foreach(Card card in Cards)
+                    {
+                        //add all the cards with matching suit
+                        if((int)card.Suit == CardIDtoSuit(leadCardID))
+                        {
+                            list.Add(card.ID);
+                        }
+                    }
+                    //if list is emtpy due to no matching suits
+                    if (list.Count == 0)
+                    {
+                        int spadeMatches = 0;
+                        foreach (Card card in Cards)
+                        {
+                            //Add all spade cards in the hand
+                            if (card.Suit == Card.CardSuit.Spade)
+                            {
+                                list.Add(card.ID);
+                                spadeMatches++;
+                            }
+                        }
 
+                        //when there are no spade cards in the hand at all
+                        if (spadeMatches == 0)
+                        {
+                            //Add all cards at hand
+                            foreach (Card card in Cards)
+                            {
+                                list.Add(card.ID);
+                            }
+                        }
+                    }
+                    //when matching suit cards are available
+                    else if (list.Count > 0)
+                    {
+                        //check if there are any greater cards amont matching suit cards
+                        int numberOfGreaterSuits = 0;
+                        foreach (int cardIndex in list)
+                        {
+                            if (CardIDtoNumber(cardIndex) > CardIDtoNumber(leadCardID))
+                            {
+                                numberOfGreaterSuits++;
+                            }
+                        }
+                         
+                        //when there are higher suit matching cards than leading card
+                        if (numberOfGreaterSuits > 0)
+                        {
+                            //clear all cards from list
+                            list.Clear();
+                        }
+                    }
+            }
+            //invalid card ID means start of trick so all cards will be available
+            else
+            {
+                foreach (Card card in Cards)
+                {
+                    list.Add(card.ID);
+                }
             }
 
             return list;
         }
 
-        /// <summary>
-        /// Player type human or computer
-        /// </summary>
-        public enum PlayerType { Human, Bot };
 
-        //public enum Playability {Unknown, LeadTrick, }
+        /// <summary>
+        /// Converts cardID to card number
+        /// </summary>
+        /// <param name="cardID"></param>
+        /// <returns>Returns -1 if invalid ID</returns>
+        public static int CardIDtoNumber(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                return (cardID % 13);
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Converts cardID to card suit
+        /// </summary>
+        /// <param name="cardID"></param>
+        /// <returns>Return -1 if invalid ID</returns>
+        public static int CardIDtoSuit(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                return (cardID - (int)(CardIDtoNumber(cardID))) / 13;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Converts cardID number into card
+        /// </summary>
+        /// <param name="cardID">Unique ID of the card ranging 0-51</param>
+        /// <returns>Corresponding card of given ID, returns null if invalid ID</returns>
+        public static Card CardIDtoCard(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                return (new Card((Card.CardNumber)CardIDtoNumber(cardID), (Card.CardSuit)CardIDtoSuit(cardID)));
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Converts CardID to card value
+        /// </summary>
+        /// <param name="cardID">CardID of the said card</param>
+        /// <returns>Return number ranging 0-25, returns -1 if invalid cardID</returns>
+        public static int CardIDtoValue(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                return CardIDtoCard(cardID).Value;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
+}
+
+/// <summary>
+/// Player type human or computer
+/// </summary>
+public enum PlayerType { Human, Bot };
+
+        //public enum Playability {FirstTrick, LeadTrick, }
     }
 }

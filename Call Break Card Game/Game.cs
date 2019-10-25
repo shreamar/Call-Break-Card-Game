@@ -15,7 +15,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="cardID"></param>
         /// <returns>Returns -1 if invalid ID</returns>
-        public int CardIDtoNumber(int cardID)
+        public static int CardIDtoNumber(int cardID)
         {
             if (cardID >= 0 && cardID < 52)
             {
@@ -32,7 +32,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="cardID"></param>
         /// <returns>Return -1 if invalid ID</returns>
-        public int CardIDtoSuit(int cardID)
+        public static int CardIDtoSuit(int cardID)
         {
             if (cardID >= 0 && cardID < 52)
             {
@@ -49,11 +49,11 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="cardID">Unique ID of the card ranging 0-51</param>
         /// <returns>Corresponding card of given ID, returns null if invalid ID</returns>
-        public Card CardIDtoCard(int cardID)
+        public static Card CardIDtoCard(int cardID)
         {
             if (cardID >= 0 && cardID < 52)
             {
-                return (new Card((CardNumber)CardIDtoNumber(cardID), (CardSuit)CardIDtoSuit(cardID)));
+                return (new Card((Card.CardNumber)CardIDtoNumber(cardID), (Card.CardSuit)CardIDtoSuit(cardID)));
             }
             else
             {
@@ -66,7 +66,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="cardID">CardID of the said card</param>
         /// <returns>Return number ranging 0-25, returns -1 if invalid cardID</returns>
-        public int CardIDtoValue(int cardID)
+        public static int CardIDtoValue(int cardID)
         {
             if (cardID >= 0 && cardID < 52)
             {
