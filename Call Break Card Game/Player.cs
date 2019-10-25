@@ -13,6 +13,7 @@ namespace Call_Break_Card_Game
         private int _Score;
         private int _ID;
         private PlayerType _Type;
+        private Card _LastPlayedCard;
 
         public Player()
         {
@@ -20,6 +21,7 @@ namespace Call_Break_Card_Game
             Score = 0;
             Type = PlayerType.Bot;
             ID = 0;
+            _LastPlayedCard = null;
         }
 
         public Player(string name, PlayerType type)
@@ -28,6 +30,7 @@ namespace Call_Break_Card_Game
             Score = 0;
             Type = type;
             ID = 0;
+            _LastPlayedCard = null;
         }
 
         /// <summary>
@@ -68,6 +71,12 @@ namespace Call_Break_Card_Game
             set { _Type = value; }
         }
 
+        public Card LastPlayedCard
+        {
+            get { return _LastPlayedCard; }
+            set { _LastPlayedCard = value; }
+        }
+
         public void swapCards(Card a, Card b)
         {
             Card temp = a;
@@ -83,7 +92,16 @@ namespace Call_Break_Card_Game
             Cards.Sort((a, b) => (a.ID.CompareTo(b.ID)));
         }
 
-        
+        /// <summary>
+        /// Plays the card for the given trick
+        /// Removes the given card from the hand
+        /// </summary>
+        /// <param name="cardIndex">Index of card to play</param>
+        public void playCard(int cardIndex)
+        {
+            LastPlayedCard = Cards[cardIndex];
+            Cards.Remove(Cards[cardIndex]);
+        }
 
         /// <summary>
         /// Player type human or computer
