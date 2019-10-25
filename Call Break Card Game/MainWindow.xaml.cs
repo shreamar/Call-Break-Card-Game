@@ -48,15 +48,16 @@ namespace Call_Break_Card_Game
         {
             lbPlayables.Items.Clear();
 
+            /*
             Random rnd = new Random();
 
-            int b=0, a=0;
+            int b = 0, a = 0;
             bool duplicate = false;
 
             List<int> indexCards = new List<int>();
             do
             {
-                Random rnd1 = new Random(rnd.Next(9999999)+b+999);
+                Random rnd1 = new Random(rnd.Next(9999999) + b + 999);
                 Random rnd2 = new Random(rnd.Next(9999999) + a);
 
                 foreach (Card card in player.Cards)
@@ -72,20 +73,26 @@ namespace Call_Break_Card_Game
                     duplicate = false;
                 }
             } while (duplicate);
-           
 
-            if ( Game.CardIDtoValue(a)> Game.CardIDtoValue(b) && Game.CardIDtoSuit(a) == 3)
+
+            if (Game.CardIDtoValue(a) > Game.CardIDtoValue(b) && Game.CardIDtoSuit(a) == 3)
             {
                 indexCards = player.ListPlayableCards(b, a);
-                lblTest.Content = "Lead: "+Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(a).Name;
+                lblTest.Content = "Lead: " + Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(a).Name;
             }
             else
             {
                 indexCards = player.ListPlayableCards(b, b);
                 lblTest.Content = "Lead: " + Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(b).Name;
             }
+            */
 
-            foreach(int id in indexCards)
+            int x = 26;
+            int y = 12;
+            List<int> indexCards = player.ListPlayableCards(x,y);
+            lblTest.Content = "Lead: " + Game.CardIDtoCard(x).Name + "   Power: " + Game.CardIDtoCard(y).Name;
+
+            foreach (int id in indexCards)
             {
                 lbPlayables.Items.Add(Game.CardIDtoCard(id).Name);
             }

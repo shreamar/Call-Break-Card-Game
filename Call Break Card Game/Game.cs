@@ -8,40 +8,26 @@ namespace Call_Break_Card_Game
 {
     public static class Game
     {
-
+        
 
         /// <summary>
         /// Converts cardID to card number
         /// </summary>
         /// <param name="cardID"></param>
-        /// <returns>Returns -1 if invalid ID</returns>
-        public static int CardIDtoNumber(int cardID)
+        /// <returns></returns>
+        public static Card.CardNumber CardIDtoNumber(int cardID)
         {
-            if (cardID >= 0 && cardID < 52)
-            {
-                return (cardID % 13);
-            }
-            else
-            {
-                return -1;
-            }
+            return (Card.CardNumber)(cardID % 13);
         }
 
         /// <summary>
         /// Converts cardID to card suit
         /// </summary>
         /// <param name="cardID"></param>
-        /// <returns>Return -1 if invalid ID</returns>
-        public static int CardIDtoSuit(int cardID)
+        /// <returns></returns>
+        public static Card.CardSuit CardIDtoSuit(int cardID)
         {
-            if (cardID >= 0 && cardID < 52)
-            {
-                return (cardID - (int)(CardIDtoNumber(cardID))) / 13;
-            }
-            else
-            {
-                return -1;
-            }
+            return (Card.CardSuit)((cardID - (int)(CardIDtoNumber(cardID))) / 13);
         }
 
         /// <summary>
@@ -76,6 +62,31 @@ namespace Call_Break_Card_Game
             {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Process Lead Card and Power Card, and validity checks and make changes if required
+        /// </summary>
+        /// <param name="leadCardID"></param>
+        /// <param name="powerCardID"></param>
+        /// <returns>Corrected power and lead card ID values</returns>
+        public static int[] LeadVsPowerCard(int leadCardID, int powerCardID)
+        {
+            int[] index = new int[2];
+
+            //if the power card is higher ranking but not same suit and is not spade then power and lead card are same
+            //or if power card has less rank than lead card
+            if (((Game.CardIDtoSuit(leadCardID) != Game.CardIDtoSuit(powerCardID) &&
+                (Game.CardIDtoValue(leadCardID) > Game.CardIDtoValue(powerCardID) && Game.CardIDtoSuit(leadCardID) != Card.CardSuit.Spade))) ||
+                Game.CardIDtoValue(powerCardID) <= Game.CardIDtoValue(leadCardID))
+            {
+                powerCardID = leadCardID;
+            }
+
+            index[0] = leadCardID;
+            index[1] = powerCardID;
+
+            return index;
         }
     }
 }
