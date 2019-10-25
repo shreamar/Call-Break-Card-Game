@@ -112,6 +112,14 @@ namespace Call_Break_Card_Game
             }
         }
 
+        /// <summary>
+        /// Lists the IDs of playable cards for the given lead card and power card
+        /// Lead card: The card played at start of th given trick
+        /// Power card: other played card which is higher ranking than lead card
+        /// </summary>
+        /// <param name="leadCardID"></param>
+        /// <param name="powerCardID"></param>
+        /// <returns>List of intergers indicating card Ids of playable cards</returns>
         public List<int> ListPlayableCards(int leadCardID, int powerCardID)
         {
             List<int> list = new List<int>();
@@ -185,15 +193,24 @@ namespace Call_Break_Card_Game
                     }
                 }
                 //when there is higher ranking card than lead card in the table
-                else if(CardIDtoValue(powerCardID) > CardIDtoValue(leadCardID))
+                else if (CardIDtoValue(powerCardID) > CardIDtoValue(leadCardID))
                 {
+                    foreach (Card card in Cards)
+                    {
+                        //add all the cards with matching suit
+                        if ((int)card.Suit == CardIDtoSuit(leadCardID))
+                        {
+                            list.Add(card.ID);
+                        }
+                    }
+
                     //when power card has same suit as the lead card
-                    if(CardIDtoSuit(powerCardID) == CardIDtoSuit(leadCardID))
+                    if (CardIDtoSuit(powerCardID) == CardIDtoSuit(leadCardID))
                     {
                         foreach (Card card in Cards)
                         {
                             //add all the cards with matching suit
-                            if ((int)card.Suit == CardIDtoSuit(po))
+                            if ((int)card.Suit == CardIDtoSuit(powerCardID))
                             {
                                 list.Add(card.ID);
                             }
@@ -204,10 +221,8 @@ namespace Call_Break_Card_Game
                             int spadeMatches = 0;
                             foreach (Card card in Cards)
                             {
-                                //Add all spade cards in the hand
                                 if (card.Suit == Card.CardSuit.Spade)
                                 {
-                                    list.Add(card.ID);
                                     spadeMatches++;
                                 }
                             }
@@ -221,6 +236,17 @@ namespace Call_Break_Card_Game
                                     list.Add(card.ID);
                                 }
                             }
+                            else if (spadeMatches > 0)
+                            {
+                                //add just the spade cards when there are spade cards
+                                foreach (Card card in Cards)
+                                {
+                                    if (card.Suit == Card.CardSuit.Spade)
+                                    {
+                                        list.Add(card.ID);
+                                    }
+                                }
+                            }
                         }
                         //when matching suit cards are available
                         else if (list.Count > 0)
@@ -229,7 +255,7 @@ namespace Call_Break_Card_Game
                             int numberOfGreaterSuits = 0;
                             foreach (int cardIndex in list)
                             {
-                                if (CardIDtoNumber(cardIndex) > CardIDtoNumber(leadCardID))
+                                if (CardIDtoNumber(cardIndex) > CardIDtoNumber(powerCardID))
                                 {
                                     numberOfGreaterSuits++;
                                 }
@@ -244,7 +270,7 @@ namespace Call_Break_Card_Game
                                 //add cards which has both matching suits and greater ranking then the lead card
                                 foreach (Card card in Cards)
                                 {
-                                    if (((int)card.Suit == CardIDtoSuit(leadCardID) && CardIDtoNumber(card.ID) > CardIDtoNumber(leadCardID)))
+                                    if (((int)card.Suit == CardIDtoSuit(powerCardID) && CardIDtoNumber(card.ID) > CardIDtoNumber(powerCardID)))
                                     {
                                         list.Add(card.ID);
                                     }
@@ -252,9 +278,47 @@ namespace Call_Break_Card_Game
                             }
                         }
                     }
+                    //when the power card has spade suit
+                    else if (CardIDtoSuit(powerCardID) > CardIDtoSuit(leadCardID))
+                    {
+                        if (list.Count == 0)
+                        {
+                            int spadeMatches = 0;
+                            foreach (Card card in Cards)
+                            {
+                                if (card.Suit == Card.CardSuit.Spade)
+                                {
+                                    spadeMatches++;
+                                }
+                            }
+
+                            //when there are no spade cards in the hand at all
+                            if (spadeMatches == 0)
+                            {
+                                //Add all cards at hand
+                                foreach (Card card in Cards)
+                                {
+                                    list.Add(card.ID);
+                                }
+                            }
+                            else if (spadeMatches > 0)
+                            {
+                                //add just the spade cards when there are spade cards
+                                foreach (Card card in Cards)
+                                {
+                                    if (card.Suit == Card.CardSuit.Spade)
+                                    {
+                                        list.Add(card.ID);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
                 }
 
-                
+
             }
             //invalid card ID means start of trick so all cards will be available
             else
