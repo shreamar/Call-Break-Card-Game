@@ -55,7 +55,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shuffles the deck of cards
         /// </summary>
-        private void shuffleDeck()
+        public void shuffleDeck()
         {
             //create first random number as seed
             Random random = new Random();
@@ -67,6 +67,7 @@ namespace Call_Break_Card_Game
                 Random random1 = new Random(rnd + i);
                 int rndIndex = random1.Next(52);
 
+                //swaps first card with randomly generated indexed card
                 swapCards(ref Cards[0],ref Cards[rndIndex]);
             }
             _Shuffled = true;

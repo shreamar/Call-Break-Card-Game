@@ -20,12 +20,22 @@ namespace Call_Break_Card_Game
     /// </summary>
     public partial class MainWindow : Window
     {
+        Deck deck = new Deck();
         public MainWindow()
         {
             InitializeComponent();
 
-            Deck deck = new Deck();
 
+            for (int i = 0; i < deck.Cards.Length; i++)
+            {
+                lbTest.Items.Add(deck.Cards[i].Name);
+            }
+        }
+
+        private void btnShuffle_Click(object sender, RoutedEventArgs e)
+        {
+            lbTest.Items.Clear();
+            deck.shuffleDeck();
             for (int i = 0; i < deck.Cards.Length; i++)
             {
                 lbTest.Items.Add(deck.Cards[i].Name);
