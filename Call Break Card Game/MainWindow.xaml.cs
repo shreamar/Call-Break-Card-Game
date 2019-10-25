@@ -30,14 +30,14 @@ namespace Call_Break_Card_Game
 
             lblTest.Content = player.Name;
 
-            for (int i = 0; i < deck.Cards.Length; i++)
+            for (int i = 0; i < deck.Cards.Count; i+=4)
             {
                 player.Cards.Add(deck.Cards[i]);
             }
 
             for (int i = 0; i < player.Cards.Count; i++)
             {
-                lbTest.Items.Add(player.Cards[i].ID +" "+player.Cards[i].Name);
+                lbTest.Items.Add(player.Cards[i].Name);
             }
         }
 

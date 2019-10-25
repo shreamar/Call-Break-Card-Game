@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Call_Break_Card_Game
 {
@@ -69,17 +68,22 @@ namespace Call_Break_Card_Game
             set { _Type = value; }
         }
 
-        public void swapCards(ref Card a, ref Card b)
+        public void swapCards(Card a, Card b)
         {
             Card temp = a;
             a = b;
             b = temp;
         }
 
+        /// <summary>
+        /// Sorts players cards based on the cards ID
+        /// </summary>
         public void sortCards()
         {
             Cards.Sort((a, b) => (a.ID.CompareTo(b.ID)));
         }
+
+        
 
         /// <summary>
         /// Player type human or computer

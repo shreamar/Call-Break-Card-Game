@@ -6,25 +6,19 @@ using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
-    class Deck:ISwapCards<Card>
+    class Deck //:ISwapCards<Card>
     {
-        private Card[] _Cards;
-        private bool _Shuffled = false;
+        private List<Card> _Cards = new List<Card>();
+        private bool _Shuffled;
 
         public Deck()
         {
-            _Cards = new Card[52];
-            //initialize the deck
-            for (int i = 0; i < _Cards.Length; i++)
-            {
-                _Cards[i] = new Card();
-            }
-
+            _Shuffled = false;
             createCards();
             shuffleDeck();
         }
 
-        public Card[] Cards
+        public List<Card> Cards
         {
             get { return _Cards; }
             set { _Cards = value; }
@@ -40,14 +34,11 @@ namespace Call_Break_Card_Game
         /// </summary>
         private void createCards()
         {
-            int counter = 0;
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 13; j++)
                 {
-                    Cards[counter].Number = (Card.CardNumber)j;
-                    Cards[counter].Suit = (Card.CardSuit)i;
-                    counter++;
+                    Cards.Add(new Card((Card.CardNumber)j, (Card.CardSuit)i));
                 }
             }
         }
@@ -68,17 +59,18 @@ namespace Call_Break_Card_Game
                 int rndIndex = random1.Next(52);
 
                 //swaps first card with randomly generated indexed card
-                swapCards(ref Cards[0],ref Cards[rndIndex]);
+                swapCards(Cards, 0, rndIndex);
             }
             _Shuffled = true;
         }
 
-        public void swapCards(ref Card a,ref Card b)
+        
+        public void swapCards(List<Card> deck, int i, int j)
         {
-            Card temp = a;
-            a = b;
-            b = temp;
+            Card temp = deck[i];
+            deck[i] = deck[j];
+            deck[j] = temp;
         }
-
+        
     }
 }
