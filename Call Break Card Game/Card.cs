@@ -95,7 +95,7 @@ namespace Call_Break_Card_Game
         /// Converts cardID number into card
         /// </summary>
         /// <param name="cardID">Unique ID of the card ranging 0-51</param>
-        /// <returns>Corresponding card of given ID</returns>
+        /// <returns>Corresponding card of given ID, returns null if invalid ID</returns>
         public Card convertCardIDtoCard(int cardID)
         {
             if (cardID >= 0 && cardID < 52)
@@ -105,7 +105,27 @@ namespace Call_Break_Card_Game
 
                 return (new Card((CardNumber)number, (CardSuit)suit));
             }
-            return null;
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Converts CardID to card value
+        /// </summary>
+        /// <param name="cardID">CardID of the said card</param>
+        /// <returns>Return number ranging 0-25, returns -1 if invalid cardID</returns>
+        public int cardIDtoCardValue(int cardID)
+        {
+            if(cardID>=0 && cardID < 52)
+            {
+                return convertCardIDtoCard(cardID).Value;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         /// <summary>
