@@ -63,17 +63,6 @@ namespace Call_Break_Card_Game
             }
             _Shuffled = true;
         }
-
-        /// <summary>
-        /// Plays the card for the given trick
-        /// Removes the given card from the hand
-        /// </summary>
-        /// <param name="cardIndex">Index of card to play</param>
-        public void playCard(int cardIndex)
-        {
-            Cards.Remove(Cards[cardIndex]);
-        }
-
         
         public void swapCards(List<Card> deck, int i, int j)
         {

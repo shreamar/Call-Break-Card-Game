@@ -10,7 +10,7 @@ namespace Call_Break_Card_Game
     {
         private CardNumber _Number;
         private CardSuit _Suit;
-        private bool _Thrown = false;
+        private bool _IsPlayed = false;
 
         public Card()
         {
@@ -58,10 +58,10 @@ namespace Call_Break_Card_Game
             }
         }
 
-        public bool Thrown
+        public bool IsPlayed
         {
-            get { return _Thrown; }
-            set { _Thrown = value; }
+            get { return _IsPlayed; }
+            set { _IsPlayed = value; }
         }
 
         /// <summary>
@@ -73,20 +73,39 @@ namespace Call_Break_Card_Game
             get
             {
                 string name = "";
+                
+                    //since Two = 0, 9 = Jack
+                    if ((int)Number < 10 && (int)Number > 0)
+                    {
+                        name = ((int)Number + 1).ToString();
+                    }
+                    else if ((int)Number >= 10 || (int)Number == 0)
+                    {
+                        //picks only the first letter of face/ace cards
+                        name = Number.ToString()[0].ToString();
+                    }
+                    name += "-" + Suit.ToString();
 
-                //since Two = 0, 9 = Jack
-                if ((int)Number < 10 && (int)Number>0)
-                {
-                    name = ((int)Number + 1).ToString();
-                }
-                else if ((int)Number >= 10 || (int)Number == 0)
-                {
-                    //picks only the first letter of face/ace cards
-                    name = Number.ToString()[0].ToString();
-                }
+                return name;
 
-                return name + "-" + Suit.ToString();
             }
+        }
+
+        /// <summary>
+        /// Converts cardID number into card
+        /// </summary>
+        /// <param name="cardID">Unique ID of the card ranging 0-51</param>
+        /// <returns>Corresponding card of given ID</returns>
+        public Card convertCardIDtoCard(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                int number = cardID % 13;
+                int suit = (cardID - number) / 13;
+
+                return (new Card((CardNumber)number, (CardSuit)suit));
+            }
+            return null;
         }
 
         /// <summary>
@@ -98,9 +117,9 @@ namespace Call_Break_Card_Game
             return new Card(this.Number, this.Suit);
         }
 
-        public enum CardSuit { Club, Diamond, Heart, Spade}; 
+        public enum CardSuit { Club, Diamond, Heart, Spade };
 
-        public enum CardNumber {Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King};
+        public enum CardNumber { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King };
 
     }
 }

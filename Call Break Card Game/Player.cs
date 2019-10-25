@@ -100,7 +100,7 @@ namespace Call_Break_Card_Game
         /// <returns>True if the said card was successfully played</returns>
         public bool playCard(int cardIndex)
         {
-            if (CardCount-1 >= cardIndex)
+            if (CardCount - 1 >= cardIndex && cardIndex >= 0) 
             {
                 LastPlayedCard = Cards[cardIndex];
                 Cards.Remove(Cards[cardIndex]);
@@ -111,6 +111,12 @@ namespace Call_Break_Card_Game
                 return false;
             }
         }
+
+        public struct IndexListAndListSize
+        {
+            List<int> IndexList;
+            int ItemCount;
+        };
 
         /// <summary>
         /// Player type human or computer

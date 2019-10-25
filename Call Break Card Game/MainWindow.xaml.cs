@@ -40,16 +40,16 @@ namespace Call_Break_Card_Game
             {
                 lbTest.Items.Add(player.Cards[i].Name);
             }
-            lblTest.Content = player.CardCount;
+            //lblTest.Content = player.LastPlayedCard.Name;
             
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
             lbTest.Items.Clear();
-            
-            player.playCard(9);
-            lblTest.Content = player.CardCount;
+
+            player.playCard(0);
+            lblTest.Content = player.LastPlayedCard.Name;
             
             for (int i = 0; i < player.CardCount; i++)
             {
