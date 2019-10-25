@@ -81,6 +81,7 @@ namespace Call_Break_Card_Game
             return new Card(this.Number, this.Suit);
         }
 
+
         /// <summary>
         /// no specific order except Spade is trump card with highest index value
         /// </summary>
@@ -89,7 +90,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// 2 is lowest value where as Ace is higher than King
         /// </summary>
-        public enum CardNumber { Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
+        public enum CardNumber {Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King};
         
 
     }
