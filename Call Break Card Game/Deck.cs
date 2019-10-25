@@ -14,8 +14,8 @@ namespace Call_Break_Card_Game
         public Deck()
         {
             _Shuffled = false;
-            createCards();
-            shuffleDeck();
+            CreateCardsInDeck();
+            ShuffleDeck();
         }
 
         public List<Card> Cards
@@ -32,7 +32,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Creates the deck of cards
         /// </summary>
-        private void createCards()
+        private void CreateCardsInDeck()
         {
             for (int i = 0; i < 4; i++)
             {
@@ -46,7 +46,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shuffles the deck of cards
         /// </summary>
-        public void shuffleDeck()
+        public void ShuffleDeck()
         {
             //create first random number as seed
             Random random = new Random();
@@ -59,12 +59,12 @@ namespace Call_Break_Card_Game
                 int rndIndex = random1.Next(52);
 
                 //swaps first card with randomly generated indexed card
-                swapCards(Cards, 0, rndIndex);
+                SwapCards(Cards, 0, rndIndex);
             }
             _Shuffled = true;
         }
         
-        public void swapCards(List<Card> deck, int i, int j)
+        public void SwapCards(List<Card> deck, int i, int j)
         {
             Card temp = deck[i];
             deck[i] = deck[j];

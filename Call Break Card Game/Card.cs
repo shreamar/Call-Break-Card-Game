@@ -92,18 +92,49 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
+        /// Converts cardID to card number
+        /// </summary>
+        /// <param name="cardID"></param>
+        /// <returns>Returns -1 if invalid ID</returns>
+        public int CardIDtoNumber(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                return (cardID % 13);
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Converts cardID to card suit
+        /// </summary>
+        /// <param name="cardID"></param>
+        /// <returns>Return -1 if invalid ID</returns>
+        public int CardIDtoSuit(int cardID)
+        {
+            if (cardID >= 0 && cardID < 52)
+            {
+                return (cardID - (int)(CardIDtoNumber(cardID))) / 13;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
         /// Converts cardID number into card
         /// </summary>
         /// <param name="cardID">Unique ID of the card ranging 0-51</param>
         /// <returns>Corresponding card of given ID, returns null if invalid ID</returns>
-        public Card convertCardIDtoCard(int cardID)
+        public Card CardIDtoCard(int cardID)
         {
             if (cardID >= 0 && cardID < 52)
-            {
-                int number = cardID % 13;
-                int suit = (cardID - number) / 13;
-
-                return (new Card((CardNumber)number, (CardSuit)suit));
+            {                
+                return (new Card((CardNumber)CardIDtoNumber(cardID), (CardSuit)CardIDtoSuit(cardID)));
             }
             else
             {
@@ -116,11 +147,11 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="cardID">CardID of the said card</param>
         /// <returns>Return number ranging 0-25, returns -1 if invalid cardID</returns>
-        public int cardIDtoCardValue(int cardID)
+        public int CardIDtoValue(int cardID)
         {
             if(cardID>=0 && cardID < 52)
             {
-                return convertCardIDtoCard(cardID).Value;
+                return CardIDtoCard(cardID).Value;
             }
             else
             {
@@ -132,7 +163,7 @@ namespace Call_Break_Card_Game
         /// Creates deep copy of card
         /// </summary>
         /// <returns></returns>
-        public Card createDeepCopy()
+        public Card CreateDeepCopy()
         {
             return new Card(this.Number, this.Suit);
         }
