@@ -25,9 +25,10 @@ namespace Call_Break_Card_Game
             InitializeComponent();
 
             Deck deck = new Deck();
-            foreach(Card card in deck.Cards)
+
+            for (int i = 0; i < deck.Cards.Length; i++)
             {
-                lbTest.Items.Add(card.Name);
+                lbTest.Items.Add(deck.Cards[i].Name);
             }
         }
     }

@@ -76,7 +76,7 @@ namespace Call_Break_Card_Game
         /// Creates deep copy of card
         /// </summary>
         /// <returns></returns>
-        private Card createDeepCopy()
+        public Card createDeepCopy()
         {
             return new Card(this.Number, this.Suit);
         }

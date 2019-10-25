@@ -61,21 +61,20 @@ namespace Call_Break_Card_Game
             Random random = new Random();
             int rnd = random.Next(1, 999999999);
 
-            for (int i = 0; i < 52; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 //updates the seeds everytime so they are pseudorandom and all are not same
                 Random random1 = new Random(rnd + i);
                 int rndIndex = random1.Next(52);
 
-                swapCards(Cards[i], Cards[rndIndex]);
+                swapCards(ref Cards[0],ref Cards[rndIndex]);
             }
             _Shuffled = true;
         }
 
-        private void swapCards(Card a, Card b)
+        private void swapCards(ref Card a,ref Card b)
         {
-            Card temp = new Card();
-            temp = a;
+            Card temp = a;
             a = b;
             b = temp;
         }
