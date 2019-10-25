@@ -35,18 +35,23 @@ namespace Call_Break_Card_Game
                 player.Cards.Add(deck.Cards[i]);
             }
 
+            player.sortCards();
             for (int i = 0; i < player.Cards.Count; i++)
             {
                 lbTest.Items.Add(player.Cards[i].Name);
             }
+            lblTest.Content = player.CardCount;
+            
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
             lbTest.Items.Clear();
-            player.sortCards();
             
-            for (int i = 0; i < player.Cards.Count; i++)
+            player.playCard(9);
+            lblTest.Content = player.CardCount;
+            
+            for (int i = 0; i < player.CardCount; i++)
             {
                 lbTest.Items.Add(player.Cards[i].Name);
             }

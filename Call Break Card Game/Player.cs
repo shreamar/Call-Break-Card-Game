@@ -96,11 +96,20 @@ namespace Call_Break_Card_Game
         /// Plays the card for the given trick
         /// Removes the given card from the hand
         /// </summary>
-        /// <param name="cardIndex">Index of card to play</param>
-        public void playCard(int cardIndex)
+        /// <param name="cardIndex">Index of the card to be played</param>
+        /// <returns>True if the said card was successfully played</returns>
+        public bool playCard(int cardIndex)
         {
-            LastPlayedCard = Cards[cardIndex];
-            Cards.Remove(Cards[cardIndex]);
+            if (CardCount-1 >= cardIndex)
+            {
+                LastPlayedCard = Cards[cardIndex];
+                Cards.Remove(Cards[cardIndex]);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
