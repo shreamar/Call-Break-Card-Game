@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Call_Break_Card_Game
 {
@@ -78,17 +79,7 @@ namespace Call_Break_Card_Game
         {
             if(Cards.Count > 0)
             {
-                //sort by suit first
-                for (int i = 0; i < Cards.Count-1; i++)
-                {
-                    for (int j = i+1; j < Cards.Count; j++)
-                    {
-                        if (Cards[i].Suit > Cards[j].Suit)
-                        {
-                            swapCards(ref Cards[i], ref Cards[j]);
-                        }
-                    }
-                }
+                Cards.Sort((a, b) => (a.ID.CompareTo(b.ID)));
             }
         }
 

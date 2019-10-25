@@ -14,7 +14,7 @@ namespace Call_Break_Card_Game
 
         public Card()
         {
-            _Number = CardNumber.Two;
+            _Number = CardNumber.Ace;
             _Suit = CardSuit.Club;
         }
 
@@ -58,11 +58,11 @@ namespace Call_Break_Card_Game
                 string name = "";
 
                 //since Two = 0, 9 = Jack
-                if ((int)Number < 9)
+                if ((int)Number < 10 && (int)Number>0)
                 {
-                    name = ((int)Number+2).ToString();
+                    name = ((int)Number + 1).ToString();
                 }
-                else if ((int)Number >= 9)
+                else if ((int)Number >= 10 || (int)Number == 0)
                 {
                     //picks only the first letter of face/ace cards
                     name = Number.ToString()[0].ToString();
@@ -81,15 +81,8 @@ namespace Call_Break_Card_Game
             return new Card(this.Number, this.Suit);
         }
 
-
-        /// <summary>
-        /// no specific order except Spade is trump card with highest index value
-        /// </summary>
         public enum CardSuit { Club, Diamond, Heart, Spade}; 
 
-        /// <summary>
-        /// 2 is lowest value where as Ace is higher than King
-        /// </summary>
         public enum CardNumber {Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King};
         
 

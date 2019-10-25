@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
-    class Deck:ISwapCards
+    class Deck:ISwapCards<Card>
     {
         private Card[] _Cards;
         private bool _Shuffled = false;
@@ -21,7 +21,7 @@ namespace Call_Break_Card_Game
             }
 
             createCards();
-            shuffleDeck();
+            //shuffleDeck();
         }
 
         public Card[] Cards
@@ -73,7 +73,7 @@ namespace Call_Break_Card_Game
             _Shuffled = true;
         }
 
-        void ISwapCards.swapCards(ref Card a,ref Card b)
+        public void swapCards(ref Card a,ref Card b)
         {
             Card temp = a;
             a = b;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
-    public interface ISwapCards
+    public interface ISwapCards<Card>
     {
         void swapCards(ref Card a, ref Card b);
     }

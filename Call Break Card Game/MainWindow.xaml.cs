@@ -25,7 +25,8 @@ namespace Call_Break_Card_Game
         {
             InitializeComponent();
 
-
+            Card card = new Card();
+            lblTest.Content = card.Name;
             for (int i = 0; i < deck.Cards.Length; i++)
             {
                 lbTest.Items.Add(deck.Cards[i].Name);
