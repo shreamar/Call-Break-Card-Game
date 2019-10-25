@@ -14,6 +14,12 @@ namespace Call_Break_Card_Game
         public Deck()
         {
             _Cards = new Card[52];
+            //initialize the deck
+            for (int i = 0; i < _Cards.Length; i++)
+            {
+                _Cards[i] = new Card();
+            }
+
             createCards();
             shuffleDeck();
         }
@@ -39,8 +45,8 @@ namespace Call_Break_Card_Game
             {
                 for (int j = 0; j < 13; j++)
                 {
-                    Cards[counter].Number = (Card.CardNumber)i;
-                    Cards[counter].Suit = (Card.CardSuit)j;
+                    Cards[counter].Number = (Card.CardNumber)j;
+                    Cards[counter].Suit = (Card.CardSuit)i;
                     counter++;
                 }
             }

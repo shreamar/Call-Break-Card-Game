@@ -73,6 +73,15 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
+        /// Creates deep copy of card
+        /// </summary>
+        /// <returns></returns>
+        private Card createDeepCopy()
+        {
+            return new Card(this.Number, this.Suit);
+        }
+
+        /// <summary>
         /// no specific order except Spade is trump card with highest index value
         /// </summary>
         public enum CardSuit { Club, Diamond, Heart, Spade}; 
