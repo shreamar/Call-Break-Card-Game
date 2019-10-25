@@ -112,15 +112,24 @@ namespace Call_Break_Card_Game
             }
         }
 
-        public struct IndexListAndListSize
+        public List<int> ListPlayableCards(int leadCardID, int powerCardID)
         {
-            List<int> IndexList;
-            int ItemCount;
-        };
+            List<int> list = new List<int>();
+
+            //validity of card ID
+            if(leadCardID>=0 && leadCardID < 52 && powerCardID>=0 && powerCardID<52)
+            {
+
+            }
+
+            return list;
+        }
 
         /// <summary>
         /// Player type human or computer
         /// </summary>
         public enum PlayerType { Human, Bot };
+
+        //public enum Playability {Unknown, LeadTrick, }
     }
 }
