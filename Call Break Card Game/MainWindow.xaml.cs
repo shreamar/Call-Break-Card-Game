@@ -21,25 +21,34 @@ namespace Call_Break_Card_Game
     public partial class MainWindow : Window
     {
         Deck deck = new Deck();
+        Player player = new Player("Amar", Player.PlayerType.Human);
         public MainWindow()
         {
             InitializeComponent();
 
-            Card card = new Card();
-            lblTest.Content = card.Name;
+            Card card = new Card();            
+
+            lblTest.Content = player.Name;
+
             for (int i = 0; i < deck.Cards.Length; i++)
             {
-                lbTest.Items.Add(deck.Cards[i].Name);
+                player.Cards.Add(deck.Cards[i]);
+            }
+
+            for (int i = 0; i < player.Cards.Count; i++)
+            {
+                lbTest.Items.Add(player.Cards[i].ID +" "+player.Cards[i].Name);
             }
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
             lbTest.Items.Clear();
-            deck.shuffleDeck();
-            for (int i = 0; i < deck.Cards.Length; i++)
+            player.sortCards();
+            
+            for (int i = 0; i < player.Cards.Count; i++)
             {
-                lbTest.Items.Add(deck.Cards[i].Name);
+                lbTest.Items.Add(player.Cards[i].Name);
             }
         }
     }

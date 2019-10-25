@@ -38,7 +38,7 @@ namespace Call_Break_Card_Game
 
         public int ID
         {
-            get { return ((int)Suit * 10) + (int)Number; }        //Two-Club is 0, Ace-Spade is 51
+            get { return ((int)Suit * 13) + (int)Number; }        //Two-Club is 0, K-Spade is 51
         }
 
         /// <summary>

@@ -7,9 +7,8 @@ using System.Linq;
 
 namespace Call_Break_Card_Game
 {
-    class Player:ISwapCards<Card>
+    class Player : ISwapCards<Card>
     {
-        private int _CardCount;
         private List<Card> _Cards = new List<Card>();
         private string _Name;
         private int _Score;
@@ -21,6 +20,7 @@ namespace Call_Break_Card_Game
             Name = "Random Player";
             Score = 0;
             Type = PlayerType.Bot;
+            ID = 0;
         }
 
         public Player(string name, PlayerType type)
@@ -28,6 +28,7 @@ namespace Call_Break_Card_Game
             Name = name;
             Score = 0;
             Type = type;
+            ID = 0;
         }
 
         /// <summary>
@@ -77,15 +78,12 @@ namespace Call_Break_Card_Game
 
         public void sortCards()
         {
-            if(Cards.Count > 0)
-            {
-                Cards.Sort((a, b) => (a.ID.CompareTo(b.ID)));
-            }
+            Cards.Sort((a, b) => (a.ID.CompareTo(b.ID)));
         }
 
         /// <summary>
         /// Player type human or computer
         /// </summary>
-        public enum PlayerType { Human, Bot};
+        public enum PlayerType { Human, Bot };
     }
 }

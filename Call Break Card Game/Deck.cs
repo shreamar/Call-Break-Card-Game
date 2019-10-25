@@ -21,7 +21,7 @@ namespace Call_Break_Card_Game
             }
 
             createCards();
-            //shuffleDeck();
+            shuffleDeck();
         }
 
         public Card[] Cards
@@ -79,5 +79,6 @@ namespace Call_Break_Card_Game
             a = b;
             b = temp;
         }
+
     }
 }
