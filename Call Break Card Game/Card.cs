@@ -41,6 +41,23 @@ namespace Call_Break_Card_Game
             get { return ((int)Suit * 10) + (int)Number; }        //Two-Club is 0, Ace-Spade is 51
         }
 
+        /// <summary>
+        /// Hierarchical value a card given its suit and number
+        /// </summary>
+        public int Value
+        {
+            get
+            {
+                //Ace is highest among numbers and all other numbers have values given their order
+                //Space has highest value while all other suits have same value
+                int suitValue = Suit == CardSuit.Spade ? 13 : 0;
+                int numberValue = Number == CardNumber.Ace ? 12 : (int)Number - 1;
+
+                //examples: 5-H = 5-D = 5-C =4, A-H = A-D = A-C =12, 2-S = 13, K-S = 24, A-S =25
+                return suitValue + numberValue;
+            }
+        }
+
         public bool Thrown
         {
             get { return _Thrown; }
@@ -84,7 +101,6 @@ namespace Call_Break_Card_Game
         public enum CardSuit { Club, Diamond, Heart, Spade}; 
 
         public enum CardNumber {Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King};
-        
 
     }
 }
