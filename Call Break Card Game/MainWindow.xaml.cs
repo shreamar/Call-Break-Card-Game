@@ -47,8 +47,7 @@ namespace Call_Break_Card_Game
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
             lbPlayables.Items.Clear();
-
-            /*
+            
             Random rnd = new Random();
 
             int b = 0, a = 0;
@@ -75,7 +74,7 @@ namespace Call_Break_Card_Game
             } while (duplicate);
 
 
-            if (Game.CardIDtoValue(a) > Game.CardIDtoValue(b) && Game.CardIDtoSuit(a) == 3)
+            if (Game.CardIDtoValue(a) > Game.CardIDtoValue(b) && Game.CardIDtoSuit(a) == Card.CardSuit.Spade)
             {
                 indexCards = player.ListPlayableCards(b, a);
                 lblTest.Content = "Lead: " + Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(a).Name;
@@ -85,17 +84,20 @@ namespace Call_Break_Card_Game
                 indexCards = player.ListPlayableCards(b, b);
                 lblTest.Content = "Lead: " + Game.CardIDtoCard(b).Name + "   Power: " + Game.CardIDtoCard(b).Name;
             }
-            */
+            
 
+            /*
             int x = 26;
-            int y = 12;
+            int y = 26;
             List<int> indexCards = player.ListPlayableCards(x,y);
             lblTest.Content = "Lead: " + Game.CardIDtoCard(x).Name + "   Power: " + Game.CardIDtoCard(y).Name;
+            */
 
             foreach (int id in indexCards)
             {
                 lbPlayables.Items.Add(Game.CardIDtoCard(id).Name);
             }
+            
         }        
 
         private void btnRedeal_Click(object sender, RoutedEventArgs e)
@@ -117,7 +119,16 @@ namespace Call_Break_Card_Game
             }
         }
 
+        private void btnTest1_Click(object sender, RoutedEventArgs e)
+        {
+            Game.InitializePLayers("Jaeger");
 
+            lbPlayables.Items.Clear();
+            foreach (Player player in Game.Players)
+            {
+                lbPlayables.Items.Add(player.Name);
+            }
+        }
     }
 }
 

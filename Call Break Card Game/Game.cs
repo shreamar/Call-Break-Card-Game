@@ -81,12 +81,16 @@ namespace Call_Break_Card_Game
             get { return _TurnCounter; }
         }
 
+        /// <summary>
+        /// Initializes all players and puts them in random order
+        /// </summary>
+        /// <param name="playerName"></param>
         public static void InitializePLayers(string playerName)
         {
             _Players[0] = new Player(playerName, Player.PlayerType.Human);
             for (int i = 1; i <= 3; i++)
             {
-                _Players[i] = new Player("Bot-" + i, Player.PlayerType.Bot);
+                _Players[i] = new Player(i==1?"Reiner":(i==2?"Bertholdt":"Annie"), Player.PlayerType.Bot);
             }
 
             Random random = new Random();

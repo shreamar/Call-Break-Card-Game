@@ -12,6 +12,7 @@
         <Button x:Name ="btnShuffle" Content="Find Playables" HorizontalAlignment="Left" Margin="322,114,0,0" VerticalAlignment="Top" Width="87" Click="btnShuffle_Click"/>
         <ListBox x:Name="lbPlayables" HorizontalAlignment="Left" Height="333" Margin="443,114,0,0" VerticalAlignment="Top" Width="200"/>
         <Button x:Name="btnRedeal" Content="Deal Again!" HorizontalAlignment="Left" Margin="90,89,0,0" VerticalAlignment="Top" Width="87" Height="20" Click="btnRedeal_Click"/>
+        <Button x:Name="btnTest1" Content="Get players" HorizontalAlignment="Left" Margin="322,173,0,0" VerticalAlignment="Top" Width="87" Click="btnTest1_Click"/>
 
     </Grid>
 </Window>
