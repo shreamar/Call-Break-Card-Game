@@ -73,25 +73,41 @@ namespace Call_Break_Card_Game
             get
             {
                 string name = "";
-                
-                    //since Two = 0, 9 = Jack
-                    if ((int)Number < 10 && (int)Number > 0)
-                    {
-                        name = ((int)Number + 1).ToString();
-                    }
-                    else if ((int)Number >= 10 || (int)Number == 0)
-                    {
-                        //picks only the first letter of face/ace cards
-                        name = Number.ToString()[0].ToString();
-                    }
-                    name += "-" + Suit.ToString();
+
+                //since Two = 0, 9 = Jack
+                if ((int)Number < 10 && (int)Number > 0)
+                {
+                    name = ((int)Number + 1).ToString();
+                }
+                else if ((int)Number >= 10 || (int)Number == 0)
+                {
+                    //picks only the first letter of face/ace cards
+                    name = Number.ToString()[0].ToString();
+                }
+
+                if (Suit == CardSuit.Diamond)
+                {
+                    name += '♦'.ToString();
+                }
+                else if (Suit == CardSuit.Club)
+                {
+                    name += '♣'.ToString();
+                }
+                else if (Suit == CardSuit.Heart)
+                {
+                    name += '♥'.ToString();
+                }
+                else if (Suit == CardSuit.Spade)
+                {
+                    name += '♠'.ToString();
+                }
 
                 return name;
 
             }
         }
 
-        
+
 
         /// <summary>
         /// Creates deep copy of card
@@ -102,7 +118,7 @@ namespace Call_Break_Card_Game
             return new Card(this.Number, this.Suit);
         }
 
-        public enum CardSuit { Diamond,Club, Heart, Spade };
+        public enum CardSuit { Diamond, Club, Heart, Spade };
 
         public enum CardNumber { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King };
 
