@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
-    class Deck //:ISwapCards<Card>
+    public class Deck //:ISwapCards<Card>
     {
         private List<Card> _Cards = new List<Card>();
         private bool _Shuffled;

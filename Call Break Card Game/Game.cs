@@ -8,7 +8,78 @@ namespace Call_Break_Card_Game
 {
     public static class Game
     {
-        
+        private static Player[] _Players = new Player[4];
+        private static int _MaxTricksToPlay;
+        private static Deck _DeckOfCards;
+        private static int _CurrentTrick;
+        private static double[,] _ScoreBoard;
+        private static int[,] _Bidding;
+        private static int _LeadCardID;
+        private static int _PowerCardID;
+        private static List<Card> _CardsInTable = new List<Card>();
+        private static int _TurnCounter;
+
+        public static Player[] Players
+        {
+            get
+            {
+                return _Players;
+            }
+            set
+            {
+                _Players = value;
+            }
+        }
+
+        public static int MaXTrickToPlay
+        {
+            get { return _MaxTricksToPlay; }
+            set { _MaxTricksToPlay = value; }
+        }
+
+        public static Deck DeckOfCards
+        {
+            get { return _DeckOfCards; }
+            //set { _DeckOfCards = value; }
+        }
+
+        public static int CurrentTrick
+        {
+            get { return _CurrentTrick; }
+        }
+
+        public static double[,] ScoreBoard
+        {
+            get { return _ScoreBoard; }
+        }
+
+        public static int[,] Bidding
+        {
+            get { return _Bidding; }
+            set { _Bidding = value; }
+        }
+
+        public static int LeadCardID
+        {
+            get { return _LeadCardID; }
+            //set { _LeadCardID = value; }
+        }
+
+        public static int PowerCardID
+        {
+            get { return _PowerCardID; }
+            //set { _PowerCardID = value; }
+        }
+
+        public static List<Card> CardsInTable
+        {
+            get { return _CardsInTable; }
+        }
+
+        public static int TurnCounter
+        {
+            get { return _TurnCounter; }
+        }
 
         /// <summary>
         /// Converts cardID to card number

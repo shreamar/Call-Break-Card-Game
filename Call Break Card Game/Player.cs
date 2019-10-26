@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
-    class Player : ISwapCards<Card>
+    public class Player : ISwapCards<Card>
     {
         private List<Card> _Cards = new List<Card>();
         private string _Name;
