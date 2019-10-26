@@ -81,6 +81,34 @@ namespace Call_Break_Card_Game
             get { return _TurnCounter; }
         }
 
+        public static void InitializePLayers(string playerName)
+        {
+            _Players[0] = new Player(playerName, Player.PlayerType.Human);
+            for (int i = 1; i <= 3; i++)
+            {
+                _Players[i] = new Player("Bot-" + i, Player.PlayerType.Bot);
+            }
+
+            Random random = new Random();
+            int rand = random.Next(999999999);
+
+            for (int i = 0; i < 1000; i++)
+            {
+                Random rnd = new Random(rand * i);
+                int index = rnd.Next(4);
+
+                Player temp = _Players[0];
+                _Players[0] = _Players[index];
+                _Players[index] = temp;
+            }
+
+            //assign IDs to players
+            for (int i = 0; i < 4; i++)
+            {
+                _Players[i].ID = i;
+            }
+        }
+
         /// <summary>
         /// Converts cardID to card number
         /// </summary>
