@@ -19,6 +19,7 @@
         <Label x:Name ="lblTest2" Content="Label" HorizontalAlignment="Left" Margin="341,79,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
         <Label x:Name ="lblTest3" Content="Label" HorizontalAlignment="Left" Margin="510,79,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
         <Button x:Name="btnDeal" Content="Deal Cards" HorizontalAlignment="Left" Margin="499,15,0,0" VerticalAlignment="Top" Width="71" Height="59" Click="btnDeal_Click"/>
+        <Button x:Name="btnSort" Content="Sort Cards" HorizontalAlignment="Left" Margin="575,15,0,0" VerticalAlignment="Top" Width="75" Click="btnSort_Click"/>
 
     </Grid>
 </Window>

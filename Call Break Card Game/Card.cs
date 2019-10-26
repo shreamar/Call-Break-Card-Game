@@ -102,7 +102,7 @@ namespace Call_Break_Card_Game
             return new Card(this.Number, this.Suit);
         }
 
-        public enum CardSuit { Club, Diamond, Heart, Spade };
+        public enum CardSuit { Diamond,Club, Heart, Spade };
 
         public enum CardNumber { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King };
 
