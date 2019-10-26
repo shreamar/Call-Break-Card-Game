@@ -7,12 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500.194" Width="729.6">
     <Grid>
-        <Label x:Name ="lblTest" Content="Label" HorizontalAlignment="Left" Margin="322,57,0,0" VerticalAlignment="Top" Height="35" Width="321"/>
-        <ListBox x:Name ="lbTest" HorizontalAlignment="Left" Height="333" Margin="81,114,0,0" VerticalAlignment="Top" Width="197"/>
-        <Button x:Name ="btnShuffle" Content="Find Playables" HorizontalAlignment="Left" Margin="322,114,0,0" VerticalAlignment="Top" Width="87" Click="btnShuffle_Click"/>
-        <ListBox x:Name="lbPlayables" HorizontalAlignment="Left" Height="333" Margin="443,114,0,0" VerticalAlignment="Top" Width="200"/>
-        <Button x:Name="btnRedeal" Content="Deal Again!" HorizontalAlignment="Left" Margin="90,89,0,0" VerticalAlignment="Top" Width="87" Height="20" Click="btnRedeal_Click"/>
-        <Button x:Name="btnTest1" Content="Get players" HorizontalAlignment="Left" Margin="322,173,0,0" VerticalAlignment="Top" Width="87" Click="btnTest1_Click"/>
+        <Label x:Name ="lblTest" Content="Label" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Height="35" Width="157"/>
+        <ListBox x:Name ="lbTest" HorizontalAlignment="Left" Height="333" Margin="10,114,0,0" VerticalAlignment="Top" Width="157"/>
+        <Button x:Name ="btnShuffle" Content="Find Playables" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="87" Click="btnShuffle_Click"/>
+        <ListBox x:Name="lbPlayables" HorizontalAlignment="Left" Height="333" Margin="172,114,0,0" VerticalAlignment="Top" Width="164"/>
+        <Button x:Name="btnRedeal" Content="Deal Again!" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="20" Click="btnRedeal_Click"/>
+        <Button x:Name="btnTest1" Content="Get players" HorizontalAlignment="Left" Margin="194,10,0,0" VerticalAlignment="Top" Width="87" Click="btnTest1_Click"/>
+        <ListBox x:Name="lb3" HorizontalAlignment="Left" Height="333" Margin="341,114,0,0" VerticalAlignment="Top" Width="164"/>
+        <ListBox x:Name="lb4" HorizontalAlignment="Left" Height="333" Margin="510,114,0,0" VerticalAlignment="Top" Width="164"/>
+        <Label x:Name ="lblTest1" Content="Label" HorizontalAlignment="Left" Margin="172,74,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
+        <Label x:Name ="lblTest2" Content="Label" HorizontalAlignment="Left" Margin="341,79,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
+        <Label x:Name ="lblTest3" Content="Label" HorizontalAlignment="Left" Margin="510,79,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
+        <Button x:Name="btnDeal" Content="Deal Cards" HorizontalAlignment="Left" Margin="499,15,0,0" VerticalAlignment="Top" Width="71" Height="59" Click="btnDeal_Click"/>
 
     </Grid>
 </Window>

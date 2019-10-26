@@ -114,6 +114,26 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
+        /// Deals all cards from the deck to all players,
+        /// As the card is being dealt to players, the given cards are being removed from deck pile at the same time.
+        /// </summary>
+        public static void DealCards()
+        {
+            _DeckOfCards = new Deck();
+
+            for (int i = 0; i < 13; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    //Adds the card from top of the deck to players pile
+                    Players[j].Cards.Add(DeckOfCards.Cards[0]);
+                    //Removes the card from top of the deck since now its moved to player's pile
+                    DeckOfCards.Cards.Remove(DeckOfCards.Cards[0]);
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts cardID to card number
         /// </summary>
         /// <param name="cardID"></param>

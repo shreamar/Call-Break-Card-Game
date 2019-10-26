@@ -129,6 +129,42 @@ namespace Call_Break_Card_Game
                 lbPlayables.Items.Add(player.Name);
             }
         }
+
+        private void btnDeal_Click(object sender, RoutedEventArgs e)
+        {
+            lbTest.Items.Clear();
+            lbPlayables.Items.Clear();
+            lb3.Items.Clear();
+            lb4.Items.Clear();
+
+            Game.InitializePLayers("Jaeger");
+
+            Game.DealCards();
+
+            lblTest.Content = Game.Players[0].Name;
+            foreach (Card card in Game.Players[0].Cards)
+            {
+                lbTest.Items.Add(card.Name);
+            }
+
+            lblTest1.Content = Game.Players[1].Name;
+            foreach (Card card in Game.Players[1].Cards)
+            {
+                lbPlayables.Items.Add(card.Name);
+            }
+
+            lblTest2.Content = Game.Players[2].Name;
+            foreach (Card card in Game.Players[2].Cards)
+            {
+                lb3.Items.Add(card.Name);
+            }
+
+            lblTest3.Content = Game.Players[3].Name;
+            foreach (Card card in Game.Players[3].Cards)
+            {
+                lb4.Items.Add(card.Name);
+            }
+        }
     }
 }
 
