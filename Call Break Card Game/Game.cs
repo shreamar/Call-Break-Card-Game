@@ -13,6 +13,7 @@ namespace Call_Break_Card_Game
         private static Deck _DeckOfCards;
         private static int _CurrentTrick;
         private static double[,] _ScoreBoard;
+        private static int[] _WinCount;
         private static int[,] _Bidding;
         //private static int _LeadCardID;
         //private static int _PowerCardID;
@@ -104,6 +105,12 @@ namespace Call_Break_Card_Game
         public static int TurnCounter
         {
             get { return _TurnCounter; }
+        }
+
+        public static int[] WinCount
+        {
+            get { return _WinCount; }
+            set { _WinCount = value; }
         }
 
         /// <summary>
@@ -238,7 +245,13 @@ namespace Call_Break_Card_Game
             return winner;
         }
 
-
+        public static bool UpdateScoreBoard()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if(Bidding[CurrentTrick,0]==)
+            }
+        }
 
         /// <summary>
         /// Converts cardID to card number
