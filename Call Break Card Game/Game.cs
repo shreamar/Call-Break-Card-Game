@@ -8,16 +8,16 @@ namespace Call_Break_Card_Game
 {
     public static class Game
     {
-        private static Player[] _Players = new Player[4];
+        private static Player[] _Players;
         private static int _MaxHandsToPlay;
         private static Deck _DeckOfCards;
         private static int _CurrentHand;
         private static double[,] _ScoreBoard;
         private static int[] _TricksWon;
-        private static int[,] _Bidding;
+        private static int[] _Bidding;
         //private static int _LeadCardID;
         //private static int _PowerCardID;
-        private static List<Card> _CardsInTable = new List<Card>();
+        private static List<Card> _CardsInTable;
         private static int _CurrentDealer;
 
         public static Player[] Players
@@ -35,7 +35,7 @@ namespace Call_Break_Card_Game
         public static int MaxHandsToPlay
         {
             get { return _MaxHandsToPlay; }
-            set { _MaxHandsToPlay = value; }
+            //set { _MaxHandsToPlay = value; }
         }
 
         public static Deck DeckOfCards
@@ -54,7 +54,7 @@ namespace Call_Break_Card_Game
             get { return _ScoreBoard; }
         }
 
-        public static int[,] Bidding
+        public static int[] Bidding
         {
             get { return _Bidding; }
             set { _Bidding = value; }
@@ -269,24 +269,27 @@ namespace Call_Break_Card_Game
 
         /// <summary>
         /// Updates scoreboard given the bidding number and tricks won
-        /// </summary>
+        /// Also updates current hand</summary>
         public static void UpdateScoreBoard()
         {
             for (int i = 0; i < 4; i++)
             {
-                if(Bidding[CurrentHand,i]== TricksWon[i])
+                if(Bidding[i]== TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[CurrentHand, i];
+                    ScoreBoard[CurrentHand, i] = Bidding[ i];
                 }
-                else if(Bidding[CurrentHand, i] < TricksWon[i])
+                else if(Bidding[ i] < TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[CurrentHand, i] * (-1);
+                    ScoreBoard[CurrentHand, i] = Bidding[ i] * (-1);
                 }
-                else if(Bidding[CurrentHand, i] > TricksWon[i])
+                else if(Bidding[ i] > TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[CurrentHand, i] + (0.1) * TricksWon[i];
+                    ScoreBoard[CurrentHand, i] = Bidding[i] + (0.1) * TricksWon[i];
                 }
             }
+
+            //Updates CurrentHand
+            _CurrentHand++;
         }
 
         /// <summary>
@@ -296,7 +299,52 @@ namespace Call_Break_Card_Game
         /// <param name="bid"></param>
         public static void PlaceBid(int playerID, int bid)
         {
-            Bidding[CurrentHand, playerID] = bid;
+            if (bid > 13 && bid > 0)
+            {
+                Bidding[playerID] = bid;
+            }
+            else
+            {
+                //default bid is 1
+                Bidding[playerID] = 1;
+            }
+        }
+
+        public static void InitializeGame(string playerName, int maxHands)
+        {
+            //Initialize Players
+            InitializePLayers(playerName);
+
+            //Default number of hands to play is 5
+            if(maxHands<1 || maxHands > 20)
+            {
+                _MaxHandsToPlay = 5;
+            }
+            else
+            {
+                _MaxHandsToPlay = maxHands;
+            }
+
+            //Initialize deck of cards
+            _DeckOfCards = new Deck();
+
+            //Set current hand to 0
+            _CurrentHand = 0;
+
+            //Initialize score board
+            _ScoreBoard = new double[MaxHandsToPlay, 4];
+
+            //Initialize tricks won by players in given hand
+            TricksWon = new int[4];
+
+            //Initialize bidding board
+            Bidding = new int[4];
+
+            //Initializes cards in table
+            _CardsInTable = new List<Card>();
+
+            //Set current dealer to 0
+            _CurrentDealer = 0;
         }
 
         /// <summary>
