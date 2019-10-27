@@ -15,7 +15,7 @@ namespace Call_Break_Card_Game
         {
             _Shuffled = false;
             CreateCardsInDeck();
-            ShuffleDeck();
+            //ShuffleDeck();
         }
 
         public List<Card> Cards

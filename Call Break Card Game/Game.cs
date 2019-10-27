@@ -171,6 +171,7 @@ namespace Call_Break_Card_Game
         public static void DealCards()
         {
             //_DeckOfCards = new Deck();
+            DeckOfCards.ShuffleDeck();
 
             for (int i = 0; i < 13; i++)
             {
@@ -335,16 +336,37 @@ namespace Call_Break_Card_Game
             _ScoreBoard = new double[MaxHandsToPlay, 4];
 
             //Initialize tricks won by players in given hand
-            TricksWon = new int[4];
+            _TricksWon = new int[4];
 
             //Initialize bidding board
-            Bidding = new int[4];
+            _Bidding = new int[4];
+            for (int i = 0; i < 4; i++)
+            {
+                //default and lowest bid is 1
+                _Bidding[i] = 1;
+            }
 
             //Initializes cards in table
             _CardsInTable = new List<Card>();
 
             //Set current dealer to 0
             _CurrentDealer = 0;
+        }
+
+        public static void ReinitializeHand()
+        {            
+            for (int i = 0; i < 4; i++)
+            {
+                //reset tricks won for new hand of game
+                TricksWon[i] = 0;
+
+                //reset bidding board for new hand of game
+                Bidding[i] = 1;
+
+                //Clear cards in table
+                CardsInTable.Clear();
+            }
+
         }
 
         /// <summary>
