@@ -14,8 +14,8 @@ namespace Call_Break_Card_Game
         private static int _CurrentTrick;
         private static double[,] _ScoreBoard;
         private static int[,] _Bidding;
-        private static int _LeadCardID;
-        private static int _PowerCardID;
+        //private static int _LeadCardID;
+        //private static int _PowerCardID;
         private static List<Card> _CardsInTable = new List<Card>();
         private static int _TurnCounter;
 
@@ -59,15 +59,40 @@ namespace Call_Break_Card_Game
             set { _Bidding = value; }
         }
 
+        /// <summary>
+        /// First card played in the table is lead card
+        /// </summary>
         public static int LeadCardID
         {
-            get { return _LeadCardID; }
+            get 
+            {
+                return CardsInTable[0].ID;
+            }
             //set { _LeadCardID = value; }
         }
 
+        /// <summary>
+        /// Finds the power card among the cards played in the table
+        /// </summary>
         public static int PowerCardID
         {
-            get { return _PowerCardID; }
+            get 
+            {
+                int index = 0;
+                foreach(Card card in CardsInTable)
+                {
+                    if(card.Suit == CardIDtoSuit(LeadCardID) && card.Value > CardIDtoValue(LeadCardID))
+                    {
+                        index = card.ID;
+                    }
+                    else if(card.Suit!=CardIDtoSuit(LeadCardID) && card.Suit == Card.CardSuit.Spade)
+                    {
+                        index = card.ID;
+                    }
+                }
+
+                return index;
+            }
             //set { _PowerCardID = value; }
         }
 
