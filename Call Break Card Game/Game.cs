@@ -156,6 +156,52 @@ namespace Call_Break_Card_Game
                     DeckOfCards.Cards.Remove(DeckOfCards.Cards[0]);
                 }
             }
+
+            if (CheckNeedForRedealingCard())
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    foreach(Card card in Players[i].Cards)
+                    {
+                        //puts back players cards in deck
+                        DeckOfCards.Cards.Add(card);
+                    }
+                    //removes cards from the players pile
+                    Players[i].Cards.Clear();
+                }
+                //Re-shuffles deck
+                DeckOfCards.ShuffleDeck();
+                //Deals the cards to players again
+                DealCards();
+            }
+        }
+
+        /// <summary>
+        /// Checks if cards need to be redealt.
+        /// If there are no neither of ace cards, face cards or spade cards in any of the players pile, needs to redeal
+        /// </summary>
+        /// <returns></returns>
+        private static bool CheckNeedForRedealingCard()
+        {
+            int counter=0;
+            for (int i = 0; i < 4; i++)
+            {
+                counter = 0;
+                foreach(Card card in Players[i].Cards)
+                {
+                    //check for any facecards, ace cards and spade cards
+                    if((int)card.Number==0 || (int)card.Number >= 10 || (int)card.Number < 12 || card.Suit == Card.CardSuit.Spade)
+                    {
+                        counter++;
+                    }
+                }
+
+                if (counter == 0)
+                {
+                    break;
+                }
+            }
+            return (counter == 0);
         }
 
         /// <summary>
