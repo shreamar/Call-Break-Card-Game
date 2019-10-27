@@ -13,7 +13,7 @@ namespace Call_Break_Card_Game
         private static Deck _DeckOfCards;
         private static int _CurrentTrick;
         private static double[,] _ScoreBoard;
-        private static int[] _WinCount;
+        private static int[] _TricksWon;
         private static int[,] _Bidding;
         //private static int _LeadCardID;
         //private static int _PowerCardID;
@@ -107,10 +107,29 @@ namespace Call_Break_Card_Game
             get { return _TurnCounter; }
         }
 
-        public static int[] WinCount
+        public static int[] TricksWon
         {
-            get { return _WinCount; }
-            set { _WinCount = value; }
+            get { return _TricksWon; }
+            set { _TricksWon = value; }
+        }
+
+        /// <summary>
+        /// Gets cumulative scores of each player
+        /// </summary>
+        public static double[] CumulativeScore
+        {
+            get
+            {
+                double[] scores = { 0, 0, 0, 0 };
+                for (int i = 0; i < ScoreBoard.GetUpperBound(1); i++)
+                {
+                    for (int j = 0; j < ScoreBoard.GetUpperBound(0); j++)
+                    {
+                        scores[i] += ScoreBoard[j, i];
+                    }
+                }
+                return scores;
+            }
         }
 
         /// <summary>
@@ -245,11 +264,25 @@ namespace Call_Break_Card_Game
             return winner;
         }
 
-        public static bool UpdateScoreBoard()
+        /// <summary>
+        /// Updates scoreboard given the bidding number and tricks won
+        /// </summary>
+        public static void UpdateScoreBoard()
         {
             for (int i = 0; i < 4; i++)
             {
-                if(Bidding[CurrentTrick,0]==)
+                if(Bidding[CurrentTrick,i]== TricksWon[i])
+                {
+                    ScoreBoard[CurrentTrick, i] = Bidding[CurrentTrick, i];
+                }
+                else if(Bidding[CurrentTrick, i] < TricksWon[i])
+                {
+                    ScoreBoard[CurrentTrick, i] = Bidding[CurrentTrick, i] * (-1);
+                }
+                else if(Bidding[CurrentTrick, i] > TricksWon[i])
+                {
+                    ScoreBoard[CurrentTrick, i] = Bidding[CurrentTrick, i] + (0.1) * TricksWon[i];
+                }
             }
         }
 
