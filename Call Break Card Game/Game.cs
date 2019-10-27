@@ -138,6 +138,9 @@ namespace Call_Break_Card_Game
         /// <param name="playerName"></param>
         public static void InitializePLayers(string playerName)
         {
+            //Initialize Players
+            _Players = new Player[4];
+
             _Players[0] = new Player(playerName, Player.PlayerType.Human);
             for (int i = 1; i <= 3; i++)
             {
@@ -173,18 +176,24 @@ namespace Call_Break_Card_Game
             //_DeckOfCards = new Deck();
             DeckOfCards.ShuffleDeck();
 
-            for (int i = 0; i < 13; i++)
+            bool alreadyDealt = false;
+
+            if (DeckOfCards.Cards.Count != 0)
             {
-                for (int j = 0; j < 4; j++)
+                for (int i = 0; i < 13; i++)
                 {
-                    //Adds the card from top of the deck to players pile
-                    Players[j].Cards.Add(DeckOfCards.Cards[0]);
-                    //Removes the card from top of the deck since now its moved to player's pile
-                    DeckOfCards.Cards.Remove(DeckOfCards.Cards[0]);
+                    for (int j = 0; j < 4; j++)
+                    {
+                        //Adds the card from top of the deck to players pile
+                        Players[j].Cards.Add(DeckOfCards.Cards[0]);
+                        //Removes the card from top of the deck since now its moved to player's pile
+                        DeckOfCards.Cards.Remove(DeckOfCards.Cards[0]);
+                    }
                 }
+                alreadyDealt = true;
             }
 
-            if (CheckNeedForRedealingCard())
+            if (CheckNeedForRedealingCard() || !alreadyDealt)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -311,7 +320,7 @@ namespace Call_Break_Card_Game
             }
         }
 
-        public static void InitializeGame(string playerName, int maxHands)
+        public static void InitializeGame(string playerName, int maxHands=5)
         {
             //Initialize Players
             InitializePLayers(playerName);

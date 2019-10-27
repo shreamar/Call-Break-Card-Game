@@ -48,20 +48,23 @@ namespace Call_Break_Card_Game
         /// </summary>
         public void ShuffleDeck()
         {
-            //create first random number as seed
-            Random random = new Random();
-            int rnd = random.Next(1, 999999999);
-
-            for (int i = 0; i < 1000; i++)
+            if (Cards.Count != 0)
             {
-                //updates the seeds everytime so they are pseudorandom and all are not same
-                Random random1 = new Random(rnd + i);
-                int rndIndex = random1.Next(52);
+                //create first random number as seed
+                Random random = new Random();
+                int rnd = random.Next(1, 999999999);
 
-                //swaps first card with randomly generated indexed card
-                SwapCards(Cards, 0, rndIndex);
+                for (int i = 0; i < 1000; i++)
+                {
+                    //updates the seeds everytime so they are pseudorandom and all are not same
+                    Random random1 = new Random(rnd + i);
+                    int rndIndex = random1.Next(52);
+
+                    //swaps first card with randomly generated indexed card
+                    SwapCards(Cards, 0, rndIndex);
+                }
+                _Shuffled = true;
             }
-            _Shuffled = true;
         }
         
         public void SwapCards(List<Card> deck, int i, int j)
