@@ -103,6 +103,9 @@ namespace Call_Break_Card_Game
             if (CardCount - 1 >= cardIndex && cardIndex >= 0)
             {
                 LastPlayedCard = Cards[cardIndex];
+                
+                //Removes card from players stacks and adds to the cards in the table
+                Game.CardsInTable.Add(Cards[cardIndex]);
                 Cards.Remove(Cards[cardIndex]);
                 return true;
             }

@@ -31,7 +31,7 @@ namespace Call_Break_Card_Game
             }
         }
 
-        public static int MaXTrickToPlay
+        public static int MaxTrickToPlay
         {
             get { return _MaxTricksToPlay; }
             set { _MaxTricksToPlay = value; }
@@ -144,7 +144,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         public static void DealCards()
         {
-            _DeckOfCards = new Deck();
+            //_DeckOfCards = new Deck();
 
             for (int i = 0; i < 13; i++)
             {
@@ -157,6 +157,42 @@ namespace Call_Break_Card_Game
                 }
             }
         }
+
+        /// <summary>
+        /// Moves cards from table to deck, updates TurnCounte and returns the winner's player ID
+        /// </summary>
+        /// <returns>Players ID of the trick winner,
+        ///  returns -1 if the operation didn't suceed</returns>
+        public static int ProcessTrickWinner()
+        {
+            int winner = -1;
+            //check if all players have played their card for the trick
+            if (CardsInTable.Count == 4)
+            {
+                int counter = 0;
+                foreach (Card card in CardsInTable)
+                {
+                    //add the cards in table back to deck
+                    DeckOfCards.Cards.Add(card);
+
+                    if(card.ID == PowerCardID)
+                    {
+                        //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
+                        winner = (TurnCounter + counter) % 4;
+                        //now turn goes the winner of the trick;
+                        _TurnCounter = winner;
+                    }
+                    counter++;
+                }
+                //clears cards from the table
+                CardsInTable.Clear();           
+                
+             }
+            //winner is one who played power card
+            return winner;
+        }
+
+
 
         /// <summary>
         /// Converts cardID to card number
