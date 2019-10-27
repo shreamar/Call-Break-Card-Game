@@ -9,16 +9,16 @@ namespace Call_Break_Card_Game
     public static class Game
     {
         private static Player[] _Players = new Player[4];
-        private static int _MaxTricksToPlay;
+        private static int _MaxHandsToPlay;
         private static Deck _DeckOfCards;
-        private static int _CurrentTrick;
+        private static int _CurrentHand;
         private static double[,] _ScoreBoard;
         private static int[] _TricksWon;
         private static int[,] _Bidding;
         //private static int _LeadCardID;
         //private static int _PowerCardID;
         private static List<Card> _CardsInTable = new List<Card>();
-        private static int _TurnCounter;
+        private static int _CurrentDealer;
 
         public static Player[] Players
         {
@@ -32,10 +32,10 @@ namespace Call_Break_Card_Game
             }
         }
 
-        public static int MaxTrickToPlay
+        public static int MaxHandsToPlay
         {
-            get { return _MaxTricksToPlay; }
-            set { _MaxTricksToPlay = value; }
+            get { return _MaxHandsToPlay; }
+            set { _MaxHandsToPlay = value; }
         }
 
         public static Deck DeckOfCards
@@ -44,9 +44,9 @@ namespace Call_Break_Card_Game
             //set { _DeckOfCards = value; }
         }
 
-        public static int CurrentTrick
+        public static int CurrentHand
         {
-            get { return _CurrentTrick; }
+            get { return _CurrentHand; }
         }
 
         public static double[,] ScoreBoard
@@ -102,9 +102,9 @@ namespace Call_Break_Card_Game
             get { return _CardsInTable; }
         }
 
-        public static int TurnCounter
+        public static int CurrentDealer
         {
-            get { return _TurnCounter; }
+            get { return _CurrentDealer; }
         }
 
         public static int[] TricksWon
@@ -231,7 +231,7 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
-        /// Moves cards from table to deck, updates TurnCounte and returns the winner's player ID
+        /// Moves cards from table to deck, updates CurrentDealer and HandsWon by the given player, and returns the winner's player ID
         /// </summary>
         /// <returns>Players ID of the trick winner,
         ///  returns -1 if the operation didn't suceed</returns>
@@ -250,14 +250,17 @@ namespace Call_Break_Card_Game
                     if(card.ID == PowerCardID)
                     {
                         //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
-                        winner = (TurnCounter + counter) % 4;
+                        winner = (CurrentDealer + counter) % 4;
                         //now turn goes the winner of the trick;
-                        _TurnCounter = winner;
+                        _CurrentDealer = winner;
                     }
                     counter++;
                 }
                 //clears cards from the table
-                CardsInTable.Clear();           
+                CardsInTable.Clear();
+
+                //updates the TricksWon
+                TricksWon[winner]++;
                 
              }
             //winner is one who played power card
@@ -271,19 +274,29 @@ namespace Call_Break_Card_Game
         {
             for (int i = 0; i < 4; i++)
             {
-                if(Bidding[CurrentTrick,i]== TricksWon[i])
+                if(Bidding[CurrentHand,i]== TricksWon[i])
                 {
-                    ScoreBoard[CurrentTrick, i] = Bidding[CurrentTrick, i];
+                    ScoreBoard[CurrentHand, i] = Bidding[CurrentHand, i];
                 }
-                else if(Bidding[CurrentTrick, i] < TricksWon[i])
+                else if(Bidding[CurrentHand, i] < TricksWon[i])
                 {
-                    ScoreBoard[CurrentTrick, i] = Bidding[CurrentTrick, i] * (-1);
+                    ScoreBoard[CurrentHand, i] = Bidding[CurrentHand, i] * (-1);
                 }
-                else if(Bidding[CurrentTrick, i] > TricksWon[i])
+                else if(Bidding[CurrentHand, i] > TricksWon[i])
                 {
-                    ScoreBoard[CurrentTrick, i] = Bidding[CurrentTrick, i] + (0.1) * TricksWon[i];
+                    ScoreBoard[CurrentHand, i] = Bidding[CurrentHand, i] + (0.1) * TricksWon[i];
                 }
             }
+        }
+
+        /// <summary>
+        /// Places bid for the given player in the current
+        /// </summary>
+        /// <param name="playerID"></param>
+        /// <param name="bid"></param>
+        public static void PlaceBid(int playerID, int bid)
+        {
+            Bidding[CurrentHand, playerID] = bid;
         }
 
         /// <summary>
