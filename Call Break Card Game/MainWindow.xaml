@@ -12,11 +12,12 @@
         <ListBox x:Name="lbCards1" HorizontalAlignment="Left" Height="293" Margin="189,167,0,0" VerticalAlignment="Top" Width="164"/>
         <ListBox x:Name="lbCards2" HorizontalAlignment="Left" Height="293" Margin="358,167,0,0" VerticalAlignment="Top" Width="164"/>
         <ListBox x:Name="lbCards3" HorizontalAlignment="Left" Height="293" Margin="527,167,0,0" VerticalAlignment="Top" Width="164"/>
-        <Label x:Name ="lblPlayer1" Content="Label" HorizontalAlignment="Left" Margin="189,122,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
-        <Label x:Name ="LblPlayer2" Content="Label" HorizontalAlignment="Left" Margin="358,127,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
+        <Label x:Name ="lblPlayer1" Content="Label" HorizontalAlignment="Left" Margin="189,127,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
+        <Label x:Name ="lblPlayer2" Content="Label" HorizontalAlignment="Left" Margin="358,127,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
         <Label x:Name ="lblPlayer3" Content="Label" HorizontalAlignment="Left" Margin="527,127,0,0" VerticalAlignment="Top" Height="35" Width="164"/>
         <ListBox x:Name="lbPlayable" Height="93" Margin="308,10,312.2,0" VerticalAlignment="Top"/>
         <Button x:Name="btnDealCards" Content="Deal Cards" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="btnDealCards_Click"/>
+        <Button x:Name="btnPlaceBids" Content="Place Bids" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="75" Click="btnPlaceBids_Click" IsEnabled="False"/>
 
     </Grid>
 </Window>

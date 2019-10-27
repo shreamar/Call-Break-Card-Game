@@ -14,6 +14,7 @@ namespace Call_Break_Card_Game
         private int _ID;
         private PlayerType _Type;
         private Card _LastPlayedCard;
+        private List<int> _Playables = new List<int>();
 
         public Player()
         {
@@ -77,6 +78,15 @@ namespace Call_Break_Card_Game
             set { _LastPlayedCard = value; }
         }
 
+        public List<int> Playables
+        {
+            get 
+            {
+                _Playables = ListPlayableCards(Game.LeadCardID, Game.PowerCardID);
+                return _Playables; 
+            }
+        }
+
         public void swapCards(Card a, Card b)
         {
             Card temp = a;
@@ -123,7 +133,7 @@ namespace Call_Break_Card_Game
         /// <param name="leadCardID">Invalid id means start of trick</param>
         /// <param name="powerCardID">Invalid id means start of trick</param>
         /// <returns>List returns null if power card is less ranking than lead card</returns>
-        public List<int> ListPlayableCards(int leadCardID, int powerCardID)
+        private List<int> ListPlayableCards(int leadCardID, int powerCardID)
         {
             List<int> list = new List<int>();
 

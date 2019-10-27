@@ -67,7 +67,14 @@ namespace Call_Break_Card_Game
         {
             get 
             {
-                return CardsInTable[0].ID;
+                if (CardsInTable.Count > 0)
+                {
+                    return CardsInTable[0].ID;
+                }
+                else
+                {
+                    return -1;
+                }
             }
             //set { _LeadCardID = value; }
         }
@@ -188,8 +195,16 @@ namespace Call_Break_Card_Game
                         Players[j].Cards.Add(DeckOfCards.Cards[0]);
                         //Removes the card from top of the deck since now its moved to player's pile
                         DeckOfCards.Cards.Remove(DeckOfCards.Cards[0]);
-                    }
+                    }                    
                 }
+
+                //Sort each players cards in thier own stack
+                foreach(Player player in Players)
+                {
+                    player.sortCards();
+                }
+
+                //flag as already dealt
                 alreadyDealt = true;
             }
 
@@ -309,7 +324,7 @@ namespace Call_Break_Card_Game
         /// <param name="bid"></param>
         public static void PlaceBid(int playerID, int bid)
         {
-            if (bid > 13 && bid > 0)
+            if (bid < 13 && bid > 0)
             {
                 Bidding[playerID] = bid;
             }
