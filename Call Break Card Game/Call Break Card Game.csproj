@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cards.Dll" />
+    <Resource Include="cards\extras\mandala.png" />
     <Resource Include="cards\extras\Background.jpg" />
     <Resource Include="cards\extras\Back.png" />
     <Resource Include="cards\extras\red back.png" />

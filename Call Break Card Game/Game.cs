@@ -120,6 +120,24 @@ namespace Call_Break_Card_Game
             set { _TricksWon = value; }
         }
 
+        public static int HumanPlayerID
+        {
+            get
+            {
+                int id = 0;
+                foreach(Player player in Game.Players)
+                {
+                    if(player.Type == Player.PlayerType.Human)
+                    {
+                        id = player.ID;
+                        break;
+                    }
+                }
+
+                return id;
+            }
+        }
+
         /// <summary>
         /// Gets cumulative scores of each player
         /// </summary>

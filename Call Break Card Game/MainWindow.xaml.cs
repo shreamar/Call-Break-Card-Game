@@ -27,17 +27,9 @@ namespace Call_Break_Card_Game
 
             Game.InitializeGame("JAEGER");
 
-            //fill background with image
-            /*
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri("/cards/extras/Background.jpg", UriKind.Relative);
-            bitmap.EndInit();
-            Image image = new Image();
-            image.Source = bitmap;
-            image.Stretch = Stretch.Fill;
-            grdWindow.Children.Add(image);
-            */
+            //dropshadow effect on mandala
+            imgMandala.Visibility = Visibility.Hidden;
+            Image_DropShadowEffect(imgMandala,0,0,0,255);
         }
 
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
@@ -48,7 +40,7 @@ namespace Call_Break_Card_Game
             Game.DealCards();
 
             //shows cards of the first players in image form in grid
-            grdCards.Children.Clear();
+            canvasGame.Children.Clear();
 
             int counter = 1, a = 0;
             foreach (Card card in Game.Players[0].Cards)
@@ -65,7 +57,7 @@ namespace Call_Break_Card_Game
                     image.Width = 100;
                     image.Height = 200;
                     //a is the index of current card  
-                    image.Margin = new Thickness(((grdCards.Width - (image.Width + (Game.Players[0].CardCount - 1) * 45)) / 2) + 45 * a, ((grdCards.Height) * 3) / 4, 0, 10);
+                    image.Margin = new Thickness(((canvasGame.Width - (image.Width + (Game.Players[0].CardCount - 1) * 45)) / 2) + 45 * a, ((canvasGame.Height) * 3) / 4, 0, 10);
 
                     //changes cursor to hand cursor when pointed at cards
                     image.Cursor = Cursors.Hand;
@@ -75,7 +67,7 @@ namespace Call_Break_Card_Game
                     image.MouseLeave += new MouseEventHandler(Image_MouseLeave);
                     image.MouseDown += new MouseButtonEventHandler(Image_BitmapBlurEffect);
 
-                    grdCards.Children.Add(image);
+                    canvasGame.Children.Add(image);
 
                     a++;
                 }
@@ -105,11 +97,6 @@ namespace Call_Break_Card_Game
         private void markPlayables()
         {
             /////////////////////////////////////
-        }
-
-        private void lbCards0_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            playCardsNow();
         }
 
         private void playCardsNow()
@@ -185,14 +172,14 @@ namespace Call_Break_Card_Game
         {
             Image image = sender as Image;
             //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
-            image.Margin = new Thickness(image.Margin.Left, (((grdCards.Height) * 3) / 4) - 30, 0, 10);
+            image.Margin = new Thickness(image.Margin.Left, (((canvasGame.Height) * 3) / 4) - 30, 0, 10);
         }
 
         private void Image_MouseLeave(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
             //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
-            image.Margin = new Thickness(image.Margin.Left, ((grdCards.Height) * 3) / 4, 0, 10);
+            image.Margin = new Thickness(image.Margin.Left, ((canvasGame.Height) * 3) / 4, 0, 10);
         }
 
         /// <summary>
@@ -200,7 +187,8 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Image_DropShadowEffect(object sender, MouseEventArgs e)
+        private void Image_DropShadowEffect(object sender, byte a = 0, byte r = 0, byte g = 0, byte b = 0,
+            double direction = 320, double shadowdepth = 0, double opacity = 50, double blurradius = 15)
         {
             Image image = sender as Image;
             UIElement uie = image;
@@ -208,11 +196,11 @@ namespace Call_Break_Card_Game
             //card edge glowing effect
             uie.Effect = new DropShadowEffect
             {
-                Color = new Color { A = 0, R = 255, G = 0, B = 0 },
-                Direction = 320,
-                ShadowDepth = 0,
-                Opacity = 50,
-                BlurRadius = 15
+                Color = new Color { A = a, R = r, G = g, B = b },
+                Direction = direction,
+                ShadowDepth = shadowdepth,
+                Opacity = opacity,
+                BlurRadius = blurradius
             };
 
             //clears effect
@@ -244,6 +232,45 @@ namespace Call_Break_Card_Game
         private void Image_EmbossBitmapEffect(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
+        }
+
+        private void ShowCardsOnCanvas_Human()
+        {
+            //shows cards of the first players in image form in grid
+            canvasGame.Children.Clear();
+
+            int counter = 1, a = 0;
+            foreach (Card card in )
+            {
+                if (counter % 1 == 0)
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(mapCardtoFile(card), UriKind.Relative);
+                    bitmap.EndInit();
+                    Image image = new Image();
+                    image.Source = bitmap;
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
+                    image.Width = 100;
+                    image.Height = 200;
+                    //a is the index of current card  
+                    image.Margin = new Thickness(((canvasGame.Width - (image.Width + (Game.Players[0].CardCount - 1) * 45)) / 2) + 45 * a, ((canvasGame.Height) * 3) / 4, 0, 10);
+
+                    //changes cursor to hand cursor when pointed at cards
+                    image.Cursor = Cursors.Hand;
+
+                    //mouse enter and leave events
+                    image.MouseEnter += new MouseEventHandler(Image_MouseEnter);
+                    image.MouseLeave += new MouseEventHandler(Image_MouseLeave);
+                    image.MouseDown += new MouseButtonEventHandler(Image_BitmapBlurEffect);
+
+                    canvasGame.Children.Add(image);
+
+                    a++;
+                }
+
+                counter++;
+            }
         }
     }
 }
