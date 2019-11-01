@@ -54,6 +54,11 @@ namespace Call_Break_Card_Game
 
             //show cards of human player
             ShowCardsOnCanvas_Human();
+
+            Show_PlayedCards_Table(Game.HumanPlayerID, 25);
+            Show_PlayedCards_Table((Game.HumanPlayerID + 1) % 4, 35);
+            Show_PlayedCards_Table((Game.HumanPlayerID + 2) % 4, 45);
+            Show_PlayedCards_Table((Game.HumanPlayerID + 3) % 4, 15);
         }
 
         private void btnPlaceBids_Click(object sender, RoutedEventArgs e)
@@ -152,14 +157,14 @@ namespace Call_Break_Card_Game
         {
             Image image = sender as Image;
             //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
-            image.Margin = new Thickness(image.Margin.Left, (canvasGame.Height - image.Height) - 30, 0, 10);
+            image.Margin = new Thickness(image.Margin.Left, (canvasGame.Height - image.Height) - 30+13, 0, 10);
         }
 
         private void Image_MouseLeave(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
             //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
-            image.Margin = new Thickness(image.Margin.Left, (canvasGame.Height - image.Height), 0, 10);
+            image.Margin = new Thickness(image.Margin.Left, (canvasGame.Height - image.Height)+13, 0, 10);
         }
 
         /// <summary>
@@ -230,15 +235,15 @@ namespace Call_Break_Card_Game
                 bitmap.EndInit();
                 Image image = new Image();
                 image.Source = bitmap;
-                image.Width = 120;
-                image.Height = 200;
+                image.Width = 150;
+                image.Height = 190;
 
                 image.HorizontalAlignment = HorizontalAlignment.Center;
                 image.VerticalAlignment = VerticalAlignment.Bottom;
 
                 //places human player's cards in the center bottom of the canvas
                 image.Margin = new Thickness(((canvasGame.Width - (image.Width +
-                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 85)) / 2) + 85 * counter, (canvasGame.Height - image.Height), 0, 0);
+                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2) + 110 * counter, (canvasGame.Height - image.Height)+13, 0, 0);
 
                 //changes cursor to hand cursor when pointed at cards
                 image.Cursor = Cursors.Hand;
@@ -417,7 +422,7 @@ namespace Call_Break_Card_Game
                     name.Content = String.Format("[{0}]", Game.Players[id].Name);//Game.Players[id].Name);
                     name.HorizontalAlignment = HorizontalAlignment.Right;
                     name.VerticalAlignment = VerticalAlignment.Bottom;
-                    name.Margin = new Thickness(canvasGame.Width-205,canvasGame.Height/2 - 205, 0, 0);
+                    name.Margin = new Thickness(canvasGame.Width - 205, canvasGame.Height / 2 - 205, 0, 0);
                     name.FontSize = 35;
                     name.FontWeight = FontWeights.Bold;
                     name.FontFamily = new FontFamily("Georgia");
@@ -427,7 +432,7 @@ namespace Call_Break_Card_Game
                     bid.Content = "Win: " + Game.TricksWon[id];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
                     bid.VerticalAlignment = VerticalAlignment.Bottom;
-                    bid.Margin = new Thickness(canvasGame.Width-150, canvasGame.Height / 2 - 80, 0, 0);
+                    bid.Margin = new Thickness(canvasGame.Width - 150, canvasGame.Height / 2 - 80, 0, 0);
                     bid.FontSize = 15;
                     bid.FontWeight = FontWeights.Bold;
                     bid.FontFamily = new FontFamily("Courier");
@@ -468,7 +473,7 @@ namespace Call_Break_Card_Game
                 else if (j == 1)//player over the top
                 {
                     Label name = new Label();
-                    name.Content = "["+Game.Players[id].Name+"]";
+                    name.Content = "[" + Game.Players[id].Name + "]";
                     name.HorizontalAlignment = HorizontalAlignment.Center;
                     name.VerticalAlignment = VerticalAlignment.Bottom;
                     name.Margin = new Thickness((canvasGame.Width / 2) - 175, 110, 0, 0);
@@ -519,7 +524,7 @@ namespace Call_Break_Card_Game
 
                     canvasGame.Children.Add(image);
                 }
-                else if(j==2)//player on the left side
+                else if (j == 2)//player on the left side
                 {
                     Label name = new Label();
                     name.Content = String.Format("[{0}]", Game.Players[id].Name);//Game.Players[id].Name);
@@ -576,9 +581,63 @@ namespace Call_Break_Card_Game
             }
         }
 
-        private void ThrowCards_Table()
+        /// <summary>
+        /// Shows played cards on the table given the playerID and cardID
+        /// </summary>
+        /// <param name="playerID"></param>
+        /// <param name="cardID"></param>
+        private void Show_PlayedCards_Table(int playerID, int cardID)
         {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(mapCardtoFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
+            bitmap.EndInit();
+            Image image = new Image();
+            image.Source = bitmap;
+            image.Width = 115;
+            image.Height = 200;
+            image.HorizontalAlignment = HorizontalAlignment.Left;
 
+            Random rnd = new Random();
+            int rndm = rnd.Next(99999);
+
+            if (playerID == Game.HumanPlayerID)//human players card
+            {
+                Random rand = new Random(rndm);
+                int angle = rand.Next(41) - 20; //rest positoin is 0 degree, with -50 to 50 range
+
+                RotateTransform rotateTransform = new RotateTransform(angle);
+                image.RenderTransform = rotateTransform;
+                image.Margin = new Thickness(canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 100, 0, 0);
+            }
+            else if ((Game.HumanPlayerID + 1) % 4 == playerID)//player on the right side
+            {
+                Random rand = new Random(rndm * 2);
+                int angle = rand.Next(70, 111);//rest positoin is 90 degree, with 40 to 140 range
+
+                RotateTransform rotateTransform = new RotateTransform(angle);
+                image.RenderTransform = rotateTransform;
+                image.Margin = new Thickness(canvasGame.Width / 2 + 180, canvasGame.Height / 2 - 100, 0, 0);
+            }
+            else if ((Game.HumanPlayerID + 2) % 4 == playerID)//player over the top
+            {
+                Random rand = new Random(rndm * 3);
+                int angle = rand.Next(41)-20;//rest positoin is 180 degree, with 130 to 230 range
+
+                RotateTransform rotateTransform = new RotateTransform(angle);
+                image.RenderTransform = rotateTransform;
+                image.Margin = new Thickness(canvasGame.Width / 2 -25, canvasGame.Height / 2-180, 0, 0);
+            }
+            else if ((Game.HumanPlayerID + 3) % 4 == playerID)//player over the top
+            {
+                Random rand = new Random(rndm * 3);
+                int angle = rand.Next(70,111)*(-1);//rest positoin is -90 degree, with -70 to -110 range
+
+                RotateTransform rotateTransform = new RotateTransform(angle);
+                image.RenderTransform = rotateTransform;
+                image.Margin = new Thickness(canvasGame.Width / 2 -150, canvasGame.Height / 2 - 20, 0, 0);
+            }
+            canvasGame.Children.Add(image);
         }
     }
 }
