@@ -101,6 +101,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cards.Dll" />
+    <Resource Include="cards\personicons\personicon1.png" />
+    <Resource Include="cards\personicons\personicon8.png" />
+    <Resource Include="cards\personicons\personicon.png" />
+    <Resource Include="cards\personicons\personicon9.png" />
+    <Resource Include="cards\personicons\personicon10.png" />
+    <Resource Include="cards\personicons\personicon11.png" />
+    <Resource Include="cards\personicons\personicon12.png" />
+    <Resource Include="cards\personicons\personicon13.png" />
+    <Resource Include="cards\personicons\personicon2.png" />
+    <Resource Include="cards\personicons\personicon3.png" />
+    <Resource Include="cards\personicons\personicon4.png" />
+    <Resource Include="cards\personicons\personicon5.png" />
+    <Resource Include="cards\personicons\personicon6.png" />
+    <Resource Include="cards\personicons\personicon7.png" />
     <Resource Include="cards\extras\mandala.png" />
     <Resource Include="cards\extras\Background.jpg" />
     <Resource Include="cards\extras\Back.png" />
@@ -173,5 +187,6 @@
     <Resource Include="cards\queen_of_spades2.png" />
     <Resource Include="cards\extras\red_joker.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

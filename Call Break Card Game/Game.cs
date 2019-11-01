@@ -169,7 +169,7 @@ namespace Call_Break_Card_Game
             _Players[0] = new Player(playerName, Player.PlayerType.Human);
             for (int i = 1; i <= 3; i++)
             {
-                _Players[i] = new Player(i==1?"Reiner":(i==2?"Bertholdt":"Annie"), Player.PlayerType.Bot);
+                _Players[i] = new Player(i==1?"Zion":(i==2?"Eren":"Navy"), Player.PlayerType.Bot);
             }
 
             Random random = new Random();
@@ -189,6 +189,8 @@ namespace Call_Break_Card_Game
             for (int i = 0; i < 4; i++)
             {
                 _Players[i].ID = i;
+                //Assign random icon number for each player
+                _Players[i].IconNumber = (new Random(rand + i).Next(1, 14));
             }
         }
 

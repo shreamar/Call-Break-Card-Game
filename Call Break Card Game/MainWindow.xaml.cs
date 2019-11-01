@@ -35,7 +35,7 @@ namespace Call_Break_Card_Game
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
         {
             btnPlaceBids.IsEnabled = true;
-            //btnDealCards.IsEnabled = false;
+            //btnDealCards.IsEnabled = false;            
 
             Game.DealCards();
 
@@ -44,6 +44,10 @@ namespace Call_Break_Card_Game
 
             //remove a card from human players card pile
             //Game.Players[Game.HumanPlayerID].playCard(Game.Players[Game.HumanPlayerID].PlayableIDs[0]);
+
+            //show labels
+            Show_BidHuman();
+            Show_BidsBots();
 
             //show cards of bots
             ShowCardsOnCanvas_Bots();
@@ -234,7 +238,7 @@ namespace Call_Break_Card_Game
 
                 //places human player's cards in the center bottom of the canvas
                 image.Margin = new Thickness(((canvasGame.Width - (image.Width +
-                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 85)) / 2) + 85 * counter,(canvasGame.Height-image.Height),0,0);
+                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 85)) / 2) + 85 * counter, (canvasGame.Height - image.Height), 0, 0);
 
                 //changes cursor to hand cursor when pointed at cards
                 image.Cursor = Cursors.Hand;
@@ -274,7 +278,7 @@ namespace Call_Break_Card_Game
                     {
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(mapCardtoFile(Game.Players[id].Cards[counter]), UriKind.Relative);
+                        bitmap.UriSource = new Uri(faceDownCard, UriKind.Relative);
                         bitmap.EndInit();
                         Image image = new Image();
                         image.Source = bitmap;
@@ -284,8 +288,8 @@ namespace Call_Break_Card_Game
                         image.HorizontalAlignment = HorizontalAlignment.Left;
 
                         //places bot1 player's cards in the right of the canvas
-                        image.Margin = new Thickness(canvasGame.Width - image.Width-5, ((canvasGame.Height - 
-                            (((Game.Players[i].CardCount-1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0, 0);
+                        image.Margin = new Thickness(canvasGame.Width - image.Width - 5, ((canvasGame.Height -
+                            (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0, 0);
 
                         canvasGame.Children.Add(image);
                     }
@@ -296,7 +300,7 @@ namespace Call_Break_Card_Game
                     {
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(mapCardtoFile(Game.Players[id].Cards[counter]), UriKind.Relative);
+                        bitmap.UriSource = new Uri(faceDownCard, UriKind.Relative);
                         bitmap.EndInit();
                         Image image = new Image();
                         image.Source = bitmap;
@@ -308,7 +312,7 @@ namespace Call_Break_Card_Game
 
                         //places bot2 player's cards in the center top of the canvas
                         image.Margin = new Thickness(((canvasGame.Width - (image.Width +
-                    (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter), 0,0,0);
+                    (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter), 0, 0, 0);
 
                         canvasGame.Children.Add(image);
                     }
@@ -319,7 +323,7 @@ namespace Call_Break_Card_Game
                     {
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(mapCardtoFile(Game.Players[id].Cards[counter]), UriKind.Relative);
+                        bitmap.UriSource = new Uri(faceDownCard, UriKind.Relative);
                         bitmap.EndInit();
                         Image image = new Image();
                         image.Source = bitmap;
@@ -330,12 +334,251 @@ namespace Call_Break_Card_Game
 
                         //places bot1 player's cards in the right of the canvas
                         image.Margin = new Thickness(10, ((canvasGame.Height -
-                            (((Game.Players[id].CardCount-1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0, 0);
+                            (((Game.Players[id].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0, 0);
 
                         canvasGame.Children.Add(image);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Shows bid, win count and icon for human player on canvas
+        /// </summary>
+        private void Show_BidHuman()
+        {
+            Label name = new Label();
+            name.Content = "[You]";
+            name.HorizontalAlignment = HorizontalAlignment.Center;
+            name.VerticalAlignment = VerticalAlignment.Bottom;
+            name.Margin = new Thickness((canvasGame.Width / 2) - 180, canvasGame.Height - 240, 0, 0);
+            name.FontSize = 45;
+            name.FontWeight = FontWeights.Bold;
+            name.FontFamily = new FontFamily("Georgia");
+            name.Foreground = Brushes.DarkGreen;
+
+            Label bid = new Label();
+            bid.Content = "Win: " + Game.TricksWon[Game.HumanPlayerID];
+            bid.HorizontalAlignment = HorizontalAlignment.Center;
+            bid.VerticalAlignment = VerticalAlignment.Bottom;
+            bid.Margin = new Thickness((canvasGame.Width / 2) + 20, canvasGame.Height - 240, 0, 0);
+            bid.FontSize = 15;
+            bid.FontWeight = FontWeights.Bold;
+            bid.FontFamily = new FontFamily("Courier");
+            //bid.Foreground = Brushes.DarkGreen;
+            bid.Background = Brushes.DeepSkyBlue;
+
+            Label score = new Label();
+            score.Content = "Bid: " + Game.Bidding[Game.HumanPlayerID];
+            score.HorizontalAlignment = HorizontalAlignment.Center;
+            score.VerticalAlignment = VerticalAlignment.Bottom;
+            score.Margin = new Thickness((canvasGame.Width / 2) + 20, canvasGame.Height - 210, 0, 0);
+            score.FontSize = 15;
+            score.FontWeight = FontWeights.Bold;
+            score.FontFamily = new FontFamily("Courier");
+            //bid.Foreground = Brushes.DarkGreen;
+            score.Background = Brushes.IndianRed;
+
+            canvasGame.Children.Add(name);
+            canvasGame.Children.Add(bid);
+            canvasGame.Children.Add(score);
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri("/cards/personicons/personicon.png", UriKind.Relative);
+            bitmap.EndInit();
+            Image image = new Image();
+            image.Source = bitmap;
+            image.Width = 70;
+            image.Height = 70;
+
+            image.HorizontalAlignment = HorizontalAlignment.Left;
+
+            //places bot1 player's cards in the right of the canvas
+            image.Margin = new Thickness(-50 + canvasGame.Width / 2, canvasGame.Height - 250, 0, 0);
+
+            canvasGame.Children.Add(image);
+        }
+
+        /// <summary>
+        /// Shows bid, win counts and names of bots, along with icon on canvas
+        /// </summary>
+        private void Show_BidsBots()
+        {
+            for (int i = (Game.HumanPlayerID + 1) % 4, j = 0; j < 3; i++, j++)
+            {
+                //bot players id
+                int id = i % 4;
+                string personIcon = "/cards/personicons/personicon" + Game.Players[id].IconNumber + ".png";
+
+                if (j == 0)//player on right handside
+                {
+                    Label name = new Label();
+                    name.Content = String.Format("[{0}]", Game.Players[id].Name);//Game.Players[id].Name);
+                    name.HorizontalAlignment = HorizontalAlignment.Right;
+                    name.VerticalAlignment = VerticalAlignment.Bottom;
+                    name.Margin = new Thickness(canvasGame.Width-205,canvasGame.Height/2 - 205, 0, 0);
+                    name.FontSize = 35;
+                    name.FontWeight = FontWeights.Bold;
+                    name.FontFamily = new FontFamily("Georgia");
+                    name.Foreground = Brushes.SeaGreen;
+
+                    Label bid = new Label();
+                    bid.Content = "Win: " + Game.TricksWon[id];
+                    bid.HorizontalAlignment = HorizontalAlignment.Center;
+                    bid.VerticalAlignment = VerticalAlignment.Bottom;
+                    bid.Margin = new Thickness(canvasGame.Width-150, canvasGame.Height / 2 - 80, 0, 0);
+                    bid.FontSize = 15;
+                    bid.FontWeight = FontWeights.Bold;
+                    bid.FontFamily = new FontFamily("Courier");
+                    //bid.Foreground = Brushes.DarkGreen;
+                    bid.Background = Brushes.DeepSkyBlue;
+
+                    Label score = new Label();
+                    score.Content = "Bid: " + Game.Bidding[id];
+                    score.HorizontalAlignment = HorizontalAlignment.Center;
+                    score.VerticalAlignment = VerticalAlignment.Bottom;
+                    score.Margin = new Thickness(canvasGame.Width - 150, canvasGame.Height / 2 - 50, 0, 0);
+                    score.FontSize = 15;
+                    score.FontWeight = FontWeights.Bold;
+                    score.FontFamily = new FontFamily("Courier");
+                    //bid.Foreground = Brushes.DarkGreen;
+                    score.Background = Brushes.IndianRed;
+
+                    canvasGame.Children.Add(name);
+                    canvasGame.Children.Add(bid);
+                    canvasGame.Children.Add(score);
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(personIcon, UriKind.Relative);
+                    bitmap.EndInit();
+                    Image image = new Image();
+                    image.Source = bitmap;
+                    image.Width = 70;
+                    image.Height = 70;
+
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
+
+                    //places bot1 player's cards in the right of the canvas
+                    image.Margin = new Thickness(canvasGame.Width - 160, canvasGame.Height / 2 - 155, 0, 0);
+
+                    canvasGame.Children.Add(image);
+                }
+                else if (j == 1)//player over the top
+                {
+                    Label name = new Label();
+                    name.Content = "["+Game.Players[id].Name+"]";
+                    name.HorizontalAlignment = HorizontalAlignment.Center;
+                    name.VerticalAlignment = VerticalAlignment.Bottom;
+                    name.Margin = new Thickness((canvasGame.Width / 2) - 175, 110, 0, 0);
+                    name.FontSize = 35;
+                    name.FontWeight = FontWeights.Bold;
+                    name.FontFamily = new FontFamily("Georgia");
+                    name.Foreground = Brushes.DarkGreen;
+
+                    Label bid = new Label();
+                    bid.Content = "Win: " + Game.TricksWon[Game.HumanPlayerID];
+                    bid.HorizontalAlignment = HorizontalAlignment.Center;
+                    bid.VerticalAlignment = VerticalAlignment.Bottom;
+                    bid.Margin = new Thickness((canvasGame.Width / 2) + 25, 110, 0, 0);
+                    bid.FontSize = 15;
+                    bid.FontWeight = FontWeights.Bold;
+                    bid.FontFamily = new FontFamily("Courier");
+                    //bid.Foreground = Brushes.DarkGreen;
+                    bid.Background = Brushes.DeepSkyBlue;
+
+                    Label score = new Label();
+                    score.Content = "Bid: " + Game.Bidding[Game.HumanPlayerID];
+                    score.HorizontalAlignment = HorizontalAlignment.Center;
+                    score.VerticalAlignment = VerticalAlignment.Bottom;
+                    score.Margin = new Thickness((canvasGame.Width / 2) + 25, 140, 0, 0);
+                    score.FontSize = 15;
+                    score.FontWeight = FontWeights.Bold;
+                    score.FontFamily = new FontFamily("Courier");
+                    //bid.Foreground = Brushes.DarkGreen;
+                    score.Background = Brushes.IndianRed;
+
+                    canvasGame.Children.Add(name);
+                    canvasGame.Children.Add(bid);
+                    canvasGame.Children.Add(score);
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(personIcon, UriKind.Relative);
+                    bitmap.EndInit();
+                    Image image = new Image();
+                    image.Source = bitmap;
+                    image.Width = 70;
+                    image.Height = 70;
+
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
+
+                    //places bot1 player's cards in the right of the canvas
+                    image.Margin = new Thickness(canvasGame.Width / 2 - 50, 105, 0, 0);
+
+                    canvasGame.Children.Add(image);
+                }
+                else if(j==2)//player on the left side
+                {
+                    Label name = new Label();
+                    name.Content = String.Format("[{0}]", Game.Players[id].Name);//Game.Players[id].Name);
+                    name.HorizontalAlignment = HorizontalAlignment.Right;
+                    name.VerticalAlignment = VerticalAlignment.Bottom;
+                    name.Margin = new Thickness(80, canvasGame.Height / 2 - 205, 0, 0);
+                    name.FontSize = 35;
+                    name.FontWeight = FontWeights.Bold;
+                    name.FontFamily = new FontFamily("Georgia");
+                    name.Foreground = Brushes.SeaGreen;
+
+                    Label bid = new Label();
+                    bid.Content = "Win: " + Game.TricksWon[id];
+                    bid.HorizontalAlignment = HorizontalAlignment.Center;
+                    bid.VerticalAlignment = VerticalAlignment.Bottom;
+                    bid.Margin = new Thickness(90, canvasGame.Height / 2 - 80, 0, 0);
+                    bid.FontSize = 15;
+                    bid.FontWeight = FontWeights.Bold;
+                    bid.FontFamily = new FontFamily("Courier");
+                    //bid.Foreground = Brushes.DarkGreen;
+                    bid.Background = Brushes.DeepSkyBlue;
+
+                    Label score = new Label();
+                    score.Content = "Bid: " + Game.Bidding[id];
+                    score.HorizontalAlignment = HorizontalAlignment.Center;
+                    score.VerticalAlignment = VerticalAlignment.Bottom;
+                    score.Margin = new Thickness(90, canvasGame.Height / 2 - 50, 0, 0);
+                    score.FontSize = 15;
+                    score.FontWeight = FontWeights.Bold;
+                    score.FontFamily = new FontFamily("Courier");
+                    //bid.Foreground = Brushes.DarkGreen;
+                    score.Background = Brushes.IndianRed;
+
+                    canvasGame.Children.Add(name);
+                    canvasGame.Children.Add(bid);
+                    canvasGame.Children.Add(score);
+
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(personIcon, UriKind.Relative);
+                    bitmap.EndInit();
+                    Image image = new Image();
+                    image.Source = bitmap;
+                    image.Width = 70;
+                    image.Height = 70;
+
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
+
+                    //places bot1 player's cards in the right of the canvas
+                    image.Margin = new Thickness(90, canvasGame.Height / 2 - 155, 0, 0);
+
+                    canvasGame.Children.Add(image);
+                }
+            }
+        }
+
+        private void ThrowCards_Table()
+        {
+
         }
     }
 }

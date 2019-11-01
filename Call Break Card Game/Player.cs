@@ -15,6 +15,7 @@ namespace Call_Break_Card_Game
         private PlayerType _Type;
         private Card _LastPlayedCard;
         private List<int> _PlayableIDs = new List<int>();
+        private int _IconNumber;
 
         public Player()
         {
@@ -76,6 +77,12 @@ namespace Call_Break_Card_Game
         {
             get { return _LastPlayedCard; }
             set { _LastPlayedCard = value; }
+        }
+
+        public int IconNumber
+        {
+            get { return _IconNumber; }
+            set { _IconNumber = value; }
         }
 
         public List<int> PlayableIDs
