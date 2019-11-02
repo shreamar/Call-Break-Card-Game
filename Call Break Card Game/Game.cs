@@ -60,6 +60,27 @@ namespace Call_Break_Card_Game
             set { _Bidding = value; }
         }
 
+        public static int CurrentTrickWinner
+        {
+            get
+            {
+                int winner = 0;
+                int counter = 0;
+                foreach (Card card in CardsInTable)
+                {
+                    if (card.ID == PowerCardID)
+                    {
+                        //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
+                        winner = (CurrentDealer + counter) % 4;
+                        //now turn goes the winner of the trick;
+                        _CurrentDealer = winner;
+                    }
+                    counter++;
+                }
+                return winner;
+            }
+        }
+
         /// <summary>
         /// First card played in the table is lead card
         /// </summary>
@@ -280,9 +301,9 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <returns>Players ID of the trick winner,
         ///  returns -1 if the operation didn't suceed</returns>
-        public static int ProcessTrickWinner()
+        public static void ProcessTrickWinner()
         {
-            int winner = -1;
+            int winner = 0;
             //check if all players have played their card for the trick
             if (CardsInTable.Count == 4)
             {
@@ -291,25 +312,13 @@ namespace Call_Break_Card_Game
                 {
                     //add the cards in table back to deck
                     DeckOfCards.Cards.Add(card);
-
-                    if(card.ID == PowerCardID)
-                    {
-                        //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
-                        winner = (CurrentDealer + counter) % 4;
-                        //now turn goes the winner of the trick;
-                        _CurrentDealer = winner;
-                    }
-                    counter++;
                 }
                 //clears cards from the table
                 CardsInTable.Clear();
 
                 //updates the TricksWon
-                TricksWon[winner]++;
-                
+                TricksWon[winner]++;                
              }
-            //winner is one who played power card
-            return winner;
         }
 
         /// <summary>
