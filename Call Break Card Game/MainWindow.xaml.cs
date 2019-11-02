@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -30,6 +31,8 @@ namespace Call_Break_Card_Game
             //dropshadow effect on mandala
             imgMandala.Visibility = Visibility.Hidden;
             Image_DropShadowEffect(imgMandala, 0, 0, 0, 255);
+
+            ShowDealReady_Deck();
         }
 
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
@@ -50,15 +53,19 @@ namespace Call_Break_Card_Game
             Show_BidsBots();
 
             //show cards of bots
-            ShowCardsOnCanvas_Bots();
+            ShowCardsOnCanvas_Bots(true);
 
             //show cards of human player
             ShowCardsOnCanvas_Human();
 
-            Show_PlayedCards_Table(Game.HumanPlayerID, 25);
-            Show_PlayedCards_Table((Game.HumanPlayerID + 1) % 4, 35);
-            Show_PlayedCards_Table((Game.HumanPlayerID + 2) % 4, 45);
-            Show_PlayedCards_Table((Game.HumanPlayerID + 3) % 4, 15);
+            //ShowCardDeal_Animation();
+
+            //Show_PlayedCards_Table(Game.HumanPlayerID, 25);
+            //Show_PlayedCards_Table((Game.HumanPlayerID + 1) % 4, 35);
+            //Show_PlayedCards_Table((Game.HumanPlayerID + 2) % 4, 45);
+            //Show_PlayedCards_Table((Game.HumanPlayerID + 3) % 4, 15);
+
+            PointCurrentPlayer_Canvas(3);
         }
 
         private void btnPlaceBids_Click(object sender, RoutedEventArgs e)
@@ -157,14 +164,16 @@ namespace Call_Break_Card_Game
         {
             Image image = sender as Image;
             //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
-            image.Margin = new Thickness(image.Margin.Left, (canvasGame.Height - image.Height) - 30+13, 0, 10);
+            Canvas.SetTop(image, -30);
+            Canvas.SetLeft(image, 0);
         }
 
         private void Image_MouseLeave(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
-            //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
-            image.Margin = new Thickness(image.Margin.Left, (canvasGame.Height - image.Height)+13, 0, 10);
+            //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");         
+            Canvas.SetTop(image, 0);
+            Canvas.SetLeft(image, 0);
         }
 
         /// <summary>
@@ -222,7 +231,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shows interactive human cards on canvas
         /// </summary>
-        private void ShowCardsOnCanvas_Human()
+        private void ShowCardsOnCanvas_Human(bool showAnimation = false)
         {
             //canvasGame.Children.Clear();
 
@@ -241,9 +250,19 @@ namespace Call_Break_Card_Game
                 image.HorizontalAlignment = HorizontalAlignment.Center;
                 image.VerticalAlignment = VerticalAlignment.Bottom;
 
+                //set animation speed to either show it or not
+                double animationSpeed = showAnimation ? 0.5 : 0;
+                //Animates card dealing to human player
+                AnimateCardTranslation(image, 0, (canvasGame.Height - image.Height) + 13, ((canvasGame.Width - (image.Width +
+                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2)
+                    + 110 * counter, (canvasGame.Height - image.Height) + 13, animationSpeed);
+               
                 //places human player's cards in the center bottom of the canvas
-                image.Margin = new Thickness(((canvasGame.Width - (image.Width +
-                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2) + 110 * counter, (canvasGame.Height - image.Height)+13, 0, 0);
+                //image.Margin = new Thickness(((canvasGame.Width - (image.Width +
+                //(Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2) +
+                //  110 * counter, (canvasGame.Height - image.Height) + 13, 0, 0);
+
+                //image.Margin = new Thickness(0, 0, 0, 0);
 
                 //changes cursor to hand cursor when pointed at cards
                 image.Cursor = Cursors.Hand;
@@ -253,7 +272,7 @@ namespace Call_Break_Card_Game
                 //puts the card back down when mouse leaves
                 image.MouseLeave += new MouseEventHandler(Image_MouseLeave);
 
-                image.MouseDown += new MouseButtonEventHandler(Image_BitmapBlurEffect);
+                image.MouseDown += new MouseButtonEventHandler(Show_PlayedCards_Table);
 
                 //adds the card to the canvas
                 canvasGame.Children.Add(image);
@@ -265,7 +284,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Show cards(unrevealed) of bots on canvas
         /// </summary>
-        private void ShowCardsOnCanvas_Bots()
+        private void ShowCardsOnCanvas_Bots(bool showAnimation = false)
         {
             //canvasGame.Children.Clear();
 
@@ -292,9 +311,13 @@ namespace Call_Break_Card_Game
 
                         image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                        //places bot1 player's cards in the right of the canvas
-                        image.Margin = new Thickness(canvasGame.Width - image.Width - 5, ((canvasGame.Height -
-                            (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0, 0);
+                        //set animation speed to either show it or not
+                        double animationSpeed = showAnimation ? 0.5 : 0;
+                        //show animation of cards being dealt
+                        AnimateCardTranslation(image, canvasGame.Width - image.Width - 5,0,canvasGame.Width - image.Width - 5, ((canvasGame.Height -
+                            (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50,animationSpeed);
+
+                        image.Margin = new Thickness(0, 0, 0, 0);
 
                         canvasGame.Children.Add(image);
                     }
@@ -316,8 +339,10 @@ namespace Call_Break_Card_Game
                         image.VerticalAlignment = VerticalAlignment.Top;
 
                         //places bot2 player's cards in the center top of the canvas
-                        image.Margin = new Thickness(((canvasGame.Width - (image.Width +
-                    (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter), 0, 0, 0);
+                        AnimateCardTranslation(image,0,0,((canvasGame.Width - (image.Width +
+                    (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter),0,0.5);
+
+                        image.Margin = new Thickness(0, 0, 0, 0);
 
                         canvasGame.Children.Add(image);
                     }
@@ -338,8 +363,10 @@ namespace Call_Break_Card_Game
                         image.HorizontalAlignment = HorizontalAlignment.Left;
 
                         //places bot1 player's cards in the right of the canvas
-                        image.Margin = new Thickness(10, ((canvasGame.Height -
-                            (((Game.Players[id].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0, 0);
+                        AnimateCardTranslation(image,0,0,10, ((canvasGame.Height -
+                            (((Game.Players[id].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50,0.5);
+
+                        image.Margin = new Thickness(0, 0, 0, 0);
 
                         canvasGame.Children.Add(image);
                     }
@@ -586,17 +613,21 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="playerID"></param>
         /// <param name="cardID"></param>
-        private void Show_PlayedCards_Table(int playerID, int cardID)
+        private void Show_PlayedCards_Table(Object sender, MouseEventArgs e)
         {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(mapCardtoFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
-            bitmap.EndInit();
-            Image image = new Image();
-            image.Source = bitmap;
+            int playerID, cardID = 49;
+            Image image = sender as Image;
+            //BitmapImage bitmap = new BitmapImage();
+            //bitmap.BeginInit();
+            //bitmap.UriSource = new Uri(mapCardtoFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
+            //bitmap.EndInit();
+            //Image image = new Image();
+            //image.Source = bitmap;
             image.Width = 115;
             image.Height = 200;
             image.HorizontalAlignment = HorizontalAlignment.Left;
+
+            playerID = Game.HumanPlayerID;
 
             Random rnd = new Random();
             int rndm = rnd.Next(99999);
@@ -606,9 +637,15 @@ namespace Call_Break_Card_Game
                 Random rand = new Random(rndm);
                 int angle = rand.Next(41) - 20; //rest positoin is 0 degree, with -50 to 50 range
 
+                //Vector offset = VisualTreeHelper.GetOffset(image);//position of the image in the container
+
                 RotateTransform rotateTransform = new RotateTransform(angle);
                 image.RenderTransform = rotateTransform;
-                image.Margin = new Thickness(canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 100, 0, 0);
+
+                image.Margin = new Thickness(canvasGame.Width / 2 - 45, canvasGame.Height / 2 - 100, 0, 0);
+
+                //disable card control after it's played
+                image.IsEnabled = false;
             }
             else if ((Game.HumanPlayerID + 1) % 4 == playerID)//player on the right side
             {
@@ -637,7 +674,111 @@ namespace Call_Break_Card_Game
                 image.RenderTransform = rotateTransform;
                 image.Margin = new Thickness(canvasGame.Width / 2 -150, canvasGame.Height / 2 - 20, 0, 0);
             }
-            canvasGame.Children.Add(image);
+            //canvasGame.Children.Add(image);
+        }
+
+        /// <summary>
+        /// Animates movement of cards from one point to another
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="startX"></param>
+        /// <param name="startY"></param>
+        /// <param name="endX"></param>
+        /// <param name="endY"></param>
+        /// <param name="timeSpan"></param>
+        public void AnimateCardTranslation(Image target, double startX, double startY, double endX, double endY, double timeSpan =1)
+        {
+            TranslateTransform trans = new TranslateTransform();
+            target.RenderTransform = trans;
+            DoubleAnimation anim1 = new DoubleAnimation(startX, endX, TimeSpan.FromSeconds(timeSpan));
+            DoubleAnimation anim2 = new DoubleAnimation(startY, endY, TimeSpan.FromSeconds(timeSpan));
+            trans.BeginAnimation(TranslateTransform.XProperty, anim1);
+            trans.BeginAnimation(TranslateTransform.YProperty, anim2);
+        }
+
+        private void ShowCardDeal_Animation()
+        {
+            ShowDealReady_Deck(true);
+        }
+
+        private void ShowDealReady_Deck(bool deal=false)
+        {
+            string faceDownCard = "/cards/extras/Back.png";
+
+            for (int i = 0; i < 52; i++)
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(faceDownCard, UriKind.Relative);
+                bitmap.EndInit();
+                Image image = new Image();
+                image.Source = bitmap;
+                image.Width = 90;
+                image.Height = 100;
+
+                image.HorizontalAlignment = HorizontalAlignment.Center;
+                image.VerticalAlignment = VerticalAlignment.Top;
+
+                //places the deck of card based on current dealer
+                int a = Game.CurrentDealer;
+                int x = 0, y = 0;
+                if(a == (Game.HumanPlayerID + 3) % 4)
+                {
+                    x = 80+i/2;
+                    y = 300+i/2;
+                }
+                else if(a == (Game.HumanPlayerID + 1) % 4)
+                {
+                    x = ((int)(canvasGame.Width) - 170)-i/2;
+                    y = 300+i/2;
+                }
+                else if(a == (Game.HumanPlayerID + 2) % 4)
+                {
+                    x = ((int)canvasGame.Width / 2) + 15 + i / 2;
+                    y = 110 + i / 2;
+                }
+                else if(a == Game.HumanPlayerID)
+                {
+                    x = ((int)canvasGame.Width / 2) + 10 + i / 2;
+                    y = (int)canvasGame.Height - 240 + i / 2;
+                }
+                
+                image.Margin = new Thickness(x,y,0,0);
+
+                canvasGame.Children.Add(image);
+            }
+        }
+
+        /// <summary>
+        /// Points arrow on the canvas to the current player
+        /// </summary>
+        /// <param name="playerID"></param>
+        private void PointCurrentPlayer_Canvas(int playerID)
+        {
+            Label arrow = new Label();
+            arrow.Content = "⮚";
+            arrow.Foreground = Brushes.BurlyWood;
+            arrow.FontSize = 45;            
+             
+            if (playerID == (Game.HumanPlayerID+1)%4)//player on the right side
+            {
+                arrow.Margin = new Thickness(canvasGame.Width - 240, canvasGame.Height / 2 - 215, 0, 0);
+            }
+            else if(playerID == (Game.HumanPlayerID+3)%4)//player on the left side
+            {
+                arrow.Content = "⮘";
+                arrow.Margin = new Thickness(200, canvasGame.Height / 2 - 215, 0, 0);
+            }
+            else if(playerID == (Game.HumanPlayerID+2)%4)//player over the top
+            {
+                arrow.Margin = new Thickness((canvasGame.Width / 2) - 210, 100, 0, 0);
+            }
+            else if(playerID == Game.HumanPlayerID)//human player
+            {
+                arrow.Margin = new Thickness((canvasGame.Width / 2) - 215, canvasGame.Height - 245, 0, 0);
+            }
+
+            canvasGame.Children.Add(arrow);
         }
     }
 }
