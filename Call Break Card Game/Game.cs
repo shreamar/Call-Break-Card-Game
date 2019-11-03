@@ -19,6 +19,7 @@ namespace Call_Break_Card_Game
         //private static int _PowerCardID;
         private static List<Card> _CardsInTable;
         private static int _CurrentDealer;
+        private static int _CurrentTrickWinner;
 
         public static Player[] Players
         {
@@ -35,7 +36,7 @@ namespace Call_Break_Card_Game
         public static int MaxHandsToPlay
         {
             get { return _MaxHandsToPlay; }
-            //set { _MaxHandsToPlay = value; }
+            set { _MaxHandsToPlay = value; }
         }
 
         public static Deck DeckOfCards
@@ -64,20 +65,7 @@ namespace Call_Break_Card_Game
         {
             get
             {
-                int winner = 0;
-                int counter = 0;
-                foreach (Card card in CardsInTable)
-                {
-                    if (card.ID == PowerCardID)
-                    {
-                        //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
-                        winner = (CurrentDealer + counter) % 4;
-                        //now turn goes the winner of the trick;
-                        _CurrentDealer = winner;
-                    }
-                    counter++;
-                }
-                return winner;
+                return _CurrentTrickWinner;
             }
         }
 
@@ -304,12 +292,23 @@ namespace Call_Break_Card_Game
         public static void ProcessTrickWinner()
         {
             int winner = 0;
+            int counter = 0;
             //check if all players have played their card for the trick
             if (CardsInTable.Count == 4)
             {
-                int counter = 0;
                 foreach (Card card in CardsInTable)
                 {
+                    if (card.ID == PowerCardID)
+                    {
+                        //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
+                        winner = (CurrentDealer + counter) % 4;
+
+                        //update current trick winner
+                        _CurrentTrickWinner = winner;
+                        //now turn goes the winner of the trick;
+                        _CurrentDealer = winner;
+                    }
+                    counter++;
                     //add the cards in table back to deck
                     DeckOfCards.Cards.Add(card);
                 }
@@ -317,7 +316,7 @@ namespace Call_Break_Card_Game
                 CardsInTable.Clear();
 
                 //updates the TricksWon
-                TricksWon[winner]++;                
+                TricksWon[winner]++;
              }
         }
 
@@ -364,6 +363,11 @@ namespace Call_Break_Card_Game
             }
         }
 
+        /// <summary>
+        /// Initializes basic components to start a new game
+        /// </summary>
+        /// <param name="playerName"></param>
+        /// <param name="maxHands"></param>
         public static void InitializeGame(string playerName, int maxHands=5)
         {
             //Initialize Players
@@ -406,6 +410,9 @@ namespace Call_Break_Card_Game
             _CurrentDealer = 0;
         }
 
+        /// <summary>
+        /// Initializes components to restart a hand
+        /// </summary>
         public static void ReinitializeHand()
         {            
             for (int i = 0; i < 4; i++)

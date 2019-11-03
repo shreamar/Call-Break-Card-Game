@@ -107,8 +107,6 @@ namespace Call_Break_Card_Game
             }
         }
 
-
-
         /// <summary>
         /// Creates deep copy of card
         /// </summary>

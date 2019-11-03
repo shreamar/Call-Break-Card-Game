@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="frmStartGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,6 +71,9 @@
     </Compile>
     <Compile Include="Card.cs" />
     <Compile Include="Deck.cs" />
+    <Compile Include="frmStartGame.xaml.cs">
+      <DependentUpon>frmStartGame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="ISwapCards.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -101,6 +110,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Cards.Dll" />
+    <Resource Include="cards\extras\green_mandala2.png" />
+    <Resource Include="cards\extras\green_mandala.png" />
     <Resource Include="cards\personicons\personicon1.png" />
     <Resource Include="cards\personicons\personicon8.png" />
     <Resource Include="cards\personicons\personicon.png" />
