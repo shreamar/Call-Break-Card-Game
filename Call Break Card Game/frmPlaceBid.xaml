@@ -21,10 +21,10 @@
             </Label.Foreground>
         </Label>
         <Button x:Name="btnPlaceBid" Content="Place Bid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="133,158,112.6,10.4" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnPlaceBid_Click"/>
-        <Label Content="Place your bid:" HorizontalAlignment="Left" Margin="53,69,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="18" FontStyle="Italic" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+        <Label Content="Place your bid:" HorizontalAlignment="Left" Margin="53,49,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="35" FontStyle="Italic" FontWeight="Bold" HorizontalContentAlignment="Center"/>
         <Label x:Name="lblBid" Content="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="168,91,154.6,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D"/>
 
-        <Slider x:Name="sliderPlaceBid" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="8" Minimum="1" Value="1" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" IsSnapToTickEnabled="True" ValueChanged="sliderPlaceBid_ValueChanged"/>
+        <Slider x:Name="sliderPlaceBid" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="8" Minimum="1" Value="1" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" IsSnapToTickEnabled="False" ValueChanged="sliderPlaceBid_ValueChanged"/>
 
     </Grid>
 </Window>

@@ -29,7 +29,7 @@ namespace Call_Break_Card_Game
             InitializeComponent();
 
             //Initializes game
-            Game.InitializeGame("You");
+            Game.InitializeGame("You",Game.MaxHandsToPlay);
 
             _ = GamePlayAsync(this, new EventArgs());
         }
@@ -39,8 +39,6 @@ namespace Call_Break_Card_Game
         /// </summary>
         private async Task GamePlayAsync(object sender, EventArgs e)
         {
-             
-
             //Show_PlayersBids_WinCounts(true, Game.CurrentDealer + 1);
             //for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)
             {
@@ -70,31 +68,32 @@ namespace Call_Break_Card_Game
                 //creates pause effect
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
 
-                //hide dealing cards label
-                lblBigInfo_Center.Visibility = Visibility.Hidden;
+                //changes label to placing bids
+                lblBigInfo_Center.Content = "Placing Bids...";
 
                 /// <summary>
                 /// Place biddings before playing the hand
                 /// </summary>
-                for (int i = (Game.CurrentDealer+1)%4, counter = 0; counter<4;  counter++, i++)
+                for (int i = (Game.CurrentDealer + 1) % 4, counter = 0; counter < 4; counter++, i++)
                 {
                     int currentBidder = i % 4;
+                    //creates pause effect of 2000ms
+                    await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
-                    if(currentBidder == Game.HumanPlayerID)//human player
+                    if (currentBidder == Game.HumanPlayerID)//human player
                     {
                         frmPlaceBid frmPlaceBid = new frmPlaceBid();
                         frmPlaceBid.ShowDialog();
                     }
                     else
                     {
-                        //creates pause effect of 2000ms
-                        await Task.Delay(TimeSpan.FromMilliseconds(2000));
-
                         PlaceBids_Auto(currentBidder);
                     }
 
-                    Show_PlayersBids_WinCounts(true,true,currentBidder);
+                    Show_PlayersBids_WinCounts(true, true, currentBidder);
                 }
+                //hides the placing bids label
+                lblBigInfo_Center.Visibility = Visibility.Hidden;
 
                 for (int currentTrick = 0; currentTrick < 13; currentTrick++)
                 {
@@ -103,14 +102,14 @@ namespace Call_Break_Card_Game
 
                     }
                 }
-            }           
+            }
         }
 
         /// <summary>
         /// Deals card to all players and show relevant information on canvas
         /// </summary>
         private void DealCards()
-        {          
+        {
             //Deals cards
             Game.DealCards();
 
@@ -142,12 +141,12 @@ namespace Call_Break_Card_Game
             Random rnd = new Random();
 
             int counter = 0;
-            foreach(Player player in Game.Players)
+            foreach (Player player in Game.Players)
             {
-                if(counter == PlayerID)
+                if (counter == PlayerID)
                 {
                     //Random rand = new Random();
-                    Game.PlaceBid(PlayerID,rnd.Next(1,7));
+                    Game.PlaceBid(PlayerID, rnd.Next(1, 7));
                     break;
                 }
                 counter++;
@@ -510,13 +509,13 @@ namespace Call_Break_Card_Game
                     image.Source = bitmap;
                     image.Width = 70;
                     image.Height = 70;
-                    image.HorizontalAlignment = HorizontalAlignment.Left;         
+                    image.HorizontalAlignment = HorizontalAlignment.Left;
                     image.Margin = new Thickness(canvasGame.Width - 160, canvasGame.Height / 2 - 155, 0, 0);
 
                     canvasGame.Children.Add(name);
                     canvasGame.Children.Add(image);
                 }
-                else if(j == 2)//player over the top
+                else if (j == 2)//player over the top
                 {
                     //label for name
                     Label name = new Label();
@@ -544,7 +543,7 @@ namespace Call_Break_Card_Game
                     canvasGame.Children.Add(name);
                     canvasGame.Children.Add(image);
                 }
-                else if(j == 3)//player on the left hand side
+                else if (j == 3)//player on the left hand side
                 {
                     //label for name
                     Label name = new Label();
@@ -572,14 +571,14 @@ namespace Call_Break_Card_Game
                     canvasGame.Children.Add(name);
                     canvasGame.Children.Add(image);
                 }
-            }           
+            }
         }
 
         /// <summary>
         /// Shows bids and win counts of all players on the canvas
         /// </summary>
-        private void Show_PlayersBids_WinCounts(bool animate = false, bool showOnlyOne = false, int playerID=0)
-        {        
+        private void Show_PlayersBids_WinCounts(bool animate = false, bool showOnlyOne = false, int playerID = 0)
+        {
             for (int i = (Game.HumanPlayerID) % 4, j = -1; j < 3; i++, j++)
             {
                 //players id
@@ -588,8 +587,8 @@ namespace Call_Break_Card_Game
                 //jumps interation to the required player when only one players info have to be shown
                 if (showOnlyOne)
                 {
-                    i += (4 - id + playerID)%4;
-                    j += (4 - id + playerID)%4;
+                    i += (4 - id + playerID) % 4;
+                    j += (4 - id + playerID) % 4;
                 }
 
                 //updated player id
@@ -597,12 +596,12 @@ namespace Call_Break_Card_Game
 
                 string personIcon = "/cards/personicons/personicon" + Game.Players[id].IconNumber + ".png";
 
-                if(j == -1)//human player
+                if (j == -1)//human player
                 {
                     Label bid = new Label();
                     bid.Content = "Win: " + Game.TricksWon[Game.HumanPlayerID];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
-                    bid.VerticalAlignment = VerticalAlignment.Bottom;                    
+                    bid.VerticalAlignment = VerticalAlignment.Bottom;
                     bid.FontSize = 15;
                     bid.FontWeight = FontWeights.Bold;
                     bid.FontFamily = new FontFamily("Courier");
@@ -613,17 +612,17 @@ namespace Call_Break_Card_Game
                     score.Content = "Bid: " + Game.Bidding[Game.HumanPlayerID];
                     score.HorizontalAlignment = HorizontalAlignment.Center;
                     score.VerticalAlignment = VerticalAlignment.Bottom;
-                   
+
                     score.FontSize = 15;
                     score.FontWeight = FontWeights.Bold;
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
-                    score.Background = Brushes.IndianRed;                    
+                    score.Background = Brushes.IndianRed;
 
                     if (animate)
                     {
-                        AnimateCardTranslation(bid,canvasGame.Width, canvasGame.Height - 240, (canvasGame.Width / 2) + 20, canvasGame.Height - 240,0.5);
-                        AnimateCardTranslation(score, canvasGame.Width, canvasGame.Height - 210, (canvasGame.Width / 2) + 20, canvasGame.Height - 210,0.5);
+                        AnimateCardTranslation(bid, canvasGame.Width, canvasGame.Height - 240, (canvasGame.Width / 2) + 20, canvasGame.Height - 240, 0.5);
+                        AnimateCardTranslation(score, canvasGame.Width, canvasGame.Height - 210, (canvasGame.Width / 2) + 20, canvasGame.Height - 210, 0.5);
                     }
                     else
                     {
@@ -635,12 +634,11 @@ namespace Call_Break_Card_Game
                     canvasGame.Children.Add(score);
                 }
                 else if (j == 0)//player on right handside
-                {                 
+                {
                     Label bid = new Label();
                     bid.Content = "Win: " + Game.TricksWon[id];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
                     bid.VerticalAlignment = VerticalAlignment.Bottom;
-                    bid.Margin = new Thickness(canvasGame.Width - 150, canvasGame.Height / 2 - 80, 0, 0);
                     bid.FontSize = 15;
                     bid.FontWeight = FontWeights.Bold;
                     bid.FontFamily = new FontFamily("Courier");
@@ -651,15 +649,25 @@ namespace Call_Break_Card_Game
                     score.Content = "Bid: " + Game.Bidding[id];
                     score.HorizontalAlignment = HorizontalAlignment.Center;
                     score.VerticalAlignment = VerticalAlignment.Bottom;
-                    score.Margin = new Thickness(canvasGame.Width - 150, canvasGame.Height / 2 - 50, 0, 0);
                     score.FontSize = 15;
                     score.FontWeight = FontWeights.Bold;
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
                     score.Background = Brushes.IndianRed;
 
+                    if (animate)
+                    {
+                        AnimateCardTranslation(bid, canvasGame.Width - 150, 0, canvasGame.Width - 150, canvasGame.Height / 2 - 80, 0.4);
+                        AnimateCardTranslation(score, canvasGame.Width - 150, 0, canvasGame.Width - 150, canvasGame.Height / 2 - 50, 0.4);
+                    }
+                    else
+                    {
+                        bid.Margin = new Thickness(canvasGame.Width - 150, canvasGame.Height / 2 - 80, 0, 0);
+                        score.Margin = new Thickness(canvasGame.Width - 150, canvasGame.Height / 2 - 50, 0, 0);
+                    }
+
                     canvasGame.Children.Add(bid);
-                    canvasGame.Children.Add(score);                    
+                    canvasGame.Children.Add(score);
                 }
                 else if (j == 1)//player over the top
                 {
@@ -667,7 +675,6 @@ namespace Call_Break_Card_Game
                     bid.Content = "Win: " + Game.TricksWon[id];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
                     bid.VerticalAlignment = VerticalAlignment.Bottom;
-                    bid.Margin = new Thickness((canvasGame.Width / 2) + 25, 110, 0, 0);
                     bid.FontSize = 15;
                     bid.FontWeight = FontWeights.Bold;
                     bid.FontFamily = new FontFamily("Courier");
@@ -678,15 +685,25 @@ namespace Call_Break_Card_Game
                     score.Content = "Bid: " + Game.Bidding[id];
                     score.HorizontalAlignment = HorizontalAlignment.Center;
                     score.VerticalAlignment = VerticalAlignment.Bottom;
-                    score.Margin = new Thickness((canvasGame.Width / 2) + 25, 140, 0, 0);
                     score.FontSize = 15;
                     score.FontWeight = FontWeights.Bold;
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
                     score.Background = Brushes.IndianRed;
-                   
+
+                    if (animate)
+                    {
+                        AnimateCardTranslation(bid, 0, 110, (canvasGame.Width / 2) + 25, 110, 0.5);
+                        AnimateCardTranslation(score, 0, 140, (canvasGame.Width / 2) + 25, 140, 0.5);
+                    }
+                    else
+                    {
+                        bid.Margin = new Thickness((canvasGame.Width / 2) + 25, 110, 0, 0);
+                        score.Margin = new Thickness((canvasGame.Width / 2) + 25, 140, 0, 0);
+                    }
+
                     canvasGame.Children.Add(bid);
-                    canvasGame.Children.Add(score);                    
+                    canvasGame.Children.Add(score);
                 }
                 else if (j == 2)//player on the left side
                 {
@@ -694,7 +711,6 @@ namespace Call_Break_Card_Game
                     bid.Content = "Win: " + Game.TricksWon[id];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
                     bid.VerticalAlignment = VerticalAlignment.Bottom;
-                    bid.Margin = new Thickness(90, canvasGame.Height / 2 - 80, 0, 0);
                     bid.FontSize = 15;
                     bid.FontWeight = FontWeights.Bold;
                     bid.FontFamily = new FontFamily("Courier");
@@ -705,15 +721,25 @@ namespace Call_Break_Card_Game
                     score.Content = "Bid: " + Game.Bidding[id];
                     score.HorizontalAlignment = HorizontalAlignment.Center;
                     score.VerticalAlignment = VerticalAlignment.Bottom;
-                    score.Margin = new Thickness(90, canvasGame.Height / 2 - 50, 0, 0);
                     score.FontSize = 15;
                     score.FontWeight = FontWeights.Bold;
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
                     score.Background = Brushes.IndianRed;
-                    
+
+                    if (animate)
+                    {
+                        AnimateCardTranslation(bid, 90, canvasGame.Height, 90, canvasGame.Height / 2 - 80, 0.4);
+                        AnimateCardTranslation(score, 90, canvasGame.Height, 90, canvasGame.Height / 2 - 50, 0.4);
+                    }
+                    else
+                    {
+                        bid.Margin = new Thickness(90, canvasGame.Height / 2 - 80, 0, 0);
+                        score.Margin = new Thickness(90, canvasGame.Height / 2 - 50, 0, 0);
+                    }
+
                     canvasGame.Children.Add(bid);
-                    canvasGame.Children.Add(score);                   
+                    canvasGame.Children.Add(score);
                 }
 
                 //breaks loop if the required player is found and job is done
@@ -1081,14 +1107,15 @@ namespace Call_Break_Card_Game
             }
             return i;
         }
-        
+
         /// <summary>
         /// Shows information about game on top bar
         /// </summary>
         private void Show_Info_TopBar()
         {
-            lblTopBar.Content = String.Format("Current Player: [{4}]          Hands Played: [{0}/{1}]          Tricks Won: {2}          Score: {3}",
-                Game.CurrentHand+1,Game.MaxHandsToPlay,Game.TricksWon[Game.HumanPlayerID],Game.CumulativeScore[Game.HumanPlayerID],Game.Players[Game.CurrentDealer].Name);
+            lblTopBar.Content = String.Format("Current Player: [{0}]          Hands Played: [{1}/{2}]          Tricks Won: [{3}]          Score: [{4}]",
+                Game.Players[Game.CurrentDealer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay, 
+                Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID]);
         }
     }
 }
