@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="frmPlaceBid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="frmStartGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -71,6 +75,9 @@
     </Compile>
     <Compile Include="Card.cs" />
     <Compile Include="Deck.cs" />
+    <Compile Include="frmPlaceBid.xaml.cs">
+      <DependentUpon>frmPlaceBid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="frmStartGame.xaml.cs">
       <DependentUpon>frmStartGame.xaml</DependentUpon>
     </Compile>

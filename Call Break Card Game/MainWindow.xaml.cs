@@ -15,6 +15,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Call_Break_Card_Game
 {
@@ -28,10 +29,11 @@ namespace Call_Break_Card_Game
             InitializeComponent();
 
             //Initializes game
-            Game.InitializeGame("JAEGER");
+            Game.InitializeGame("You");
             
             //Shows deck of card in the dealers side
             ShowDealReady_Deck();
+            lblDealingCards.Visibility = Visibility.Visible;
 
             //Show players names and icons
             Show_PlayersName_Icon();
@@ -41,20 +43,37 @@ namespace Call_Break_Card_Game
             lblTopBar.IsEnabled = false;
 
             //create delay effect
-            Thread.Sleep(1000);
-
-            //Start Game play
-            GamePlay();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0,0,0,0,2000);
+            timer.Tick += new EventHandler(GamePlay);       //stars game play
+            timer.Start();
         }
 
         /// <summary>
         /// Performs whole game play 
         /// </summary>
-        private void GamePlay()
+        private void GamePlay(object sender, EventArgs e)
         {
+            //stops the delay effect from iterating
+            DispatcherTimer timer = (DispatcherTimer)sender;
+            timer.Stop();
+
+            //hide dealing cards label
+            lblDealingCards.Visibility = Visibility.Hidden;
+
+            //Deals cards to all players
             DealCards();
+
+            //opens the bid placing form
+            frmPlaceBid frmPlaceBid = new frmPlaceBid();
+            frmPlaceBid.ShowDialog();
+
+            Show_PlayersBids_WinCounts(true, Game.CurrentDealer+1);
         }
 
+        /// <summary>
+        /// Deals card to all players and show relevant information on canvas
+        /// </summary>
         private void DealCards()
         {
             //Deals cards
@@ -65,7 +84,6 @@ namespace Call_Break_Card_Game
 
             //show player icons, names, bids and win counts
             Show_PlayersName_Icon();
-            Show_PlayersBids_WinCounts();
 
             //Show bots cards with dealing animation
             ShowCardsOnCanvas_Bots(true);
@@ -75,39 +93,13 @@ namespace Call_Break_Card_Game
 
             //point current player
             PointCurrentPlayer_Canvas(Game.CurrentDealer);
+
+            //Show top bar
+            Show_Info_TopBar();
         }
 
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
         {
-            //btnDealCards.IsEnabled = false;            
-
-            Game.DealCards();
-
-            //clear canvas
-            canvasGame.Children.Clear();
-
-            //remove a card from human players card pile
-            //Game.Players[Game.HumanPlayerID].playCard(Game.Players[Game.HumanPlayerID].PlayableIDs[0]);
-
-            //show labels
-            Show_PlayersName_Icon();
-            Show_PlayersBids_WinCounts();
-
-            //show cards of bots
-            ShowCardsOnCanvas_Bots(true);
-
-            //show cards of human player
-            ShowCardsOnCanvas_Human(true);
-
-            //ShowCardDeal_Animation();
-
-            Show_PlayedCards_Table(Game.HumanPlayerID, 25, true, Game.HumanPlayerID);
-
-            Show_PlayedCards_Table((Game.HumanPlayerID + 1) % 4, 35);
-            Show_PlayedCards_Table((Game.HumanPlayerID + 2) % 4, 45);
-            Show_PlayedCards_Table((Game.HumanPlayerID + 3) % 4, 15);
-
-            PointCurrentPlayer_Canvas(Game.CurrentDealer);
         }
 
         private void markPlayables()
@@ -527,25 +519,23 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shows bids and win counts of all players on the canvas
         /// </summary>
-        private void Show_PlayersBids_WinCounts()
-        {
+        private void Show_PlayersBids_WinCounts(bool showOnlyOne = false, int playerID=0)
+        {        
             for (int i = (Game.HumanPlayerID) % 4, j = -1; j < 3; i++, j++)
             {
                 //players id
                 int id = i % 4;
+
+                //jumps interation to the required player when only one players info have to be shown
+                if (showOnlyOne)
+                {
+                    i += (4 - id + playerID)%4;
+                    j += (4 - id + playerID)%4;
+                }
+
                 string personIcon = "/cards/personicons/personicon" + Game.Players[id].IconNumber + ".png";
                 if(j == -1)//human player
                 {
-                    Label name = new Label();
-                    name.Content = "[You]";
-                    name.HorizontalAlignment = HorizontalAlignment.Center;
-                    name.VerticalAlignment = VerticalAlignment.Bottom;
-                    name.Margin = new Thickness((canvasGame.Width / 2) - 180, canvasGame.Height - 240, 0, 0);
-                    name.FontSize = 45;
-                    name.FontWeight = FontWeights.Bold;
-                    name.FontFamily = new FontFamily("Georgia");
-                    name.Foreground = Brushes.DarkGreen;
-
                     Label bid = new Label();
                     bid.Content = "Win: " + Game.TricksWon[Game.HumanPlayerID];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
@@ -567,26 +557,9 @@ namespace Call_Break_Card_Game
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
                     score.Background = Brushes.IndianRed;
-
-                    canvasGame.Children.Add(name);
+                   
                     canvasGame.Children.Add(bid);
                     canvasGame.Children.Add(score);
-
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri("/cards/personicons/personicon.png", UriKind.Relative);
-                    bitmap.EndInit();
-                    Image image = new Image();
-                    image.Source = bitmap;
-                    image.Width = 70;
-                    image.Height = 70;
-
-                    image.HorizontalAlignment = HorizontalAlignment.Left;
-
-                    //places bot1 player's cards in the right of the canvas
-                    image.Margin = new Thickness(-50 + canvasGame.Width / 2, canvasGame.Height - 250, 0, 0);
-
-                    canvasGame.Children.Add(image);
                 }
                 else if (j == 0)//player on right handside
                 {                 
@@ -673,6 +646,12 @@ namespace Call_Break_Card_Game
                     
                     canvasGame.Children.Add(bid);
                     canvasGame.Children.Add(score);                   
+                }
+
+                //breaks loop if the required player is found and job is done
+                if (showOnlyOne)
+                {
+                    break;
                 }
             }
         }
@@ -1016,7 +995,7 @@ namespace Call_Break_Card_Game
         private void Show_Info_TopBar()
         {
             lblTopBar.Content = String.Format("Current Player: [{4}]          Hands Played: [{0}/{1}]          Tricks Won: {2}          Score: {3}",
-                Game.CurrentHand,Game.MaxHandsToPlay,Game.TricksWon[Game.HumanPlayerID],Game.CumulativeScore[Game.HumanPlayerID],Game.Players[Game.CurrentDealer].Name);
+                Game.CurrentHand+1,Game.MaxHandsToPlay,Game.TricksWon[Game.HumanPlayerID],Game.CumulativeScore[Game.HumanPlayerID],Game.Players[Game.CurrentDealer].Name);
         }
     }
 }
