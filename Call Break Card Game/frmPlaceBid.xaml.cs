@@ -26,7 +26,7 @@ namespace Call_Break_Card_Game
 
         private void btnPlaceBid_Click(object sender, RoutedEventArgs e)
         {
-            Game.Bidding[Game.HumanPlayerID] = (int)sliderPlaceBid.Value;
+            Game.PlaceBid(Game.HumanPlayerID, (int)sliderPlaceBid.Value);
             this.Close();
         }
 

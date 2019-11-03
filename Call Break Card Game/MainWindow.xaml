@@ -18,7 +18,7 @@
         <Button x:Name="btnDealCards" Content="Deal Cards" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Click="btnDealCards_Click" Canvas.Left="10" Canvas.Top="10" Margin="10,10,0,0" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Visibility="Hidden"/>
         <Canvas x:Name="canvasGame" HorizontalAlignment="Left" Height="766" Margin="0,58,-0.4,0" VerticalAlignment="Top" Width="1530"/>
         <Label x:Name="lblTopBar" Content="label" HorizontalAlignment="Center" VerticalAlignment="Top" Height="53" Margin="0,0,-0.4,0" Width="1260" Foreground="#FF1DC249" FontSize="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
-        <Label x:Name="lblDealingCards" Content="Dealing Cards..." HorizontalAlignment="Center" VerticalAlignment="Center" Width="700" Height="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="100" FontWeight="Bold" FontFamily="Perpetua" Foreground="#FF063D26" FontStyle="Italic" Visibility="Hidden"/>
+        <Label x:Name="lblBigInfo_Center" Content="Dealing Cards..." HorizontalAlignment="Center" VerticalAlignment="Center" Width="700" Height="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="100" FontWeight="Bold" FontFamily="Perpetua" Foreground="#FF063D26" FontStyle="Italic" Visibility="Hidden"/>
 
     </Grid>
 </Window>

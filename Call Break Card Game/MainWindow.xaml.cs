@@ -30,52 +30,87 @@ namespace Call_Break_Card_Game
 
             //Initializes game
             Game.InitializeGame("You");
-            
-            //Shows deck of card in the dealers side
-            ShowDealReady_Deck();
-            lblDealingCards.Visibility = Visibility.Visible;
 
-            //Show players names and icons
-            Show_PlayersName_Icon();
-
-            //shows top bar
-            Show_Info_TopBar();
-            lblTopBar.IsEnabled = false;
-
-            //create delay effect
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0,0,0,0,2000);
-            timer.Tick += new EventHandler(GamePlay);       //stars game play
-            timer.Start();
+            _ = GamePlayAsync(this, new EventArgs());
         }
 
         /// <summary>
         /// Performs whole game play 
         /// </summary>
-        private void GamePlay(object sender, EventArgs e)
+        private async Task GamePlayAsync(object sender, EventArgs e)
         {
-            //stops the delay effect from iterating
-            DispatcherTimer timer = (DispatcherTimer)sender;
-            timer.Stop();
+             
 
-            //hide dealing cards label
-            lblDealingCards.Visibility = Visibility.Hidden;
+            //Show_PlayersBids_WinCounts(true, Game.CurrentDealer + 1);
+            //for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)
+            {
+                //updates current hand data in Game class
+                //Game.CurrentHand = currentHand;
 
-            //Deals cards to all players
-            DealCards();
+                //Reinitialize components to restart hand
+                Game.ReinitializeHand();
 
-            //opens the bid placing form
-            frmPlaceBid frmPlaceBid = new frmPlaceBid();
-            frmPlaceBid.ShowDialog();
+                //Shows deck of card in the dealers side
+                ShowDealReady_Deck();
+                lblBigInfo_Center.Visibility = Visibility.Visible;
 
-            Show_PlayersBids_WinCounts(true, Game.CurrentDealer+1);
+                //Show players names and icons
+                Show_PlayersName_Icon();
+
+                //shows top bar
+                Show_Info_TopBar();
+                lblTopBar.IsEnabled = false;
+
+                //creates pause effect of 2000ms
+                await Task.Delay(TimeSpan.FromMilliseconds(2000));
+
+                //Deals cards to all players
+                DealCards();
+
+                //creates pause effect
+                await Task.Delay(TimeSpan.FromMilliseconds(1000));
+
+                //hide dealing cards label
+                lblBigInfo_Center.Visibility = Visibility.Hidden;
+
+                /// <summary>
+                /// Place biddings before playing the hand
+                /// </summary>
+                for (int i = (Game.CurrentDealer+1)%4, counter = 0; counter<4;  counter++, i++)
+                {
+                    int currentBidder = i % 4;
+
+                    if(currentBidder == Game.HumanPlayerID)//human player
+                    {
+                        frmPlaceBid frmPlaceBid = new frmPlaceBid();
+                        frmPlaceBid.ShowDialog();
+                    }
+                    else
+                    {
+                        //creates pause effect of 2000ms
+                        await Task.Delay(TimeSpan.FromMilliseconds(2000));
+
+                        PlaceBids_Auto(currentBidder);
+                    }
+
+                    Show_PlayersBids_WinCounts(true,true,currentBidder);
+                }
+
+                for (int currentTrick = 0; currentTrick < 13; currentTrick++)
+                {
+                    for (int currentPlayer = 0; currentPlayer < 4; currentPlayer++)
+                    {
+
+                    }
+                }
+            }           
         }
 
         /// <summary>
         /// Deals card to all players and show relevant information on canvas
         /// </summary>
         private void DealCards()
-        {
+        {          
             //Deals cards
             Game.DealCards();
 
@@ -89,13 +124,34 @@ namespace Call_Break_Card_Game
             ShowCardsOnCanvas_Bots(true);
 
             //Show human's cards with dealing animation
-            ShowCardsOnCanvas_Human(true);
+            ShowCardsOnCanvas_Human(true, false);
 
             //point current player
             PointCurrentPlayer_Canvas(Game.CurrentDealer);
 
             //Show top bar
             Show_Info_TopBar();
+        }
+
+        /// <summary>
+        /// Places automatic bid for selected player ID
+        /// [Needs better algorithm to perform this task]
+        /// </summary>
+        private void PlaceBids_Auto(int PlayerID)
+        {
+            Random rnd = new Random();
+
+            int counter = 0;
+            foreach(Player player in Game.Players)
+            {
+                if(counter == PlayerID)
+                {
+                    //Random rand = new Random();
+                    Game.PlaceBid(PlayerID,rnd.Next(1,7));
+                    break;
+                }
+                counter++;
+            }
         }
 
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
@@ -246,7 +302,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shows interactive human cards on canvas
         /// </summary>
-        private void ShowCardsOnCanvas_Human(bool showAnimation = false)
+        private void ShowCardsOnCanvas_Human(bool showAnimation = false, bool enableCards = true)
         {
             //canvasGame.Children.Clear();
 
@@ -291,6 +347,9 @@ namespace Call_Break_Card_Game
 
                 //adds the card to the canvas
                 canvasGame.Children.Add(image);
+
+                //enables or disables human players cards
+                image.IsEnabled = enableCards;
 
                 counter++;
             }
@@ -519,7 +578,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shows bids and win counts of all players on the canvas
         /// </summary>
-        private void Show_PlayersBids_WinCounts(bool showOnlyOne = false, int playerID=0)
+        private void Show_PlayersBids_WinCounts(bool animate = false, bool showOnlyOne = false, int playerID=0)
         {        
             for (int i = (Game.HumanPlayerID) % 4, j = -1; j < 3; i++, j++)
             {
@@ -533,14 +592,17 @@ namespace Call_Break_Card_Game
                     j += (4 - id + playerID)%4;
                 }
 
+                //updated player id
+                id = i % 4;
+
                 string personIcon = "/cards/personicons/personicon" + Game.Players[id].IconNumber + ".png";
+
                 if(j == -1)//human player
                 {
                     Label bid = new Label();
                     bid.Content = "Win: " + Game.TricksWon[Game.HumanPlayerID];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
-                    bid.VerticalAlignment = VerticalAlignment.Bottom;
-                    bid.Margin = new Thickness((canvasGame.Width / 2) + 20, canvasGame.Height - 240, 0, 0);
+                    bid.VerticalAlignment = VerticalAlignment.Bottom;                    
                     bid.FontSize = 15;
                     bid.FontWeight = FontWeights.Bold;
                     bid.FontFamily = new FontFamily("Courier");
@@ -551,13 +613,24 @@ namespace Call_Break_Card_Game
                     score.Content = "Bid: " + Game.Bidding[Game.HumanPlayerID];
                     score.HorizontalAlignment = HorizontalAlignment.Center;
                     score.VerticalAlignment = VerticalAlignment.Bottom;
-                    score.Margin = new Thickness((canvasGame.Width / 2) + 20, canvasGame.Height - 210, 0, 0);
+                   
                     score.FontSize = 15;
                     score.FontWeight = FontWeights.Bold;
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
-                    score.Background = Brushes.IndianRed;
-                   
+                    score.Background = Brushes.IndianRed;                    
+
+                    if (animate)
+                    {
+                        AnimateCardTranslation(bid,canvasGame.Width, canvasGame.Height - 240, (canvasGame.Width / 2) + 20, canvasGame.Height - 240,0.5);
+                        AnimateCardTranslation(score, canvasGame.Width, canvasGame.Height - 210, (canvasGame.Width / 2) + 20, canvasGame.Height - 210,0.5);
+                    }
+                    else
+                    {
+                        bid.Margin = new Thickness((canvasGame.Width / 2) + 20, canvasGame.Height - 240, 0, 0);
+                        score.Margin = new Thickness((canvasGame.Width / 2) + 20, canvasGame.Height - 210, 0, 0);
+                    }
+
                     canvasGame.Children.Add(bid);
                     canvasGame.Children.Add(score);
                 }
@@ -590,10 +663,8 @@ namespace Call_Break_Card_Game
                 }
                 else if (j == 1)//player over the top
                 {
-                   
-
                     Label bid = new Label();
-                    bid.Content = "Win: " + Game.TricksWon[Game.HumanPlayerID];
+                    bid.Content = "Win: " + Game.TricksWon[id];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
                     bid.VerticalAlignment = VerticalAlignment.Bottom;
                     bid.Margin = new Thickness((canvasGame.Width / 2) + 25, 110, 0, 0);
@@ -604,7 +675,7 @@ namespace Call_Break_Card_Game
                     bid.Background = Brushes.DeepSkyBlue;
 
                     Label score = new Label();
-                    score.Content = "Bid: " + Game.Bidding[Game.HumanPlayerID];
+                    score.Content = "Bid: " + Game.Bidding[id];
                     score.HorizontalAlignment = HorizontalAlignment.Center;
                     score.VerticalAlignment = VerticalAlignment.Bottom;
                     score.Margin = new Thickness((canvasGame.Width / 2) + 25, 140, 0, 0);
@@ -613,15 +684,12 @@ namespace Call_Break_Card_Game
                     score.FontFamily = new FontFamily("Courier");
                     //bid.Foreground = Brushes.DarkGreen;
                     score.Background = Brushes.IndianRed;
-
                    
                     canvasGame.Children.Add(bid);
                     canvasGame.Children.Add(score);                    
                 }
                 else if (j == 2)//player on the left side
                 {
-                    
-
                     Label bid = new Label();
                     bid.Content = "Win: " + Game.TricksWon[id];
                     bid.HorizontalAlignment = HorizontalAlignment.Center;
@@ -840,7 +908,7 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
-        /// Animates movement of cards from one point to another
+        /// Animates movement of Image from one point to another
         /// </summary>
         /// <param name="target"></param>
         /// <param name="startX"></param>
@@ -862,7 +930,32 @@ namespace Call_Break_Card_Game
             trans.BeginAnimation(TranslateTransform.YProperty, animY, HandoffBehavior.Compose);
             //rotateTransform.BeginAnimation(RotateTransform.AngleProperty, animAngle);
         }
-       
+
+        /// <summary>
+        /// Animates movement of labels from one point to another
+        /// Overloaded method
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="startX"></param>
+        /// <param name="startY"></param>
+        /// <param name="endX"></param>
+        /// <param name="endY"></param>
+        /// <param name="timeSpan"></param>
+        public void AnimateCardTranslation(Label target, double startX, double startY,
+            double endX, double endY, double timeSpan = 1)
+        {
+            TranslateTransform trans = new TranslateTransform();
+            target.RenderTransform = trans;
+            //RotateTransform rotateTransform = new RotateTransform();
+            //target.RenderTransform = rotateTransform;
+            DoubleAnimation animX = new DoubleAnimation(startX, endX, TimeSpan.FromSeconds(timeSpan));
+            DoubleAnimation animY = new DoubleAnimation(startY, endY, TimeSpan.FromSeconds(timeSpan));
+            //DoubleAnimation animAngle = new DoubleAnimation(startAngle, endAngle, TimeSpan.FromSeconds(timeSpan));
+            trans.BeginAnimation(TranslateTransform.XProperty, animX, HandoffBehavior.Compose);
+            trans.BeginAnimation(TranslateTransform.YProperty, animY, HandoffBehavior.Compose);
+            //rotateTransform.BeginAnimation(RotateTransform.AngleProperty, animAngle);
+        }
+
         /// <summary>
         /// Animates rotation of card from one angle to other
         /// </summary>

@@ -48,6 +48,7 @@ namespace Call_Break_Card_Game
         public static int CurrentHand
         {
             get { return _CurrentHand; }
+            set { _CurrentDealer = value; }
         }
 
         public static double[,] ScoreBoard
