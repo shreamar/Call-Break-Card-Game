@@ -75,7 +75,7 @@ namespace Call_Break_Card_Game
                 string name = "";
 
                 //since Two = 0, 9 = Jack
-                if ((int)Number < 9 && (int)Number > 0)
+                if ((int)Number <= 8 && (int)Number >= 0)
                 {
                     name = ((int)Number + 2).ToString();
                 }
