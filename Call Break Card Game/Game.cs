@@ -17,7 +17,7 @@ namespace Call_Break_Card_Game
         private static int[] _Bidding;
         //private static int _LeadCardID;
         //private static int _PowerCardID;
-        private static List<Card> _CardsInTable;
+        private static List<Card> _CardsInTable = new List<Card>();
         private static int _CurrentDealer;
         private static int _CurrentTrickWinner;
 
@@ -75,7 +75,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         public static int LeadCardID
         {
-            get 
+            get
             {
                 if (CardsInTable.Count > 0)
                 {
@@ -94,16 +94,17 @@ namespace Call_Break_Card_Game
         /// </summary>
         public static int PowerCardID
         {
-            get 
+            get
             {
-                int index = 0;
-                foreach(Card card in CardsInTable)
+                int index = LeadCardID;
+                foreach (Card card in CardsInTable)
                 {
-                    if(card.Suit == CardIDtoSuit(LeadCardID) && card.Value > CardIDtoValue(LeadCardID))
+                    if (LeadCardID > 51 || LeadCardID < 0)
                     {
-                        index = card.ID;
+                        index = -1;
                     }
-                    else if(card.Suit!=CardIDtoSuit(LeadCardID) && card.Suit == Card.CardSuit.Spade)
+                    else if (card.Suit == CardIDtoSuit(LeadCardID) && card.Value > CardIDtoValue(LeadCardID) ||
+                    (card.Suit != CardIDtoSuit(LeadCardID) && card.Suit == Card.CardSuit.Spade))
                     {
                         index = card.ID;
                     }
@@ -117,6 +118,7 @@ namespace Call_Break_Card_Game
         public static List<Card> CardsInTable
         {
             get { return _CardsInTable; }
+            set { _CardsInTable = value; }
         }
 
         public static int CurrentDealer
@@ -135,9 +137,9 @@ namespace Call_Break_Card_Game
             get
             {
                 int id = 0;
-                foreach(Player player in Game.Players)
+                foreach (Player player in Players)
                 {
-                    if(player.Type == Player.PlayerType.Human)
+                    if (player.Type == Player.PlayerType.Human)
                     {
                         id = player.ID;
                         break;
@@ -179,7 +181,7 @@ namespace Call_Break_Card_Game
             _Players[0] = new Player(playerName, Player.PlayerType.Human);
             for (int i = 1; i <= 3; i++)
             {
-                _Players[i] = new Player(i==1?"Zion":(i==2?"Eren":"Navy"), Player.PlayerType.Bot);
+                _Players[i] = new Player(i == 1 ? "Zion" : (i == 2 ? "Eren" : "Navy"), Player.PlayerType.Bot);
             }
 
             Random random = new Random();
@@ -225,11 +227,11 @@ namespace Call_Break_Card_Game
                         Players[j].Cards.Add(DeckOfCards.Cards[0]);
                         //Removes the card from top of the deck since now its moved to player's pile
                         DeckOfCards.Cards.Remove(DeckOfCards.Cards[0]);
-                    }                    
+                    }
                 }
 
                 //Sort each players cards in thier own stack
-                foreach(Player player in Players)
+                foreach (Player player in Players)
                 {
                     player.sortCards();
                 }
@@ -242,7 +244,7 @@ namespace Call_Break_Card_Game
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    foreach(Card card in Players[i].Cards)
+                    foreach (Card card in Players[i].Cards)
                     {
                         //puts back players cards in deck
                         DeckOfCards.Cards.Add(card);
@@ -264,14 +266,14 @@ namespace Call_Break_Card_Game
         /// <returns></returns>
         private static bool CheckNeedForRedealingCard()
         {
-            int counter=0;
+            int counter = 0;
             for (int i = 0; i < 4; i++)
             {
                 counter = 0;
-                foreach(Card card in Players[i].Cards)
+                foreach (Card card in Players[i].Cards)
                 {
                     //check for any facecards, ace cards and spade cards
-                    if((int)card.Number==0 || (int)card.Number >= 10 || (int)card.Number < 12 || card.Suit == Card.CardSuit.Spade)
+                    if (((int)card.Number >= 9 && (int)card.Number <= 12) || card.Suit == Card.CardSuit.Spade)
                     {
                         counter++;
                     }
@@ -301,7 +303,7 @@ namespace Call_Break_Card_Game
                 {
                     if (card.ID == PowerCardID)
                     {
-                        //lead card is thrown by the person with the their turn, so index of cards in table are based on turn
+                        //lead card is thrown by the person with their turn, so index of cards in table are based on turn
                         winner = (CurrentDealer + counter) % 4;
 
                         //update current trick winner
@@ -318,7 +320,13 @@ namespace Call_Break_Card_Game
 
                 //updates the TricksWon
                 TricksWon[winner]++;
-             }
+
+                //reset played card flag as false
+                foreach (Player player in Game.Players)
+                {
+                    player.IsPlayed = false;
+                }
+            }
         }
 
         /// <summary>
@@ -328,17 +336,17 @@ namespace Call_Break_Card_Game
         {
             for (int i = 0; i < 4; i++)
             {
-                if(Bidding[i]== TricksWon[i])
+                if (Bidding[i] == TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[ i];
+                    ScoreBoard[CurrentHand, i] = Bidding[i];
                 }
-                else if(Bidding[ i] < TricksWon[i])
+                else if (Bidding[i] > TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[ i] * (-1);
+                    ScoreBoard[CurrentHand, i] = Bidding[i] * (-1);
                 }
-                else if(Bidding[ i] > TricksWon[i])
+                else if (Bidding[i] < TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[i] + (0.1) * TricksWon[i];
+                    ScoreBoard[CurrentHand, i] = Bidding[i] + ((0.1) * (TricksWon[i]-Bidding[i]));
                 }
             }
 
@@ -369,13 +377,13 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="playerName"></param>
         /// <param name="maxHands"></param>
-        public static void InitializeGame(string playerName, int maxHands=5)
+        public static void InitializeGame(string playerName, int maxHands = 5)
         {
             //Initialize Players
             InitializePLayers(playerName);
 
             //Default number of hands to play is 5
-            if(maxHands<1 || maxHands > 20)
+            if (maxHands < 1 || maxHands > 20)
             {
                 _MaxHandsToPlay = 5;
             }
@@ -405,7 +413,7 @@ namespace Call_Break_Card_Game
             }
 
             //Initializes cards in table
-            _CardsInTable = new List<Card>();
+            _CardsInTable.Clear();
 
             //Set current dealer to 0
             _CurrentDealer = 0;
@@ -415,18 +423,17 @@ namespace Call_Break_Card_Game
         /// Initializes components to restart a hand
         /// </summary>
         public static void ReinitializeHand()
-        {            
+        {
             for (int i = 0; i < 4; i++)
             {
                 //reset tricks won for new hand of game
                 TricksWon[i] = 0;
 
                 //reset bidding board for new hand of game
-                Bidding[i] = 1;
-
-                //Clear cards in table
-                CardsInTable.Clear();
+                Bidding[i] = 1;                
             }
+            //Clear cards in table
+            CardsInTable.Clear();
 
         }
 

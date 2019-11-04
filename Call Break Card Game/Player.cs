@@ -16,6 +16,7 @@ namespace Call_Break_Card_Game
         private Card _LastPlayedCard;
         private List<int> _PlayableIDs = new List<int>();
         private int _IconNumber;
+        private bool _IsPlayed;
 
         public Player()
         {
@@ -85,6 +86,12 @@ namespace Call_Break_Card_Game
             set { _IconNumber = value; }
         }
 
+        public bool IsPlayed
+        {
+            get { return _IsPlayed; }
+            set { _IsPlayed = value; }
+        }
+
         public List<int> PlayableIDs
         {
             get 
@@ -102,11 +109,11 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
-        /// Sorts players cards based on the cards ID
+        /// Sorts players cards in descending order based on the cards ID
         /// </summary>
         public void sortCards()
         {
-            Cards.Sort((a, b) => (a.ID.CompareTo(b.ID)));
+            Cards = Cards.OrderByDescending(card => card.ID).ToList();
         }
 
         /// <summary>
@@ -117,13 +124,17 @@ namespace Call_Break_Card_Game
         /// <returns>True if the said card was successfully played</returns>
         public bool playCard(int cardIndex)
         {
-            if (CardCount - 1 >= cardIndex && cardIndex >= 0)
+            if (cardIndex <= 51 && cardIndex >= 0)
             {
-                LastPlayedCard = Cards[cardIndex];
+                LastPlayedCard = Game.CardIDtoCard(cardIndex);
                 
                 //Removes card from players stacks and adds to the cards in the table
-                Game.CardsInTable.Add(Cards[cardIndex]);
-                Cards.Remove(Cards[cardIndex]);
+                Game.CardsInTable.Add(Game.CardIDtoCard(cardIndex));
+
+                var itemToRemove = Cards.Where(card => card.ID == cardIndex).ToList();
+                Cards.Remove(itemToRemove[0]);
+
+                IsPlayed = true;
                 return true;
             }
             else
@@ -347,7 +358,7 @@ namespace Call_Break_Card_Game
                     {
                         list.Add(card.ID);
                     }
-                }                
+                }
             
             return list;
         }

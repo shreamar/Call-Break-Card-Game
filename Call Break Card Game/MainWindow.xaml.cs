@@ -39,24 +39,26 @@ namespace Call_Break_Card_Game
         /// </summary>
         private async Task GamePlayAsync(object sender, EventArgs e)
         {
-            //Show_PlayersBids_WinCounts(true, Game.CurrentDealer + 1);
-            //for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)
+            
+            //for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)//Iteration of hands played
             {
                 //updates current hand data in Game class
                 //Game.CurrentHand = currentHand;
 
                 //Reinitialize components to restart hand
                 Game.ReinitializeHand();
-
+                TestWindow();
                 //Shows deck of card in the dealers side
                 ShowDealReady_Deck();
                 lblBigInfo_Center.Visibility = Visibility.Visible;
+                TestWindow();
 
                 //Show players names and icons
                 Show_PlayersName_Icon();
 
                 //shows top bar
-                Show_Info_TopBar();
+                //Show_Info_TopBar();
+                TestWindow();
                 lblTopBar.IsEnabled = false;
 
                 //creates pause effect of 2000ms
@@ -64,6 +66,7 @@ namespace Call_Break_Card_Game
 
                 //Deals cards to all players
                 DealCards();
+                TestWindow();
 
                 //creates pause effect
                 await Task.Delay(TimeSpan.FromMilliseconds(1000));
@@ -77,29 +80,91 @@ namespace Call_Break_Card_Game
                 for (int i = (Game.CurrentDealer + 1) % 4, counter = 0; counter < 4; counter++, i++)
                 {
                     int currentBidder = i % 4;
-                    //creates pause effect of 2000ms
-                    await Task.Delay(TimeSpan.FromMilliseconds(2000));
-
+                    TestWindow();
                     if (currentBidder == Game.HumanPlayerID)//human player
                     {
+                        //creates pause effect of 2000ms
+                        await Task.Delay(TimeSpan.FromMilliseconds(700));
+
                         frmPlaceBid frmPlaceBid = new frmPlaceBid();
                         frmPlaceBid.ShowDialog();
                     }
                     else
                     {
                         PlaceBids_Auto(currentBidder);
+
+                        //creates pause effect of 2000ms
+                        await Task.Delay(TimeSpan.FromMilliseconds(2000));
                     }
+                    TestWindow();
 
                     Show_PlayersBids_WinCounts(true, true, currentBidder);
                 }
                 //hides the placing bids label
                 lblBigInfo_Center.Visibility = Visibility.Hidden;
 
-                for (int currentTrick = 0; currentTrick < 13; currentTrick++)
-                {
-                    for (int currentPlayer = 0; currentPlayer < 4; currentPlayer++)
-                    {
+                //creates pause effect of 2000ms
+                await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
+                //Refresh canvas
+                Refresh_Canvas(Game.CurrentDealer,true);
+                TestWindow();
+                //for (int currentTrick = 0; currentTrick < 13; currentTrick++)//iteration of tricks played in a given hand
+                {
+                    for (int i = Game.CurrentDealer,j = 0; j < 4; i++, j++)//iteration of players
+                    {
+                        int currentPlayer = i % 4;
+
+                        string playables = Game.Players[currentPlayer].Name;
+                        foreach (Card card in Game.Players[currentPlayer].Cards)
+                        {
+                            foreach (int id in Game.Players[currentPlayer].PlayableIDs)
+                            {
+                                if (id == card.ID)
+                                {
+                                    playables += " " + card.Name;
+                                }
+                            }
+                        }
+                        playables += "\r\nLead: " + (Game.CardIDtoCard(Game.LeadCardID)!=null?Game.CardIDtoCard(Game.LeadCardID).Name:"--") + "\r\nPower: " + (Game.CardIDtoCard(Game.PowerCardID)!=null?Game.CardIDtoCard(Game.PowerCardID).Name:"--");
+                        int a = 0;
+                        MessageBox.Show(playables);
+
+                        //creates pause effect of 2000ms
+                        //await Task.Delay(TimeSpan.FromMilliseconds(2000));
+
+                        if (currentPlayer == Game.HumanPlayerID)
+                        {
+                            //if (Game.Players[currentPlayer].IsPlayed)
+                            //{
+                            //    //the human player has played a card then continue on to next iteration
+                            //    continue;
+                            //}
+                            //else
+                            //{
+                                //Refresh canvas
+                                Refresh_Canvas(Game.HumanPlayerID);
+                            TestWindow();
+                            //}
+                        }
+                        else
+                        {
+                            PlayCard_Bots(currentPlayer);
+                            TestWindow();
+                        }
+
+                        playables = "";
+                        playables = "Cards in table: ";
+                        foreach(Card card in Game.CardsInTable)
+                        {
+                            playables += card.Name + " ";
+                        }
+                        playables += "\r\nLead: " + Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--" + "\r\nPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
+                        MessageBox.Show(playables);
+
+                        //Refresh canvas
+                        Refresh_Canvas(currentPlayer);
+                        TestWindow();
                     }
                 }
             }
@@ -119,6 +184,7 @@ namespace Call_Break_Card_Game
             //show player icons, names, bids and win counts
             Show_PlayersName_Icon();
 
+
             //Show bots cards with dealing animation
             ShowCardsOnCanvas_Bots(true);
 
@@ -130,6 +196,7 @@ namespace Call_Break_Card_Game
 
             //Show top bar
             Show_Info_TopBar();
+            TestWindow();
         }
 
         /// <summary>
@@ -151,6 +218,66 @@ namespace Call_Break_Card_Game
                 }
                 counter++;
             }
+        }
+
+        private void Refresh_Canvas(int currentPlayer, bool deal = false)
+        {
+            //First clear the canvas
+            canvasGame.Children.Clear();
+
+            //Add names and Icons
+            Show_PlayersName_Icon();
+
+            //Add the current player pointer
+            PointCurrentPlayer_Canvas(currentPlayer);
+
+            //Add bids and win counts for players
+            Show_PlayersBids_WinCounts();
+
+            //Add bot players cards
+            ShowCardsOnCanvas_Bots();
+
+            //Add human player's cards
+            if (currentPlayer == Game.HumanPlayerID)
+            {
+                ShowCardsOnCanvas_Human();              //if current player is human then enable card
+            }
+            else
+            {
+                ShowCardsOnCanvas_Human(false, false);  //if not disable cards control
+            }
+
+            if (!deal)
+            {
+                int i = (4 + currentPlayer - Game.CardsInTable.Count - 1)%4;
+                for (int j = 0; j < Game.CardsInTable.Count; j++)
+                {
+                    int id = i % 4;
+                    Show_PlayedCards_Table(id, Game.CardsInTable[j].ID);
+                    i++;
+                }
+            }
+
+            //Refresh top bar
+            //Show_Info_TopBar();
+            TestWindow();
+        }
+
+        /// <summary>
+        /// Plays card for bots
+        /// </summary>
+        /// <param name="currentPlayer"></param>
+        private void PlayCard_Bots(int currentPlayer)
+        {
+            //Randomly selects a card from playables
+            Random rnd = new Random();
+            int cardID = Game.Players[currentPlayer].PlayableIDs[rnd.Next(Game.Players[currentPlayer].PlayableIDs.Count)];
+
+            //Play the randomly selected card
+            Game.Players[currentPlayer].playCard(cardID);
+
+            Refresh_Canvas(currentPlayer);
+            Show_PlayedCards_Table(currentPlayer, cardID);
         }
 
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
@@ -210,9 +337,9 @@ namespace Call_Break_Card_Game
         private string MapCardToFile(Card card)
         {
             string cardNumber = "", cardSuit = "", number = "";
-            if ((int)card.Number >= 1 && (int)card.Number <= 9)
+            if ((int)card.Number >= 0 && (int)card.Number < 9)
             {
-                cardNumber = ((int)card.Number + 1).ToString();
+                cardNumber = ((int)card.Number + 2).ToString();
             }
             else
             {
@@ -221,7 +348,7 @@ namespace Call_Break_Card_Game
 
             //since the card with pictures of jack, queen, king are in the same card name ending in 2
             //e.g. King of Hearts has no picture in "king_of_hearts.png", but has image of kind in "king_of_hearts2.png"
-            if ((int)card.Number >= 10)
+            if ((int)card.Number >= 9 && (int)card.Number<12)
             {
                 number = "2";
             }
@@ -326,6 +453,23 @@ namespace Call_Break_Card_Game
                 AnimateCardTranslation(image, canvasGame.Width / 2, (canvasGame.Height - image.Height) + 13, ((canvasGame.Width - (image.Width +
                     (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2)
                     + 110 * counter, (canvasGame.Height - image.Height) + 13, animationSpeed);
+
+                //Finds out if the given card is playable card or not
+                int match = 0;
+                foreach(int ndx in Game.Players[Game.HumanPlayerID].PlayableIDs)
+                {
+                    if(card.ID == ndx)
+                    {
+                        match++;
+                        break;
+                    }
+                }
+
+                //blurrs and disables the card if there is no match with playabel list
+                if (match == 0)
+                {
+                    _ = new MouseEventHandler(Image_BitmapBlurEffect);
+                }
 
                 //places human player's cards in the center bottom of the canvas
                 //image.Margin = new Thickness(((canvasGame.Width - (image.Width +
@@ -929,8 +1073,12 @@ namespace Call_Break_Card_Game
         private void Show_PlayedCards_Human(Object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
-
+            
+            Game.Players[Game.HumanPlayerID].playCard(ImageToCardID(image));
             Show_PlayedCards_Table(Game.HumanPlayerID, ImageToCardID(image));
+
+            //Refresh canvas for next player
+            //Refresh_Canvas((Game.HumanPlayerID + 1) % 4);
         }
 
         /// <summary>
@@ -1116,6 +1264,22 @@ namespace Call_Break_Card_Game
             lblTopBar.Content = String.Format("Current Player: [{0}]          Hands Played: [{1}/{2}]          Tricks Won: [{3}]          Score: [{4}]",
                 Game.Players[Game.CurrentDealer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay, 
                 Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID]);
+        }
+
+        private void TestWindow()
+        {
+            lblTopBar.FontSize = 12;
+            lblTopBar.Content = "";
+
+            foreach(Player player in Game.Players)
+            {
+                lblTopBar.Content += player.Name+": "; 
+                foreach (Card card in player.Cards)
+                {
+                    lblTopBar.Content +=  card.Name+" ";
+                }
+                lblTopBar.Content += " | ";
+            }
         }
     }
 }

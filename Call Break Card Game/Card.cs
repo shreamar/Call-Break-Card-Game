@@ -38,7 +38,7 @@ namespace Call_Break_Card_Game
 
         public int ID
         {
-            get { return ((int)Suit * 13) + (int)Number; }        //A-Club is 0, K-Spade is 51
+            get { return ((int)Suit * 13) + (int)Number; }        //2-Club is 0, A-Spade is 51
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Call_Break_Card_Game
             get
             {
                 //Ace is highest among numbers and all other numbers have values given their order
-                //Space has highest value while all other suits have same value
+                //Spade has highest value while all other suits have same value
                 int suitValue = Suit == CardSuit.Spade ? 13 : 0;
-                int numberValue = Number == CardNumber.Ace ? 12 : (int)Number - 1;
+                int numberValue = (int)Number;
 
                 //examples: 5-H = 5-D = 5-C =4, A-H = A-D = A-C =12, 2-S = 13, K-S = 24, A-S =25
                 return suitValue + numberValue;
@@ -75,11 +75,11 @@ namespace Call_Break_Card_Game
                 string name = "";
 
                 //since Two = 0, 9 = Jack
-                if ((int)Number < 10 && (int)Number > 0)
+                if ((int)Number < 9 && (int)Number > 0)
                 {
-                    name = ((int)Number + 1).ToString();
+                    name = ((int)Number + 2).ToString();
                 }
-                else if ((int)Number >= 10 || (int)Number == 0)
+                else if ((int)Number >= 9)
                 {
                     //picks only the first letter of face/ace cards
                     name = Number.ToString()[0].ToString();
@@ -118,7 +118,7 @@ namespace Call_Break_Card_Game
 
         public enum CardSuit { Diamond, Club, Heart, Spade };
 
-        public enum CardNumber { Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King };
+        public enum CardNumber { Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace};
 
     }
 }
