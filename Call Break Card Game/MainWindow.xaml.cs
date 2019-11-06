@@ -128,10 +128,10 @@ namespace Call_Break_Card_Game
                         playables += "\r\nLead: " + (Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--") +
                             "\r\nPower: " + (Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--");
                         int a = 0;
-                        //MessageBox.Show(playables);
+                        MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
-                        await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                        //await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
                         if (currentPlayer == Game.HumanPlayerID)
                         {
@@ -159,11 +159,11 @@ namespace Call_Break_Card_Game
                         playables += "\r\nCards in table:";
                         for (int x = 0; x < Game.CardsInTable.Count; x++)
                         {
-                            playables += " " + Game.CardsInTable[x].Name;
+                            playables += " " + Game.CardsInTable[x].Angle;
                         }
                         //playables += "\rLead: " + Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--" +
                          //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
-                        //MessageBox.Show(playables);
+                        MessageBox.Show(playables);
 
                         //Refresh canvas
                         Refresh_Canvas(currentPlayer);
@@ -277,7 +277,7 @@ namespace Call_Break_Card_Game
             int cardID = Game.Players[currentPlayer].PlayableIDs[rnd.Next(Game.Players[currentPlayer].PlayableIDs.Count)];
 
             //Play the randomly selected card
-            Game.Players[currentPlayer].playCard(cardID);
+            Game.Players[currentPlayer].PlayCard(cardID);
 
             Refresh_Canvas(currentPlayer);
             //Show_PlayedCards_Table(currentPlayer, cardID);
@@ -301,7 +301,7 @@ namespace Call_Break_Card_Game
                 if (1 == 1)//lbCards.Items[lbCards.SelectedIndex].ToString == Game.CardIDtoCard(a).Name)
                 {
                     lbCards.Items.Clear();
-                    Game.Players[Game.CurrentDealer].playCard(a);
+                    Game.Players[Game.CurrentDealer].PlayCard(a);
                     break;
                 }
             }
@@ -946,12 +946,12 @@ namespace Call_Break_Card_Game
                 image.Height = 200;
                 image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                Random rand = new Random(rndm);
-                int angle = rand.Next(41) - 20; //rest positoin is 0 degree, with -20 to 20 range
+                //Random rand = new Random(rndm);
+                //int angle = rand.Next(41) - 20; //rest positoin is 0 degree, with -20 to 20 range
 
                 if (animate)
                 {
-                    RotateTransform rotateTransform = new RotateTransform(angle);
+                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
                     image.RenderTransform = rotateTransform;
                     AnimateCardTranslation(image, canvasGame.Width / 2 - 45,
                     canvasGame.Height / 2 - 100, directionX, directionY, animateSpeed);
@@ -960,7 +960,7 @@ namespace Call_Break_Card_Game
                 {
                     //Vector offset = VisualTreeHelper.GetOffset(image);//position of the image in the container
 
-                    RotateTransform rotateTransform = new RotateTransform(angle);
+                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
                     image.RenderTransform = rotateTransform;
 
                     //image.Margin = new Thickness(canvasGame.Width / 2 - 45, canvasGame.Height / 2 - 100, 0, 0);
@@ -983,8 +983,8 @@ namespace Call_Break_Card_Game
                 image.Height = 200;
                 image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                Random rand = new Random(rndm * 2);
-                int angle = rand.Next(70, 111) * (-1);//rest positoin is 90 degree, with 70 to 110 range
+                //Random rand = new Random(rndm * 2);
+                //int angle = rand.Next(70, 111) * (-1);//rest positoin is 90 degree, with 70 to 110 range
 
                 if (animate)
                 {
@@ -993,7 +993,7 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    RotateTransform rotateTransform = new RotateTransform(angle);
+                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
                     image.RenderTransform = rotateTransform;
 
                     //image.Margin = new Thickness(canvasGame.Width / 2 + 180, canvasGame.Height / 2 - 100, 0, 0);
@@ -1015,10 +1015,10 @@ namespace Call_Break_Card_Game
                 image.Height = 200;
                 image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                Random rand = new Random(rndm * 3);
-                int angle = rand.Next(41) - 20;//rest positoin is 0 degree, with 20 to -20 range
+                //Random rand = new Random(rndm * 3);
+                //int angle = rand.Next(41) - 20;//rest positoin is 0 degree, with 20 to -20 range
 
-                RotateTransform rotateTransform = new RotateTransform(angle);
+                RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
                 image.RenderTransform = rotateTransform;
 
                 if (animate)
@@ -1046,8 +1046,8 @@ namespace Call_Break_Card_Game
                 image.Height = 200;
                 image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                Random rand = new Random(rndm * 3);
-                int angle = rand.Next(70, 111) * (-1);//rest positoin is -90 degree, with -70 to -110 range
+                //Random rand = new Random(rndm * 3);
+                //int angle = rand.Next(70, 111) * (-1);//rest positoin is -90 degree, with -70 to -110 range
 
                 if (animate)
                 {
@@ -1056,7 +1056,7 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    RotateTransform rotateTransform = new RotateTransform(angle);
+                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
                     image.RenderTransform = rotateTransform;
 
                     //image.Margin = new Thickness(canvasGame.Width / 2 - 150, canvasGame.Height / 2 - 20, 0, 0);
@@ -1077,7 +1077,7 @@ namespace Call_Break_Card_Game
         {
             Image image = sender as Image;
 
-            Game.Players[Game.HumanPlayerID].playCard(ImageToCardID(image));
+            Game.Players[Game.HumanPlayerID].PlayCard(ImageToCardID(image));
             Show_PlayedCards_Table(Game.HumanPlayerID, ImageToCardID(image));
 
             //Refresh canvas for next player

@@ -122,7 +122,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="cardIndex">Index of the card to be played</param>
         /// <returns>True if the said card was successfully played</returns>
-        public bool playCard(int cardIndex)
+        public bool PlayCard(int cardIndex)
         {
             if (cardIndex <= 51 && cardIndex >= 0)
             {
@@ -133,6 +133,30 @@ namespace Call_Break_Card_Game
 
                 var itemToRemove = Cards.Where(card => card.ID == cardIndex).ToList();
                 Cards.Remove(itemToRemove[0]);
+
+                //Assign angles to played cards. This angle is used to rotate transform card when thrown on the table
+                Random rand = new Random();
+                int angle = 0;
+                if(Game.CardBelongsTo(cardIndex) == Game.HumanPlayerID)
+                {
+                    angle = rand.Next(41) - 20;
+                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
+                }
+                else if(Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 1) % 4)
+                {
+                    angle = rand.Next(70, 111) * (-1);
+                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
+                }
+                else if(Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 2) % 4)
+                {
+                    angle = rand.Next(41) - 20;
+                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
+                }
+                else if(Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 3) % 4)
+                {
+                    angle = rand.Next(70, 111) * (-1);
+                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
+                }
 
                 IsPlayed = true;
                 return true;

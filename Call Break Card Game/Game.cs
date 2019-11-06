@@ -170,6 +170,28 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
+        /// Associates card ID to the player
+        /// </summary>
+        /// <param name="cardID"></param>
+        /// <returns></returns>
+        public static int CardBelongsTo(int cardID)
+        {
+            int playerID = 0;
+            foreach (Player player in Players)
+            {
+                foreach (Card card in player.Cards)
+                {
+                    if (card.ID == cardID)
+                    {
+                        playerID = player.ID;
+                        break;
+                    }
+                }
+            }
+            return playerID;
+        }
+
+        /// <summary>
         /// Initializes all players and puts them in random order
         /// </summary>
         /// <param name="playerName"></param>
@@ -346,10 +368,10 @@ namespace Call_Break_Card_Game
                 }
                 else if (Bidding[i] < TricksWon[i])
                 {
-                    ScoreBoard[CurrentHand, i] = Bidding[i] + ((0.1) * (TricksWon[i]-Bidding[i]));
+                    ScoreBoard[CurrentHand, i] = Bidding[i] + ((0.1) * (TricksWon[i] - Bidding[i]));
                 }
 
-                if(Bidding[i]>=8 && Bidding[i] >= TricksWon[i])//bonus call
+                if (Bidding[i] >= 8 && Bidding[i] >= TricksWon[i])//bonus call
                 {
                     ScoreBoard[CurrentDealer, i] = 13;
                 }
@@ -435,7 +457,7 @@ namespace Call_Break_Card_Game
                 TricksWon[i] = 0;
 
                 //reset bidding board for new hand of game
-                Bidding[i] = 1;                
+                Bidding[i] = 1;
             }
             //Clear cards in table
             CardsInTable.Clear();

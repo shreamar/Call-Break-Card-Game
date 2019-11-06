@@ -11,17 +11,20 @@ namespace Call_Break_Card_Game
         private CardNumber _Number;
         private CardSuit _Suit;
         private bool _IsPlayed = false;
+        private int _Angle;
 
         public Card()
         {
             _Number = CardNumber.Ace;
             _Suit = CardSuit.Club;
+            _Angle = 0;
         }
 
         public Card(CardNumber number, CardSuit suit)
         {
             _Number = number;
             _Suit = suit;
+            _Angle = 0;
         }
 
         public CardNumber Number
@@ -62,6 +65,12 @@ namespace Call_Break_Card_Game
         {
             get { return _IsPlayed; }
             set { _IsPlayed = value; }
+        }
+
+        public int Angle
+        {
+            get { return _Angle; }
+            set { _Angle = value; }
         }
 
         /// <summary>
