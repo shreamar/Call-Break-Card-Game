@@ -99,7 +99,7 @@ namespace Call_Break_Card_Game
                 }
                 //creates pause effect of 2000ms
                 await Task.Delay(TimeSpan.FromMilliseconds(2000));
-                
+
                 //hides the placing bids label
                 lblBigInfo_Center.Visibility = Visibility.Hidden;
 
@@ -168,9 +168,9 @@ namespace Call_Break_Card_Game
                             playables += " " + Game.CardsInTable[x].Name;
                         }
                         //playables += "\rLead: " + Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--" +
-                         //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
+                        //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
                         //MessageBox.Show(playables);
-                        
+
                         TestWindow();
                     }
                     //creates pause effect
@@ -180,7 +180,7 @@ namespace Call_Break_Card_Game
                     Game.ProcessTrickWinner();
 
                     //Refresh Canvas and show trick winner animation
-                    Refresh_Canvas(Game.CurrentTrickWinner,true,true);
+                    Refresh_Canvas(Game.CurrentTrickWinner, true, true);
 
                     //Clear cards from table in code
                     Game.CardsInTable.Clear();
@@ -262,12 +262,19 @@ namespace Call_Break_Card_Game
             Show_PlayersBids_WinCounts();
 
             //Add bot players cards
-            ShowCardsOnCanvas_Bots();
+            if (showCardsOnTable)
+            {
+                ShowCardsOnCanvas_Bots(true, true);
+            }
+            else
+            {
+                ShowCardsOnCanvas_Bots();
+            }
 
             //Add human player's cards
             if (currentPlayer == Game.HumanPlayerID)
             {
-                ShowCardsOnCanvas_Human(true,true,true);              //if current player is human then enable card
+                ShowCardsOnCanvas_Human(true, true, true);              //if current player is human then enable card
             }
             else
             {
@@ -276,7 +283,7 @@ namespace Call_Break_Card_Game
 
             if (showCardsOnTable)//show cards on table while the trick is being played
             {
-                int i = (4 + currentPlayer - Game.CardsInTable.Count+1) % 4;
+                int i = (4 + currentPlayer - Game.CardsInTable.Count + 1) % 4;
                 for (int j = 0; j < Game.CardsInTable.Count; j++)
                 {
                     int id = i % 4;
@@ -289,7 +296,7 @@ namespace Call_Break_Card_Game
                     else
                     {
                         Show_PlayedCards_Table(id, Game.CardsInTable[j]);
-                    }                    
+                    }
                     i++;
                 }
             }
@@ -312,7 +319,7 @@ namespace Call_Break_Card_Game
             //Play the randomly selected card
             Game.Players[currentPlayer].PlayCard(cardID);
 
-            Refresh_Canvas(currentPlayer);
+            Refresh_Canvas(currentPlayer,true);
             //Show_PlayedCards_Table(currentPlayer, cardID);
         }
 
@@ -553,7 +560,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Show cards(unrevealed) of bots on canvas
         /// </summary>
-        private void ShowCardsOnCanvas_Bots(bool showAnimation = false)
+        private void ShowCardsOnCanvas_Bots(bool showAnimation = false, bool inGameAnimation = false)
         {
             //canvasGame.Children.Clear();
 
@@ -583,9 +590,23 @@ namespace Call_Break_Card_Game
 
                         image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                        //show animation of cards being dealt
-                        AnimateCardTranslation(image, canvasGame.Width - image.Width - 5, canvasGame.Height / 2 - 100, canvasGame.Width - image.Width - 5, ((canvasGame.Height -
+                        if (inGameAnimation)//animation of reducing card when a card is played
+                        {
+                            AnimateCardTranslation(image, Game.Players[id].Cards[counter].XPos, Game.Players[id].Cards[counter].YPos, 
+                                canvasGame.Width - image.Width - 5,((canvasGame.Height - 
+                                (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0.25);
+                        }
+                        else
+                        {
+                            //show animation of cards being dealt
+                            AnimateCardTranslation(image, canvasGame.Width - image.Width - 5, canvasGame.Height / 2 - 100, canvasGame.Width - image.Width - 5, ((canvasGame.Height -
                             (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, animationSpeed);
+                        }
+
+                        //record the current position of the card in the canvas
+                        Game.Players[id].Cards[counter].XPos = (int)(canvasGame.Width - image.Width - 5);
+                        Game.Players[id].Cards[counter].YPos = (int)(((canvasGame.Height -
+                            (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50);
 
                         image.Margin = new Thickness(0, 0, 0, 0);
 
@@ -608,9 +629,21 @@ namespace Call_Break_Card_Game
                         image.HorizontalAlignment = HorizontalAlignment.Center;
                         image.VerticalAlignment = VerticalAlignment.Top;
 
-                        //places bot2 player's cards in the center top of the canvas
-                        AnimateCardTranslation(image, canvasGame.Width / 2, 0, ((canvasGame.Width - (image.Width +
-                    (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter), 0, animationSpeed);
+                        if (inGameAnimation)////animation of reducing card when a card is played
+                        {
+                            AnimateCardTranslation(image, Game.Players[id].Cards[counter].XPos, Game.Players[id].Cards[counter].YPos,
+                                ((canvasGame.Width - (image.Width + (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter), 0, 0.25);
+                        }
+                        else
+                        {
+                            //places bot2 player's cards in the center top of the canvas
+                            AnimateCardTranslation(image, canvasGame.Width / 2, 0, ((canvasGame.Width - (image.Width +
+                                (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter), 0, animationSpeed);
+                        }
+
+                        //record the current position of the card in the canvas
+                        Game.Players[id].Cards[counter].XPos = (int)(((canvasGame.Width - (image.Width + (Game.Players[id].CardCount - 1) * 35)) / 2) + (35 * counter));
+                        Game.Players[id].Cards[counter].YPos = 0;
 
                         image.Margin = new Thickness(0, 0, 0, 0);
 
@@ -632,9 +665,22 @@ namespace Call_Break_Card_Game
 
                         image.HorizontalAlignment = HorizontalAlignment.Left;
 
-                        //places bot1 player's cards in the right of the canvas
-                        AnimateCardTranslation(image, 10, canvasGame.Height / 2 - 100, 10, ((canvasGame.Height -
+                        if (inGameAnimation)//animation of reducing card when a card is played
+                        {
+                            AnimateCardTranslation(image, Game.Players[id].Cards[counter].XPos, Game.Players[id].Cards[counter].YPos, 10, ((canvasGame.Height -
+                           (((Game.Players[id].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0.25);
+                        }
+                        else
+                        {
+                            //places bot1 player's cards in the right of the canvas
+                            AnimateCardTranslation(image, 10, canvasGame.Height / 2 - 100, 10, ((canvasGame.Height -
                             (((Game.Players[id].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, animationSpeed);
+                        }
+
+                        //record the current position the card on the canvas
+                        Game.Players[id].Cards[counter].XPos = 10;
+                        Game.Players[id].Cards[counter].YPos = (int)(((canvasGame.Height -
+                         (((Game.Players[id].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50);
 
                         image.Margin = new Thickness(0, 0, 0, 0);
 
@@ -1069,7 +1115,7 @@ namespace Call_Break_Card_Game
                 //Random rand = new Random(rndm * 3);
                 //int angle = rand.Next(41) - 20;//rest positoin is 0 degree, with 20 to -20 range
 
-                
+
 
                 if (animate)
                 {
@@ -1132,7 +1178,7 @@ namespace Call_Break_Card_Game
             Image image = sender as Image;
 
             Game.Players[Game.HumanPlayerID].PlayCard(ImageToCardID(image));
-            Show_PlayedCards_Table(Game.HumanPlayerID, Game.CardsInTable[Game.CardsInTable.Count-1]);
+            Show_PlayedCards_Table(Game.HumanPlayerID, Game.CardsInTable[Game.CardsInTable.Count - 1]);
 
             //Refresh canvas for next player
             //Refresh_Canvas((Game.HumanPlayerID + 1) % 4);
