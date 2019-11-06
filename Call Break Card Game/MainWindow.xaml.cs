@@ -185,6 +185,15 @@ namespace Call_Break_Card_Game
                     //Clear cards from table in code
                     Game.CardsInTable.Clear();
                 }
+                //creates pause effect
+                await Task.Delay(TimeSpan.FromMilliseconds(1000));
+
+                //Updates Scoreboard at the end of the hand
+                Game.UpdateScoreBoard();
+
+                //Shows score board
+                frmScoreBoard scoreBoard = new frmScoreBoard();
+                scoreBoard.ShowDialog();
             }
         }
 
@@ -258,7 +267,7 @@ namespace Call_Break_Card_Game
             //Add human player's cards
             if (currentPlayer == Game.HumanPlayerID)
             {
-                ShowCardsOnCanvas_Human();              //if current player is human then enable card
+                ShowCardsOnCanvas_Human(true,true,true);              //if current player is human then enable card
             }
             else
             {
@@ -455,7 +464,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shows interactive human cards on canvas
         /// </summary>
-        private void ShowCardsOnCanvas_Human(bool showAnimation = false, bool enableCards = true)
+        private void ShowCardsOnCanvas_Human(bool showAnimation = false, bool enableCards = true, bool inGameAnimation = false)
         {
             //canvasGame.Children.Clear();
 
@@ -476,10 +485,26 @@ namespace Call_Break_Card_Game
 
                 //set animation speed to either show it or not
                 double animationSpeed = showAnimation ? 1 : 0;
-                //Animates card dealing to human player
-                AnimateCardTranslation(image, canvasGame.Width / 2, (canvasGame.Height - image.Height) + 13, ((canvasGame.Width - (image.Width +
-                    (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2)
-                    + 110 * counter, (canvasGame.Height - image.Height) + 13, animationSpeed);
+
+                if (inGameAnimation)//animation of reducing card when a card is played
+                {
+                    AnimateCardTranslation(image, card.XPos, card.YPos, ((canvasGame.Width - (image.Width +
+                   (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2)
+                   + 110 * counter, (canvasGame.Height - image.Height) + 13, 0.25);
+                }
+                else
+                {
+                    //Animates card dealing to human player
+                    AnimateCardTranslation(image, canvasGame.Width / 2, (canvasGame.Height - image.Height) + 13, ((canvasGame.Width - (image.Width +
+                        (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2)
+                        + 110 * counter, (canvasGame.Height - image.Height) + 13, animationSpeed);
+                }
+
+                //record the current postion of the card
+                card.XPos = (int)(((canvasGame.Width - (image.Width +
+                   (Game.Players[Game.HumanPlayerID].CardCount - 1) * 110)) / 2)
+                   + 110 * counter);
+                card.YPos = (int)((canvasGame.Height - image.Height) + 13);
 
                 //Finds out if the given card is playable card or not
                 int match = 0;
@@ -956,7 +981,7 @@ namespace Call_Break_Card_Game
                 directionY = canvasGame.Height / 2 - 160;
             }
 
-            double animateSpeed = 2;
+            double animateSpeed = .5;
 
             if (playerID == Game.HumanPlayerID)//human players card
             {

@@ -84,7 +84,7 @@ namespace Call_Break_Card_Game
                         label.FontFamily = new FontFamily("Time");
                         label.FontSize = 15;
                        
-                        label.Content = (row-1 <= Game.CurrentHand)?Game.ScoreBoard[row - 1, col].ToString("F1"):" ";//shows scores only until the current hand
+                        label.Content = (row-1 < Game.CurrentHand)?Game.ScoreBoard[row - 1, col].ToString("F1"):" ";//shows scores only until the current hand
                     }
                     else
                     {

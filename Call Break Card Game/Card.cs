@@ -12,6 +12,8 @@ namespace Call_Break_Card_Game
         private CardSuit _Suit;
         private bool _IsPlayed = false;
         private int _Angle;
+        private int _XPos;
+        private int _Ypos;
 
         public Card()
         {
@@ -37,6 +39,18 @@ namespace Call_Break_Card_Game
         {
             get { return _Suit; }
             set { _Suit = value; }
+        }
+
+        public int XPos
+        {
+            get { return _XPos; }
+            set { _XPos = value; }
+        }
+
+        public int YPos
+        {
+            get { return _Ypos; }
+            set { _Ypos = value; }
         }
 
         public int ID
