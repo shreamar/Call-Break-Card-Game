@@ -15,8 +15,8 @@ namespace Call_Break_Card_Game
         private static double[,] _ScoreBoard;
         private static int[] _TricksWon;
         private static int[] _Bidding;
-        //private static int _LeadCardID;
-        //private static int _PowerCardID;
+        private static int _LeadCardID;
+        private static int _PowerCardID;
         private static List<Card> _CardsInTable = new List<Card>();
         private static int _CurrentDealer;
         private static int _CurrentTrickWinner;
@@ -79,12 +79,13 @@ namespace Call_Break_Card_Game
             {
                 if (CardsInTable.Count > 0)
                 {
-                    return CardsInTable[0].ID;
+                    _LeadCardID = CardsInTable[0].ID;
                 }
                 else
                 {
-                    return -1;
+                    _LeadCardID = -1;
                 }
+                return _LeadCardID;
             }
             //set { _LeadCardID = value; }
         }
@@ -96,21 +97,21 @@ namespace Call_Break_Card_Game
         {
             get
             {
-                int index = LeadCardID;
+                _PowerCardID = LeadCardID;
                 foreach (Card card in CardsInTable)
                 {
                     if (LeadCardID > 51 || LeadCardID < 0)
                     {
-                        index = -1;
+                        _PowerCardID = -1;
                     }
-                    else if (card.Suit == CardIDtoSuit(LeadCardID) && card.Value > CardIDtoValue(LeadCardID) ||
-                    (card.Suit != CardIDtoSuit(LeadCardID) && card.Suit == Card.CardSuit.Spade))
+                    else if (card.Suit == CardIDtoSuit(_PowerCardID) && card.Value > CardIDtoValue(_PowerCardID) ||
+                    (card.Suit != CardIDtoSuit(_PowerCardID) && card.Suit == Card.CardSuit.Spade))
                     {
-                        index = card.ID;
+                        _PowerCardID = card.ID;
                     }
                 }
 
-                return index;
+                return _PowerCardID;
             }
             //set { _PowerCardID = value; }
         }

@@ -159,7 +159,7 @@ namespace Call_Break_Card_Game
                         playables += "\r\nCards in table:";
                         for (int x = 0; x < Game.CardsInTable.Count; x++)
                         {
-                            playables += " " + Game.CardsInTable[x].Angle;
+                            playables += " " + Game.CardsInTable[x].Name;
                         }
                         //playables += "\rLead: " + Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--" +
                          //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
