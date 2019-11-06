@@ -48,7 +48,7 @@ namespace Call_Break_Card_Game
         public static int CurrentHand
         {
             get { return _CurrentHand; }
-            set { _CurrentDealer = value; }
+            set { _CurrentHand = value; }
         }
 
         public static double[,] ScoreBoard
@@ -176,9 +176,9 @@ namespace Call_Break_Card_Game
             get
             {
                 double[] scores = { 0, 0, 0, 0 };
-                for (int i = 0; i < ScoreBoard.GetUpperBound(1); i++)//players
+                for (int i = 0; i <= ScoreBoard.GetUpperBound(1); i++)//players
                 {
-                    for (int j = 0; j < ScoreBoard.GetUpperBound(0); j++)//hands
+                    for (int j = 0; j <= ScoreBoard.GetUpperBound(0); j++)//hands
                     {
                         scores[i] += ScoreBoard[j,i];
                     }

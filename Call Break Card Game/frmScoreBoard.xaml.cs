@@ -23,21 +23,6 @@ namespace Call_Break_Card_Game
         {
             InitializeComponent();
 
-            Game.InitializeGame("You",2);
-            Game.CurrentHand = 5;
-
-            Random rnd = new Random();
-            int r = rnd.Next(999999);
-
-            for (int i = 0; i < Game.MaxHandsToPlay; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    Random rand = new Random(r + i + j + 100);
-                    Game.ScoreBoard[i, j] = (rand.Next(999999)%5==0?-1:1)*rand.NextDouble()*7;
-                }
-            }
-
             lblBottomBar.Content = String.Format("Hands Played: [{0}/{1}]         Winner: [{2}]", 
                 Game.CurrentHand, Game.MaxHandsToPlay, Game.Players[Game.CumulativeWinner].Name);
 
@@ -92,14 +77,14 @@ namespace Call_Break_Card_Game
 
                         label.Content = Game.Players[col].Name;
                     }
-                    else if (row < Game.MaxHandsToPlay+1)
+                    else if (row < Game.MaxHandsToPlay+1)//rows excluding the first and last
                     {
                         label.Foreground = Game.ScoreBoard[row - 1, col] < 0 ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.White);
-                        label.Background = row%2==0? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.ForestGreen);
+                        label.Background = (row%2==0)? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.ForestGreen);//alternating row colors
                         label.FontFamily = new FontFamily("Time");
                         label.FontSize = 15;
-
-                        label.Content = (row-1 <= Game.CurrentHand+9)?Game.ScoreBoard[row - 1, col].ToString("F1"):" ";
+                       
+                        label.Content = (row-1 <= Game.CurrentHand)?Game.ScoreBoard[row - 1, col].ToString("F1"):" ";//shows scores only until the current hand
                     }
                     else
                     {
