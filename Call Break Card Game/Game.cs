@@ -70,6 +70,23 @@ namespace Call_Break_Card_Game
             }
         }
 
+        public static int CumulativeWinner
+        {
+            get
+            {
+                int max = 0;
+                for (int i = 1; i < 4; i++)
+                {
+                    if (CumulativeScore[i] > CumulativeScore[max])
+                    {
+                        max = i;
+                    }
+                }
+
+                return max;
+            }
+        }
+
         /// <summary>
         /// First card played in the table is lead card
         /// </summary>
@@ -159,11 +176,11 @@ namespace Call_Break_Card_Game
             get
             {
                 double[] scores = { 0, 0, 0, 0 };
-                for (int i = 0; i < ScoreBoard.GetUpperBound(1); i++)
+                for (int i = 0; i < ScoreBoard.GetUpperBound(1); i++)//players
                 {
-                    for (int j = 0; j < ScoreBoard.GetUpperBound(0); j++)
+                    for (int j = 0; j < ScoreBoard.GetUpperBound(0); j++)//hands
                     {
-                        scores[i] += ScoreBoard[j, i];
+                        scores[i] += ScoreBoard[j,i];
                     }
                 }
                 return scores;

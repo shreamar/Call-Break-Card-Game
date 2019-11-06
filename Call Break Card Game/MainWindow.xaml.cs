@@ -184,7 +184,6 @@ namespace Call_Break_Card_Game
 
                     //Clear cards from table in code
                     Game.CardsInTable.Clear();
-
                 }
             }
         }
