@@ -106,11 +106,17 @@ namespace Call_Break_Card_Game
                 //Refresh canvas
                 Refresh_Canvas(Game.CurrentDealer, true);
                 TestWindow();
-                //for (int currentTrick = 0; currentTrick < 13; currentTrick++)//iteration of tricks played in a given hand
+                for (int currentTrick = 0; currentTrick < 13; currentTrick++)//iteration of tricks played in a given hand
                 {
                     for (int i = Game.CurrentDealer, j = 0; j < 4; i++, j++)//iteration of players
                     {
                         int currentPlayer = i % 4;
+
+                        //creates pause effect
+                        await Task.Delay(TimeSpan.FromMilliseconds(2000));
+
+                        //Point Current Player
+                        //PointCurrentPlayer_Canvas(currentPlayer);
 
                         ///testing
                         string playables = Game.Players[currentPlayer].Name;
@@ -128,7 +134,7 @@ namespace Call_Break_Card_Game
                         playables += "\r\nLead: " + (Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--") +
                             "\r\nPower: " + (Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--");
                         int a = 0;
-                        MessageBox.Show(playables);
+                        //MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
                         //await Task.Delay(TimeSpan.FromMilliseconds(2000));
@@ -163,12 +169,22 @@ namespace Call_Break_Card_Game
                         }
                         //playables += "\rLead: " + Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--" +
                          //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
-                        MessageBox.Show(playables);
-
-                        //Refresh canvas
-                        Refresh_Canvas(currentPlayer);
+                        //MessageBox.Show(playables);
+                        
                         TestWindow();
                     }
+                    //creates pause effect
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000));
+
+                    //Process the results of the current trick
+                    Game.ProcessTrickWinner();
+
+                    //Refresh Canvas and show trick winner animation
+                    Refresh_Canvas(Game.CurrentTrickWinner,true,true);
+
+                    //Clear cards from table in code
+                    Game.CardsInTable.Clear();
+
                 }
             }
         }
@@ -223,7 +239,7 @@ namespace Call_Break_Card_Game
             }
         }
 
-        private void Refresh_Canvas(int currentPlayer, bool deal = false)
+        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false)
         {
             //First clear the canvas
             canvasGame.Children.Clear();
@@ -250,13 +266,22 @@ namespace Call_Break_Card_Game
                 ShowCardsOnCanvas_Human(false, false);  //if not disable cards control
             }
 
-            if (!deal)//while dealing and bidding, cards on table are not shown
+            if (showCardsOnTable)//show cards on table while the trick is being played
             {
                 int i = (4 + currentPlayer - Game.CardsInTable.Count+1) % 4;
                 for (int j = 0; j < Game.CardsInTable.Count; j++)
                 {
                     int id = i % 4;
-                    Show_PlayedCards_Table(id, Game.CardsInTable[j]);
+
+                    if (showTrickAnimation)
+                    {
+                        //shows card translation animation at the end of the trick
+                        Show_PlayedCards_Table(id, Game.CardsInTable[j], true, Game.CurrentTrickWinner);
+                    }
+                    else
+                    {
+                        Show_PlayedCards_Table(id, Game.CardsInTable[j]);
+                    }                    
                     i++;
                 }
             }
@@ -932,7 +957,7 @@ namespace Call_Break_Card_Game
                 directionY = canvasGame.Height / 2 - 160;
             }
 
-            double animateSpeed = 5;
+            double animateSpeed = 2;
 
             if (playerID == Game.HumanPlayerID)//human players card
             {

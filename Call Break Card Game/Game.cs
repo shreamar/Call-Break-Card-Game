@@ -339,7 +339,7 @@ namespace Call_Break_Card_Game
                     DeckOfCards.Cards.Add(card);
                 }
                 //clears cards from the table
-                CardsInTable.Clear();
+                //CardsInTable.Clear();
 
                 //updates the TricksWon
                 TricksWon[winner]++;
