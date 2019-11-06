@@ -97,11 +97,11 @@ namespace Call_Break_Card_Game
 
                     Show_PlayersBids_WinCounts(true, true, currentBidder);
                 }
-                //hides the placing bids label
-                lblBigInfo_Center.Visibility = Visibility.Hidden;
-
                 //creates pause effect of 2000ms
                 await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                
+                //hides the placing bids label
+                lblBigInfo_Center.Visibility = Visibility.Hidden;
 
                 //Refresh canvas
                 Refresh_Canvas(Game.CurrentDealer, true);
@@ -133,21 +133,21 @@ namespace Call_Break_Card_Game
                         //creates pause effect of 2000ms
                         //await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
-                        if (currentPlayer == Game.HumanPlayerID)
-                        {
-                            if (Game.Players[currentPlayer].IsPlayed)
-                            {
-                                //the human player has played a card then continue on to next iteration
-                                continue;
-                            }
-                            else
-                            {
-                                //Refresh canvas
-                                Refresh_Canvas(Game.HumanPlayerID);
-                                TestWindow();
-                            }
-                        }
-                        else
+                        //if (currentPlayer == Game.HumanPlayerID)
+                        //{
+                        //    if (Game.Players[currentPlayer].IsPlayed)
+                        //    {
+                        //        //the human player has played a card then continue on to next iteration
+                        //        continue;
+                        //    }
+                        //    else
+                        //    {
+                        //        //Refresh canvas
+                        //        Refresh_Canvas(Game.HumanPlayerID);
+                        //        TestWindow();
+                        //    }
+                        //}
+                        //else
                         {
                             PlayCard_Bots(currentPlayer);
                             TestWindow();
@@ -256,7 +256,7 @@ namespace Call_Break_Card_Game
                 for (int j = 0; j < Game.CardsInTable.Count; j++)
                 {
                     int id = i % 4;
-                    Show_PlayedCards_Table(id, Game.CardsInTable[j].ID);
+                    Show_PlayedCards_Table(id, Game.CardsInTable[j]);
                     i++;
                 }
             }
@@ -902,7 +902,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="playerID"></param>
         /// <param name="cardID"></param>
-        private void Show_PlayedCards_Table(int playerID, int cardID, bool animate = false, int winnerID = 0)
+        private void Show_PlayedCards_Table(int playerID, Card playedCard, bool animate = false, int winnerID = 0)
         {
             //playerID = Game.HumanPlayerID;//only for testing purpose
 
@@ -938,7 +938,7 @@ namespace Call_Break_Card_Game
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(MapCardToFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
+                bitmap.UriSource = new Uri(MapCardToFile(playedCard), UriKind.Relative);
                 bitmap.EndInit();
                 Image image = new Image();
                 image.Source = bitmap;
@@ -951,7 +951,8 @@ namespace Call_Break_Card_Game
 
                 if (animate)
                 {
-                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
+                    int angle = playedCard.Angle;
+                    RotateTransform rotateTransform = new RotateTransform(angle);
                     image.RenderTransform = rotateTransform;
                     AnimateCardTranslation(image, canvasGame.Width / 2 - 45,
                     canvasGame.Height / 2 - 100, directionX, directionY, animateSpeed);
@@ -959,8 +960,8 @@ namespace Call_Break_Card_Game
                 else
                 {
                     //Vector offset = VisualTreeHelper.GetOffset(image);//position of the image in the container
-
-                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
+                    int angle = playedCard.Angle;
+                    RotateTransform rotateTransform = new RotateTransform(angle);
                     image.RenderTransform = rotateTransform;
 
                     //image.Margin = new Thickness(canvasGame.Width / 2 - 45, canvasGame.Height / 2 - 100, 0, 0);
@@ -975,7 +976,7 @@ namespace Call_Break_Card_Game
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(MapCardToFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
+                bitmap.UriSource = new Uri(MapCardToFile(playedCard), UriKind.Relative);
                 bitmap.EndInit();
                 Image image = new Image();
                 image.Source = bitmap;
@@ -993,7 +994,8 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
+                    int angle = playedCard.Angle;
+                    RotateTransform rotateTransform = new RotateTransform(angle);
                     image.RenderTransform = rotateTransform;
 
                     //image.Margin = new Thickness(canvasGame.Width / 2 + 180, canvasGame.Height / 2 - 100, 0, 0);
@@ -1007,7 +1009,7 @@ namespace Call_Break_Card_Game
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(MapCardToFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
+                bitmap.UriSource = new Uri(MapCardToFile(playedCard), UriKind.Relative);
                 bitmap.EndInit();
                 Image image = new Image();
                 image.Source = bitmap;
@@ -1018,8 +1020,7 @@ namespace Call_Break_Card_Game
                 //Random rand = new Random(rndm * 3);
                 //int angle = rand.Next(41) - 20;//rest positoin is 0 degree, with 20 to -20 range
 
-                RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
-                image.RenderTransform = rotateTransform;
+                
 
                 if (animate)
                 {
@@ -1028,6 +1029,9 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
+                    int angle = playedCard.Angle;
+                    RotateTransform rotateTransform = new RotateTransform(angle);
+                    image.RenderTransform = rotateTransform;
                     //image.Margin = new Thickness(canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 180, 0, 0);
                     Canvas.SetLeft(image, canvasGame.Width / 2 - 25);
                     Canvas.SetTop(image, canvasGame.Height / 2 - 180);
@@ -1038,7 +1042,7 @@ namespace Call_Break_Card_Game
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(MapCardToFile(Game.CardIDtoCard(cardID)), UriKind.Relative);
+                bitmap.UriSource = new Uri(MapCardToFile(playedCard), UriKind.Relative);
                 bitmap.EndInit();
                 Image image = new Image();
                 image.Source = bitmap;
@@ -1056,7 +1060,8 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    RotateTransform rotateTransform = new RotateTransform(Game.CardIDtoCard(cardID).Angle);
+                    int angle = playedCard.Angle;
+                    RotateTransform rotateTransform = new RotateTransform(angle);
                     image.RenderTransform = rotateTransform;
 
                     //image.Margin = new Thickness(canvasGame.Width / 2 - 150, canvasGame.Height / 2 - 20, 0, 0);
@@ -1078,7 +1083,7 @@ namespace Call_Break_Card_Game
             Image image = sender as Image;
 
             Game.Players[Game.HumanPlayerID].PlayCard(ImageToCardID(image));
-            Show_PlayedCards_Table(Game.HumanPlayerID, ImageToCardID(image));
+            Show_PlayedCards_Table(Game.HumanPlayerID, Game.CardsInTable[Game.CardsInTable.Count-1]);
 
             //Refresh canvas for next player
             //Refresh_Canvas((Game.HumanPlayerID + 1) % 4);

@@ -127,36 +127,36 @@ namespace Call_Break_Card_Game
             if (cardIndex <= 51 && cardIndex >= 0)
             {
                 LastPlayedCard = Game.CardIDtoCard(cardIndex);
-                
-                //Removes card from players stacks and adds to the cards in the table
-                Game.CardsInTable.Add(Game.CardIDtoCard(cardIndex));
-
-                var itemToRemove = Cards.Where(card => card.ID == cardIndex).ToList();
-                Cards.Remove(itemToRemove[0]);
 
                 //Assign angles to played cards. This angle is used to rotate transform card when thrown on the table
                 Random rand = new Random();
                 int angle = 0;
-                if(Game.CardBelongsTo(cardIndex) == Game.HumanPlayerID)
+                if (Game.CardBelongsTo(cardIndex) == Game.HumanPlayerID)//human player
                 {
                     angle = rand.Next(41) - 20;
-                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
                 }
-                else if(Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 1) % 4)
+                else if (Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 1) % 4)//player on the right side
                 {
                     angle = rand.Next(70, 111) * (-1);
-                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
                 }
-                else if(Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 2) % 4)
+                else if (Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 2) % 4)//player over the top
                 {
                     angle = rand.Next(41) - 20;
-                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
                 }
-                else if(Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 3) % 4)
+                else if (Game.CardBelongsTo(cardIndex) == (Game.HumanPlayerID + 3) % 4)//player on the left side
                 {
                     angle = rand.Next(70, 111) * (-1);
-                    Game.CardsInTable[Game.CardsInTable.Count - 1].Angle = angle;
                 }
+
+                LastPlayedCard.Angle = angle;
+
+                //Removes card from players stacks and adds to the cards in the table
+                Game.CardsInTable.Add(LastPlayedCard);
+
+                var itemToRemove = Cards.Where(card => card.ID == cardIndex).ToList();
+                Cards.Remove(itemToRemove[0]);
+
+               
 
                 IsPlayed = true;
                 return true;
