@@ -40,7 +40,7 @@ namespace Call_Break_Card_Game
         private async Task GamePlayAsync(object sender, EventArgs e)
         {
 
-            //for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)//Iteration of hands played
+            for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)//Iteration of hands played
             {
                 //updates current hand data in Game class
                 //Game.CurrentHand = currentHand;
@@ -48,8 +48,11 @@ namespace Call_Break_Card_Game
                 //Reinitialize components to restart hand
                 Game.ReinitializeHand();
                 TestWindow();
+
                 //Shows deck of card in the dealers side
                 ShowDealReady_Deck();
+
+                lblBigInfo_Center.Content = "Dealing Cards...";
                 lblBigInfo_Center.Visibility = Visibility.Visible;
                 TestWindow();
 
@@ -113,7 +116,7 @@ namespace Call_Break_Card_Game
                         int currentPlayer = i % 4;
 
                         //creates pause effect
-                        await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                        await Task.Delay(TimeSpan.FromMilliseconds(500));
 
                         //Point Current Player
                         //PointCurrentPlayer_Canvas(currentPlayer);
@@ -1027,7 +1030,7 @@ namespace Call_Break_Card_Game
                 directionY = canvasGame.Height / 2 - 160;
             }
 
-            double animateSpeed = .5;
+            double animateSpeed = 0.5;
 
             if (playerID == Game.HumanPlayerID)//human players card
             {
@@ -1313,25 +1316,26 @@ namespace Call_Break_Card_Game
         {
             Label arrow = new Label();
             arrow.Content = "⮚";
-            arrow.Foreground = Brushes.BurlyWood;
-            arrow.FontSize = 45;
+            arrow.Foreground = Brushes.Yellow;
+            arrow.FontSize = 115;
+            arrow.FontWeight = FontWeights.UltraBold;
 
             if (playerID == (Game.HumanPlayerID + 1) % 4)//player on the right side
             {
-                arrow.Margin = new Thickness(canvasGame.Width - 240, canvasGame.Height / 2 - 215, 0, 0);
+                arrow.Margin = new Thickness(canvasGame.Width - 265, canvasGame.Height / 2 - 215, 0, 0);
             }
             else if (playerID == (Game.HumanPlayerID + 3) % 4)//player on the left side
             {
                 arrow.Content = "⮘";
-                arrow.Margin = new Thickness(195, canvasGame.Height / 2 - 215, 0, 0);
+                arrow.Margin = new Thickness(155, canvasGame.Height / 2 - 215, 0, 0);
             }
             else if (playerID == (Game.HumanPlayerID + 2) % 4)//player over the top
             {
-                arrow.Margin = new Thickness((canvasGame.Width / 2) - 210, 100, 0, 0);
+                arrow.Margin = new Thickness((canvasGame.Width / 2) - 270, 55, 0, 0);
             }
             else if (playerID == Game.HumanPlayerID)//human player
             {
-                arrow.Margin = new Thickness((canvasGame.Width / 2) - 215, canvasGame.Height - 245, 0, 0);
+                arrow.Margin = new Thickness((canvasGame.Width / 2) - 280, canvasGame.Height - 310, 0, 0);
             }
 
             canvasGame.Children.Add(arrow);
