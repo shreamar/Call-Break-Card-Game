@@ -22,8 +22,6 @@ namespace Call_Break_Card_Game
         public frmScoreBoard()
         {
             InitializeComponent();
-            Game.InitializeGame("you");
-            Game.CurrentHand = 15;
 
             if (Game.CurrentHand == Game.MaxHandsToPlay)//change button label at the end of the game
             {
@@ -47,6 +45,8 @@ namespace Call_Break_Card_Game
         {
             if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
             {
+                App.Current.Windows[0].Close();
+
                 frmStartGame startGame = new frmStartGame();
                 startGame.Show();
             }
