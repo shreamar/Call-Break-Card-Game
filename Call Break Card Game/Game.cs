@@ -20,6 +20,7 @@ namespace Call_Break_Card_Game
         private static List<Card> _CardsInTable = new List<Card>();
         private static int _CurrentDealer;
         private static int _CurrentTrickWinner;
+        private static int _CurrentPlayer;
 
         public static Player[] Players
         {
@@ -68,6 +69,12 @@ namespace Call_Break_Card_Game
             {
                 return _CurrentTrickWinner;
             }
+        }
+
+        public static int CurrentPlayer
+        {
+            get { return _CurrentPlayer; }
+            set { _CurrentPlayer = value; }
         }
 
         public static int CumulativeWinner

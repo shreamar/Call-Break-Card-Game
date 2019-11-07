@@ -24,7 +24,7 @@
         <Label Content="Maximum number of hands to play:" HorizontalAlignment="Left" Margin="53,69,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="18" FontStyle="Italic" FontWeight="Bold"/>
         <Label x:Name="lblMaxHandsToPlay" Content="5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="168,91,154.6,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D"/>
 
-        <Slider x:Name="sliderMaxHandsToPlay" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="20" Minimum="1" Value="5" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" ValueChanged="sliderMaxHandsToPlay_ValueChanged" IsSnapToTickEnabled="False"/>
+        <Slider x:Name="sliderMaxHandsToPlay" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="15" Minimum="1" Value="5" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" ValueChanged="sliderMaxHandsToPlay_ValueChanged" IsSnapToTickEnabled="False"/>
 
     </Grid>
 </Window>

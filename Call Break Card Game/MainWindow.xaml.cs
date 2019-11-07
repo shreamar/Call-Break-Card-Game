@@ -47,21 +47,21 @@ namespace Call_Break_Card_Game
 
                 //Reinitialize components to restart hand
                 Game.ReinitializeHand();
-                TestWindow();
+                //TestWindow();
 
                 //Shows deck of card in the dealers side
                 ShowDealReady_Deck();
 
                 lblBigInfo_Center.Content = "Dealing Cards...";
                 lblBigInfo_Center.Visibility = Visibility.Visible;
-                TestWindow();
+                //TestWindow();
 
                 //Show players names and icons
                 Show_PlayersName_Icon();
 
                 //shows top bar
-                //Show_Info_TopBar();
-                TestWindow();
+                Show_Info_TopBar();
+                //TestWindow();
                 lblTopBar.IsEnabled = false;
 
                 //creates pause effect
@@ -69,7 +69,7 @@ namespace Call_Break_Card_Game
 
                 //Deals cards to all players
                 DealCards();
-                TestWindow();
+                //TestWindow();
 
                 //changes label to placing bids
                 lblBigInfo_Center.Content = "Placing Bids...";
@@ -79,8 +79,11 @@ namespace Call_Break_Card_Game
                 /// </summary>
                 for (int i = (Game.CurrentDealer + 1) % 4, counter = 0; counter < 4; counter++, i++)
                 {
+                    //update current player
+                    Game.CurrentPlayer = Game.CurrentDealer;
+
                     int currentBidder = i % 4;
-                    TestWindow();
+                    //TestWindow();
                     if (currentBidder == Game.HumanPlayerID)//human player
                     {
                         //creates pause effect
@@ -96,7 +99,7 @@ namespace Call_Break_Card_Game
                         //creates pause effect
                         await Task.Delay(TimeSpan.FromMilliseconds(1000));
                     }
-                    TestWindow();
+                    //TestWindow();
 
                     Show_PlayersBids_WinCounts(true, true, currentBidder);
                 }
@@ -108,15 +111,18 @@ namespace Call_Break_Card_Game
 
                 //Refresh canvas
                 Refresh_Canvas(Game.CurrentDealer, true);
-                TestWindow();
+                //TestWindow();
                 for (int currentTrick = 0; currentTrick < 13; currentTrick++)//iteration of tricks played in a given hand
                 {
                     for (int i = Game.CurrentDealer, j = 0; j < 4; i++, j++)//iteration of players
                     {
                         int currentPlayer = i % 4;
 
+                        //Update Current Player
+                        Game.CurrentPlayer = currentPlayer;
+
                         //creates pause effect
-                        await Task.Delay(TimeSpan.FromMilliseconds(500));
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
 
                         //Point Current Player
                         //PointCurrentPlayer_Canvas(currentPlayer);
@@ -159,7 +165,7 @@ namespace Call_Break_Card_Game
                         //else
                         {
                             PlayCard_Bots(currentPlayer);
-                            TestWindow();
+                            //TestWindow();
                         }
 
                         ///testing
@@ -174,13 +180,16 @@ namespace Call_Break_Card_Game
                         //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
                         //MessageBox.Show(playables);
 
-                        TestWindow();
+                        //TestWindow();
                     }
                     //creates pause effect
                     await Task.Delay(TimeSpan.FromMilliseconds(1000));
 
                     //Process the results of the current trick
                     Game.ProcessTrickWinner();
+
+                    //Update current player
+                    Game.CurrentPlayer = Game.CurrentTrickWinner;
 
                     //Refresh Canvas and show trick winner animation
                     Refresh_Canvas(Game.CurrentTrickWinner, true, true);
@@ -226,7 +235,7 @@ namespace Call_Break_Card_Game
 
             //Show top bar
             Show_Info_TopBar();
-            TestWindow();
+            //TestWindow();
         }
 
         /// <summary>
@@ -301,12 +310,12 @@ namespace Call_Break_Card_Game
                         Show_PlayedCards_Table(id, Game.CardsInTable[j]);
                     }
                     i++;
-                }
+                }                
             }
 
             //Refresh top bar
-            //Show_Info_TopBar();
-            TestWindow();
+            Show_Info_TopBar();
+            //TestWindow();
         }
 
         /// <summary>
@@ -1368,8 +1377,8 @@ namespace Call_Break_Card_Game
         /// </summary>
         private void Show_Info_TopBar()
         {
-            lblTopBar.Content = String.Format("Current Player: [{0}]          Hands Played: [{1}/{2}]          Tricks Won: [{3}]          Score: [{4}]",
-                Game.Players[Game.CurrentDealer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay,
+            lblTopBar.Content = String.Format("Current Player: [{0}]          Current Hand: [{1}/{2}]          Tricks Won: [{3}]          Score: [{4}]",
+                Game.Players[Game.CurrentPlayer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay,
                 Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID]);
         }
 

@@ -31,7 +31,7 @@ namespace Call_Break_Card_Game
 
         private void btnDealCards_Click(object sender, RoutedEventArgs e)
         {
-            Game.MaxHandsToPlay = (int)sliderMaxHandsToPlay.Value;
+            Game.MaxHandsToPlay = int.Parse(lblMaxHandsToPlay.Content.ToString());
 
             MainWindow main = new MainWindow();
             main.Show();
