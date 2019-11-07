@@ -1379,28 +1379,25 @@ namespace Call_Break_Card_Game
         {
             Label arrow = new Label();
             arrow.Content = "⮚";
-            arrow.Foreground = Brushes.Yellow;
-            arrow.FontSize = 115;
-            arrow.FontWeight = FontWeights.UltraBold;
-
+            arrow.Foreground = Brushes.BurlyWood;
+            arrow.FontSize = 45;
             if (playerID == (Game.HumanPlayerID + 1) % 4)//player on the right side
             {
-                arrow.Margin = new Thickness(canvasGame.Width - 265, canvasGame.Height / 2 - 215, 0, 0);
+                arrow.Margin = new Thickness(canvasGame.Width - 240, canvasGame.Height / 2 - 215, 0, 0);
             }
             else if (playerID == (Game.HumanPlayerID + 3) % 4)//player on the left side
             {
                 arrow.Content = "⮘";
-                arrow.Margin = new Thickness(155, canvasGame.Height / 2 - 215, 0, 0);
+                arrow.Margin = new Thickness(195, canvasGame.Height / 2 - 215, 0, 0);
             }
             else if (playerID == (Game.HumanPlayerID + 2) % 4)//player over the top
             {
-                arrow.Margin = new Thickness((canvasGame.Width / 2) - 270, 55, 0, 0);
+                arrow.Margin = new Thickness((canvasGame.Width / 2) - 210, 100, 0, 0);
             }
             else if (playerID == Game.HumanPlayerID)//human player
             {
-                arrow.Margin = new Thickness((canvasGame.Width / 2) - 280, canvasGame.Height - 310, 0, 0);
+                arrow.Margin = new Thickness((canvasGame.Width / 2) - 215, canvasGame.Height - 245, 0, 0);
             }
-
             canvasGame.Children.Add(arrow);
         }
 
