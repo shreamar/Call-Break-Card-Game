@@ -27,5 +27,6 @@
         </Label>
         <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="409,554,14.4,13.6" BorderBrush="#FF07A267" Background="#FF012510" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnPlaceBid_Click"/>
         <Grid x:Name="grdScoreboard" HorizontalAlignment="Left" Height="431" Margin="10,108,0,0" VerticalAlignment="Top" Width="514"/>
+        <Button x:Name="btnExitGame" Content="Exit Game" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="409,527,14.4,64.6" BorderBrush="#FF07A267" Background="#FF012510" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnExitGame_Click"/>
     </Grid>
 </Window>

@@ -22,8 +22,21 @@ namespace Call_Break_Card_Game
         public frmScoreBoard()
         {
             InitializeComponent();
+            Game.InitializeGame("you");
+            Game.CurrentHand = 15;
 
-            lblBottomBar.Content = String.Format("Hands Played: [{0}/{1}]         Winner: [{2}]", 
+            if (Game.CurrentHand == Game.MaxHandsToPlay)//change button label at the end of the game
+            {
+                btnOK.FontSize = 17;
+                btnOK.Content = "Restart Game";
+                btnOK.Margin = new Thickness(409, 587, 14.4, 4.6);
+
+                //Make exit button visible
+                btnExitGame.Visibility = Visibility.Visible;
+                btnExitGame.Margin = new Thickness(409, 553, 14.4, 38.6);
+            }
+
+            lblBottomBar.Content = String.Format("Hands Played: [{0}/{1}]         Winner: [{2}]",
                 Game.CurrentHand, Game.MaxHandsToPlay, Game.Players[Game.CumulativeWinner].Name);
 
             //Scoreboard
@@ -32,7 +45,13 @@ namespace Call_Break_Card_Game
 
         private void btnPlaceBid_Click(object sender, RoutedEventArgs e)
         {
+            if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
+            {
+                frmStartGame startGame = new frmStartGame();
+                startGame.Show();
+            }
             this.Close();
+
         }
 
         private void ScoreBoard()
@@ -64,27 +83,27 @@ namespace Call_Break_Card_Game
                     label.VerticalContentAlignment = VerticalAlignment.Center;
 
                     if (row == 0)//Table head
-                    {                        
+                    {
                         label.Foreground = new SolidColorBrush(Colors.White);
                         label.Background = new SolidColorBrush(Colors.DarkGreen);
                         label.FontFamily = new FontFamily("Segoe UI");
                         label.FontWeight = FontWeights.Bold;
                         //label.FontStyle = FontStyles.Italic;
-                        label.FontSize = 25-Game.MaxHandsToPlay;
+                        label.FontSize = 25 - Game.MaxHandsToPlay;
 
-                        label.BorderThickness = new Thickness(0, 2,0 , 2);
+                        label.BorderThickness = new Thickness(0, 2, 0, 2);
                         label.BorderBrush = new SolidColorBrush(Colors.DeepSkyBlue);
 
                         label.Content = Game.Players[col].Name;
                     }
-                    else if (row < Game.MaxHandsToPlay+1)//rows excluding the first and last
+                    else if (row < Game.MaxHandsToPlay + 1)//rows excluding the first and last
                     {
                         label.Foreground = Game.ScoreBoard[row - 1, col] < 0 ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.White);
-                        label.Background = (row%2==0)? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.ForestGreen);//alternating row colors
+                        label.Background = (row % 2 == 0) ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.ForestGreen);//alternating row colors
                         label.FontFamily = new FontFamily("Time");
                         label.FontSize = 15;
-                       
-                        label.Content = (row-1 < Game.CurrentHand)?Game.ScoreBoard[row - 1, col].ToString("F1"):" ";//shows scores only until the current hand
+
+                        label.Content = (row - 1 < Game.CurrentHand) ? Game.ScoreBoard[row - 1, col].ToString("F1") : " ";//shows scores only until the current hand
                     }
                     else
                     {
@@ -106,6 +125,11 @@ namespace Call_Break_Card_Game
                     grdScoreboard.Children.Add(label);
                 }
             }
+        }
+
+        private void btnExitGame_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

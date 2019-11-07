@@ -165,7 +165,12 @@ namespace Call_Break_Card_Game
                         //else
                         {
                             PlayCard_Bots(currentPlayer);
-                            //TestWindow();
+
+                            //creates pause effect
+                            await Task.Delay(TimeSpan.FromMilliseconds(400));
+
+                            //Refresh Canvas
+                            Refresh_Canvas(currentPlayer, true);
                         }
 
                         ///testing
@@ -183,7 +188,7 @@ namespace Call_Break_Card_Game
                         //TestWindow();
                     }
                     //creates pause effect
-                    await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                    await Task.Delay(TimeSpan.FromMilliseconds(700));
 
                     //Process the results of the current trick
                     Game.ProcessTrickWinner();
@@ -303,12 +308,13 @@ namespace Call_Break_Card_Game
                     if (showTrickAnimation)
                     {
                         //shows card translation animation at the end of the trick
-                        Show_PlayedCards_Table(id, Game.CardsInTable[j], true, Game.CurrentTrickWinner);
+                        Show_PlayedCards_Table(id, Game.CardsInTable[j],false, true, Game.CurrentTrickWinner);
                     }
                     else
                     {
-                        Show_PlayedCards_Table(id, Game.CardsInTable[j]);
+                        Show_PlayedCards_Table(id, Game.CardsInTable[j],true);
                     }
+
                     i++;
                 }                
             }
@@ -1009,7 +1015,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="playerID"></param>
         /// <param name="cardID"></param>
-        private void Show_PlayedCards_Table(int playerID, Card playedCard, bool animate = false, int winnerID = 0)
+        private void Show_PlayedCards_Table(int playerID, Card playedCard,bool showThowAnimation = false, bool animate = false, int winnerID = 0)
         {
             //playerID = Game.HumanPlayerID;//only for testing purpose
 
@@ -1040,6 +1046,7 @@ namespace Call_Break_Card_Game
             }
 
             double animateSpeed = 0.5;
+            double throwSpeed = 0.4;
 
             if (playerID == Game.HumanPlayerID)//human players card
             {
@@ -1066,14 +1073,28 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    //Vector offset = VisualTreeHelper.GetOffset(image);//position of the image in the container
-                    int angle = playedCard.Angle;
-                    RotateTransform rotateTransform = new RotateTransform(angle);
-                    image.RenderTransform = rotateTransform;
+                    if (showThowAnimation)
+                    {
+                        if (!playedCard.IsPlayed)
+                        {
+                            AnimateCardTranslation(image, canvasGame.Width / 2, (canvasGame.Height - image.Height) + 13,
+                                canvasGame.Width / 2 - 45, canvasGame.Height / 2 - 100, throwSpeed);
 
-                    //image.Margin = new Thickness(canvasGame.Width / 2 - 45, canvasGame.Height / 2 - 100, 0, 0);
-                    Canvas.SetLeft(image, canvasGame.Width / 2 - 45);
-                    Canvas.SetTop(image, canvasGame.Height / 2 - 100);
+                            playedCard.IsPlayed = true;
+                        }
+                        else
+                        {
+                            int angle = playedCard.Angle;
+                            RotateTransform rotateTransform = new RotateTransform(angle);
+                            image.RenderTransform = rotateTransform;
+
+                            //image.Margin = new Thickness(canvasGame.Width / 2 - 45, canvasGame.Height / 2 - 100, 0, 0);
+                            Canvas.SetLeft(image, canvasGame.Width / 2 - 45);
+                            Canvas.SetTop(image, canvasGame.Height / 2 - 100);
+                        }
+                    }
+
+                    //Vector offset = VisualTreeHelper.GetOffset(image);//position of the image in the container                    
                 }
 
                 //image.IsEnabled = false;//disable card control after it's played
@@ -1101,13 +1122,27 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    int angle = playedCard.Angle;
-                    RotateTransform rotateTransform = new RotateTransform(angle);
-                    image.RenderTransform = rotateTransform;
+                    if (showThowAnimation)
+                    {
+                        if (!playedCard.IsPlayed)
+                        {
+                            AnimateCardTranslation(image, canvasGame.Width - image.Width - 5, canvasGame.Height / 2 - 100,
+                                canvasGame.Width / 2, canvasGame.Height / 2-100, throwSpeed);
 
-                    //image.Margin = new Thickness(canvasGame.Width / 2 + 180, canvasGame.Height / 2 - 100, 0, 0);
-                    Canvas.SetLeft(image, canvasGame.Width / 2);
-                    Canvas.SetTop(image, canvasGame.Height / 2);
+                            playedCard.IsPlayed = true;
+                        }
+                        else
+                        {
+                            int angle = playedCard.Angle;
+                            RotateTransform rotateTransform = new RotateTransform(angle);
+                            image.RenderTransform = rotateTransform;
+
+                            //image.Margin = new Thickness(canvasGame.Width / 2 + 180, canvasGame.Height / 2 - 100, 0, 0);
+                            Canvas.SetLeft(image, canvasGame.Width / 2);
+                            Canvas.SetTop(image, canvasGame.Height / 2);
+                        }
+                    }
+                   
                 }
 
                 canvasGame.Children.Add(image);
@@ -1136,12 +1171,22 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    int angle = playedCard.Angle;
-                    RotateTransform rotateTransform = new RotateTransform(angle);
-                    image.RenderTransform = rotateTransform;
-                    //image.Margin = new Thickness(canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 180, 0, 0);
-                    Canvas.SetLeft(image, canvasGame.Width / 2 - 25);
-                    Canvas.SetTop(image, canvasGame.Height / 2 - 180);
+                    if (!playedCard.IsPlayed)
+                    {
+                        AnimateCardTranslation(image, canvasGame.Width / 2, 0, canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 180, throwSpeed);
+
+                        playedCard.IsPlayed = true;
+                    }
+                    else
+                    {
+                        int angle = playedCard.Angle;
+                        RotateTransform rotateTransform = new RotateTransform(angle);
+                        image.RenderTransform = rotateTransform;
+                        //image.Margin = new Thickness(canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 180, 0, 0);
+                        Canvas.SetLeft(image, canvasGame.Width / 2 - 25);
+                        Canvas.SetTop(image, canvasGame.Height / 2 - 180);
+                    }
+                    
                 }
                 canvasGame.Children.Add(image);
             }
@@ -1167,13 +1212,22 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    int angle = playedCard.Angle;
-                    RotateTransform rotateTransform = new RotateTransform(angle);
-                    image.RenderTransform = rotateTransform;
+                    if (!playedCard.IsPlayed)
+                    {
+                        AnimateCardTranslation(image, 10, canvasGame.Height / 2 - 100, canvasGame.Width / 2 - 150, canvasGame.Height / 2 - 120, throwSpeed);
 
-                    //image.Margin = new Thickness(canvasGame.Width / 2 - 150, canvasGame.Height / 2 - 20, 0, 0);
-                    Canvas.SetLeft(image, canvasGame.Width / 2 - 150);
-                    Canvas.SetTop(image, canvasGame.Height / 2 - 20);
+                        playedCard.IsPlayed = true;
+                    }
+                    else
+                    {
+                        int angle = playedCard.Angle;
+                        RotateTransform rotateTransform = new RotateTransform(angle);
+                        image.RenderTransform = rotateTransform;
+
+                        //image.Margin = new Thickness(canvasGame.Width / 2 - 150, canvasGame.Height / 2 - 20, 0, 0);
+                        Canvas.SetLeft(image, canvasGame.Width / 2 - 150);
+                        Canvas.SetTop(image, canvasGame.Height / 2 - 20);
+                    }
                 }
                 canvasGame.Children.Add(image);
             }

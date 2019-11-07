@@ -359,6 +359,9 @@ namespace Call_Break_Card_Game
                         _CurrentDealer = winner;
                     }
                     counter++;
+                    //reset isPlayed property of the card
+                    card.IsPlayed = false;
+
                     //add the cards in table back to deck
                     DeckOfCards.Cards.Add(card);
                 }
@@ -429,7 +432,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="playerName"></param>
         /// <param name="maxHands"></param>
-        public static void InitializeGame(string playerName, int maxHands = 5)
+        public static void InitializeGame(string playerName = "You", int maxHands = 5)
         {
             //Initialize Players
             InitializePLayers(playerName);
