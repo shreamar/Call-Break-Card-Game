@@ -374,7 +374,7 @@ namespace Call_Break_Card_Game
                 //reset played card flag as false
                 foreach (Player player in Game.Players)
                 {
-                    player.IsPlayed = false;
+                    player.HasPlayed = false;
                 }
             }
         }

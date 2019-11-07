@@ -150,13 +150,15 @@ namespace Call_Break_Card_Game
 
                         //if (currentPlayer == Game.HumanPlayerID)
                         //{
-                        //    if (Game.Players[currentPlayer].IsPlayed)
+                        //    if (Game.Players[currentPlayer].HasPlayed)
                         //    {
                         //        //the human player has played a card then continue on to next iteration
                         //        continue;
                         //    }
                         //    else
                         //    {
+                        //        //await Task.WaitAny()
+
                         //        //Refresh canvas
                         //        Refresh_Canvas(Game.HumanPlayerID);
                         //        TestWindow();
@@ -291,11 +293,11 @@ namespace Call_Break_Card_Game
             //Add human player's cards
             if (currentPlayer == Game.HumanPlayerID)
             {
-                ShowCardsOnCanvas_Human(true, true, true);              //if current player is human then enable card
+                ShowCardsOnCanvas_Human(true, true, true,true);              //if current player is human then enable card
             }
             else
             {
-                ShowCardsOnCanvas_Human(false, false);  //if not disable cards control
+                ShowCardsOnCanvas_Human(false, false);                 //if not disable cards control
             }
 
             if (showCardsOnTable)//show cards on table while the trick is being played
@@ -465,7 +467,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Image_BitmapBlurEffect(object sender, MouseEventArgs e)
+        private void Image_BitmapBlurEffect(object sender)
         {
             Image image = sender as Image;
             UIElement uie = image;
@@ -489,7 +491,7 @@ namespace Call_Break_Card_Game
         /// <summary>
         /// Shows interactive human cards on canvas
         /// </summary>
-        private void ShowCardsOnCanvas_Human(bool showAnimation = false, bool enableCards = true, bool inGameAnimation = false)
+        private void ShowCardsOnCanvas_Human(bool showAnimation = false, bool enableCards = true, bool inGameAnimation = false, bool activePlayer = false)
         {
             //canvasGame.Children.Clear();
 
@@ -531,21 +533,27 @@ namespace Call_Break_Card_Game
                    + 110 * counter);
                 card.YPos = (int)((canvasGame.Height - image.Height) + 13);
 
-                //Finds out if the given card is playable card or not
-                int match = 0;
-                foreach (int ndx in Game.Players[Game.HumanPlayerID].PlayableIDs)
-                {
-                    if (card.ID == ndx)
-                    {
-                        match++;
-                        break;
-                    }
-                }
+                //enables or disables human players cards
+                image.IsEnabled = enableCards;
 
-                //blurrs and disables the card if there is no match with playabel list
-                if (match == 0)
+                if (activePlayer)//shows blurr effect only when human player is the active player
                 {
-                    _ = new MouseEventHandler(Image_BitmapBlurEffect);
+                    //Finds out if the given card is playable card or not
+                    int match = 0;
+                    foreach (int ndx in Game.Players[Game.HumanPlayerID].PlayableIDs)
+                    {
+                        if (card.ID == ndx)
+                        {
+                            match++;
+                            break;
+                        }
+                    }
+
+                    //blurrs and disables the card if there is no match with playabel list
+                    if (match == 0)
+                    {
+                        Image_BitmapBlurEffect(image);
+                    }
                 }
 
                 //places human player's cards in the center bottom of the canvas
@@ -566,10 +574,7 @@ namespace Call_Break_Card_Game
                 image.MouseDown += new MouseButtonEventHandler(Show_PlayedCards_Human);
 
                 //adds the card to the canvas
-                canvasGame.Children.Add(image);
-
-                //enables or disables human players cards
-                image.IsEnabled = enableCards;
+                canvasGame.Children.Add(image);              
 
                 counter++;
             }
@@ -1167,13 +1172,13 @@ namespace Call_Break_Card_Game
                 if (animate)
                 {
                     AnimateCardTranslation(image, canvasGame.Width / 2 - 25,
-                        canvasGame.Height / 2 - 180, directionX, directionY, animateSpeed);
+                        canvasGame.Height / 2 - 170, directionX, directionY, animateSpeed);
                 }
                 else
                 {
                     if (!playedCard.IsPlayed)
                     {
-                        AnimateCardTranslation(image, canvasGame.Width / 2, 0, canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 180, throwSpeed);
+                        AnimateCardTranslation(image, canvasGame.Width / 2, 0, canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 170, throwSpeed);
 
                         playedCard.IsPlayed = true;
                     }
@@ -1184,7 +1189,7 @@ namespace Call_Break_Card_Game
                         image.RenderTransform = rotateTransform;
                         //image.Margin = new Thickness(canvasGame.Width / 2 - 25, canvasGame.Height / 2 - 180, 0, 0);
                         Canvas.SetLeft(image, canvasGame.Width / 2 - 25);
-                        Canvas.SetTop(image, canvasGame.Height / 2 - 180);
+                        Canvas.SetTop(image, canvasGame.Height / 2 - 170);
                     }
                     
                 }
@@ -1346,23 +1351,23 @@ namespace Call_Break_Card_Game
                 int x = 0, y = 0;
                 if (a == (Game.HumanPlayerID + 3) % 4)
                 {
-                    x = 80 + i / 2;
-                    y = 300 + i / 2;
+                    x = 80 + i / 4;
+                    y = 300 + i / 4;
                 }
                 else if (a == (Game.HumanPlayerID + 1) % 4)
                 {
-                    x = ((int)(canvasGame.Width) - 170) - i / 2;
-                    y = 300 + i / 2;
+                    x = ((int)(canvasGame.Width) - 170) - i / 4;
+                    y = 300 + i / 4;
                 }
                 else if (a == (Game.HumanPlayerID + 2) % 4)
                 {
-                    x = ((int)canvasGame.Width / 2) + 15 + i / 2;
-                    y = 110 + i / 2;
+                    x = ((int)canvasGame.Width / 2) + 15 + i / 4;
+                    y = 110 + i / 4;
                 }
                 else if (a == Game.HumanPlayerID)
                 {
-                    x = ((int)canvasGame.Width / 2) + 10 + i / 2;
-                    y = (int)canvasGame.Height - 240 + i / 2;
+                    x = ((int)canvasGame.Width / 2) + 10 + i / 4;
+                    y = (int)canvasGame.Height - 240 + i / 4;
                 }
 
                 image.Margin = new Thickness(x, y, 0, 0);
@@ -1446,6 +1451,39 @@ namespace Call_Break_Card_Game
                     lblTopBar.Content += card.Name + " ";
                 }
                 lblTopBar.Content += " | ";
+            }
+        }
+
+        /// <summary>
+        /// Changes contents according to screen size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            canvasGame.Width = e.NewSize.Width;
+            canvasGame.Height = e.NewSize.Height;
+
+            double xChange = 1, yChange = 1;
+
+            if (e.PreviousSize.Width != 0)
+                xChange = (e.NewSize.Width / e.PreviousSize.Width);
+
+            if (e.PreviousSize.Height != 0)
+                yChange = (e.NewSize.Height / e.PreviousSize.Height);
+
+            foreach (FrameworkElement fe in canvasGame.Children)
+            {
+                /*because I didn't want to resize the grid I'm having inside the canvas in this particular instance. (doing that from xaml) */
+                if (fe is Grid == false)
+                {
+                    fe.Height = fe.ActualHeight * yChange;
+                    fe.Width = fe.ActualWidth * xChange;
+
+                    Canvas.SetTop(fe, Canvas.GetTop(fe) * yChange);
+                    Canvas.SetLeft(fe, Canvas.GetLeft(fe) * xChange);
+
+                }
             }
         }
     }

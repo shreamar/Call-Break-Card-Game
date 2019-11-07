@@ -16,7 +16,7 @@ namespace Call_Break_Card_Game
         private Card _LastPlayedCard;
         private List<int> _PlayableIDs = new List<int>();
         private int _IconNumber;
-        private bool _IsPlayed;
+        private bool _HasPlayed;
 
         public Player()
         {
@@ -86,10 +86,10 @@ namespace Call_Break_Card_Game
             set { _IconNumber = value; }
         }
 
-        public bool IsPlayed
+        public bool HasPlayed
         {
-            get { return _IsPlayed; }
-            set { _IsPlayed = value; }
+            get { return _HasPlayed; }
+            set { _HasPlayed = value; }
         }
 
         public List<int> PlayableIDs
@@ -158,7 +158,7 @@ namespace Call_Break_Card_Game
 
                
 
-                IsPlayed = true;
+                HasPlayed = true;
                 return true;
             }
             else
