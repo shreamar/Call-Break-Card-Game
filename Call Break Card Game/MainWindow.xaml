@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Call_Break_Card_Game"
         mc:Ignorable="d"
-        Height="{x:Static SystemParameters.PrimaryScreenHeight}" 
-      Width="{x:Static SystemParameters.PrimaryScreenWidth}" 
+        Height="{Binding SystemParameters.PrimaryScreenHeight}" 
+      Width="{Binding SystemParameters.PrimaryScreenWidth}" 
       Title="Call Break"
       WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        SizeToContent="WidthAndHeight"
     ResizeMode="CanMinimize" Icon="cards/ace_of_spades.png">
     <Grid x:Name="grdWindow">
 

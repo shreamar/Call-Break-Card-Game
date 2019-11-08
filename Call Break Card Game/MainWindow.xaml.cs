@@ -83,7 +83,7 @@ namespace Call_Break_Card_Game
                     Game.CurrentPlayer = Game.CurrentDealer;
 
                     int currentBidder = i % 4;
-                    //TestWindow();
+                    TestWindow();
                     if (currentBidder == Game.HumanPlayerID)//human player
                     {
                         //creates pause effect
@@ -94,7 +94,8 @@ namespace Call_Break_Card_Game
                     }
                     else
                     {
-                        PlaceBids_Auto(currentBidder);
+                        //PlaceBids_Auto(currentBidder);
+                        Game.PlaceBid(currentBidder, Game.Players[currentBidder].Bid_AI());
 
                         //creates pause effect
                         await Task.Delay(TimeSpan.FromMilliseconds(1000));
@@ -111,7 +112,7 @@ namespace Call_Break_Card_Game
 
                 //Refresh canvas
                 Refresh_Canvas(Game.CurrentDealer, true);
-                //TestWindow();
+                TestWindow();
                 for (int currentTrick = 0; currentTrick < 13; currentTrick++)//iteration of tricks played in a given hand
                 {
                     for (int i = Game.CurrentDealer, j = 0; j < 4; i++, j++)//iteration of players
@@ -143,26 +144,37 @@ namespace Call_Break_Card_Game
                         playables += "\r\nLead: " + (Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--") +
                             "\r\nPower: " + (Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--");
                         int a = 0;
-                        //MessageBox.Show(playables);
+                        MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
                         //await Task.Delay(TimeSpan.FromMilliseconds(2000));
 
                         //if (currentPlayer == Game.HumanPlayerID)
                         //{
-                        //    if (Game.Players[currentPlayer].HasPlayed)
-                        //    {
-                        //        //the human player has played a card then continue on to next iteration
-                        //        continue;
-                        //    }
-                        //    else
-                        //    {
-                        //        //await Task.WaitAny()
+                        //    Refresh_Canvas(currentPlayer, true);
 
-                        //        //Refresh canvas
-                        //        Refresh_Canvas(Game.HumanPlayerID);
-                        //        TestWindow();
+                        //    CancellationTokenSource cancelTokenSrc = new CancellationTokenSource();
+
+                        //    Task task = Task.Delay(-1, cancelTokenSrc.Token);
+
+                        //    Thread thread = new Thread(new ThreadStart(DoWork));
+                        //    thread.Start(task);
+                        //    //thread.Abort();
+
+                        //    void DoWork()
+                        //    {
+                        //        //do some work
+                        //        //when something else needed from user then popup message
+                        //        MessageBox.Show("say whatever you need to say");
+                        //        while (!Game.Players[Game.HumanPlayerID].HasPlayed)
+                        //        {
+                        //            //note: this loop doesn't stop until gotResponse = true; 
+                        //        }
+                        //        cancelTokenSrc.Cancel();
                         //    }
+                        //    await task;
+                          
+                        //    MessageBox.Show("Booyah!");
                         //}
                         //else
                         {
@@ -187,7 +199,7 @@ namespace Call_Break_Card_Game
                         //   "\rPower: " + Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--";
                         //MessageBox.Show(playables);
 
-                        //TestWindow();
+                        TestWindow();
                     }
                     //creates pause effect
                     await Task.Delay(TimeSpan.FromMilliseconds(700));
@@ -293,7 +305,7 @@ namespace Call_Break_Card_Game
             //Add human player's cards
             if (currentPlayer == Game.HumanPlayerID)
             {
-                ShowCardsOnCanvas_Human(true, true, true,true);              //if current player is human then enable card
+                ShowCardsOnCanvas_Human(true, true, true, true);              //if current player is human then enable card
             }
             else
             {
@@ -308,17 +320,17 @@ namespace Call_Break_Card_Game
                     int id = i % 4;
 
                     if (showTrickAnimation)
-                    {
+                    {     
                         //shows card translation animation at the end of the trick
-                        Show_PlayedCards_Table(id, Game.CardsInTable[j],false, true, Game.CurrentTrickWinner);
+                        Show_PlayedCards_Table(id, Game.CardsInTable[j], false, true, Game.CurrentTrickWinner);
                     }
                     else
                     {
-                        Show_PlayedCards_Table(id, Game.CardsInTable[j],true);
+                        Show_PlayedCards_Table(id, Game.CardsInTable[j], true);
                     }
 
                     i++;
-                }                
+                }
             }
 
             //Refresh top bar
@@ -339,7 +351,7 @@ namespace Call_Break_Card_Game
             //Play the randomly selected card
             Game.Players[currentPlayer].PlayCard(cardID);
 
-            Refresh_Canvas(currentPlayer,true);
+            Refresh_Canvas(currentPlayer, true);
             //Show_PlayedCards_Table(currentPlayer, cardID);
         }
 
@@ -574,7 +586,7 @@ namespace Call_Break_Card_Game
                 image.MouseDown += new MouseButtonEventHandler(Show_PlayedCards_Human);
 
                 //adds the card to the canvas
-                canvasGame.Children.Add(image);              
+                canvasGame.Children.Add(image);
 
                 counter++;
             }
@@ -615,8 +627,8 @@ namespace Call_Break_Card_Game
 
                         if (inGameAnimation)//animation of reducing card when a card is played
                         {
-                            AnimateCardTranslation(image, Game.Players[id].Cards[counter].XPos, Game.Players[id].Cards[counter].YPos, 
-                                canvasGame.Width - image.Width - 5,((canvasGame.Height - 
+                            AnimateCardTranslation(image, Game.Players[id].Cards[counter].XPos, Game.Players[id].Cards[counter].YPos,
+                                canvasGame.Width - image.Width - 5, ((canvasGame.Height -
                                 (((Game.Players[i].CardCount - 1) * 28) + image.Height)) / 2) + (counter * 28) - 50, 0.25);
                         }
                         else
@@ -1020,7 +1032,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         /// <param name="playerID"></param>
         /// <param name="cardID"></param>
-        private void Show_PlayedCards_Table(int playerID, Card playedCard,bool showThowAnimation = false, bool animate = false, int winnerID = 0)
+        private void Show_PlayedCards_Table(int playerID, Card playedCard, bool showThrowAnimation = false, bool animateTrickWin = false, int winnerID = 0)
         {
             //playerID = Game.HumanPlayerID;//only for testing purpose
 
@@ -1068,7 +1080,7 @@ namespace Call_Break_Card_Game
                 //Random rand = new Random(rndm);
                 //int angle = rand.Next(41) - 20; //rest positoin is 0 degree, with -20 to 20 range
 
-                if (animate)
+                if (animateTrickWin)
                 {
                     int angle = playedCard.Angle;
                     RotateTransform rotateTransform = new RotateTransform(angle);
@@ -1078,7 +1090,7 @@ namespace Call_Break_Card_Game
                 }
                 else
                 {
-                    if (showThowAnimation)
+                    if (showThrowAnimation)
                     {
                         if (!playedCard.IsPlayed)
                         {
@@ -1120,19 +1132,19 @@ namespace Call_Break_Card_Game
                 //Random rand = new Random(rndm * 2);
                 //int angle = rand.Next(70, 111) * (-1);//rest positoin is 90 degree, with 70 to 110 range
 
-                if (animate)
+                if (animateTrickWin)
                 {
                     AnimateCardTranslation(image, canvasGame.Width / 2,
                         canvasGame.Height / 2, directionX, directionY, animateSpeed);
                 }
                 else
                 {
-                    if (showThowAnimation)
+                    if (showThrowAnimation)
                     {
                         if (!playedCard.IsPlayed)
                         {
                             AnimateCardTranslation(image, canvasGame.Width - image.Width - 5, canvasGame.Height / 2 - 100,
-                                canvasGame.Width / 2, canvasGame.Height / 2-100, throwSpeed);
+                                canvasGame.Width / 2, canvasGame.Height / 2 - 100, throwSpeed);
 
                             playedCard.IsPlayed = true;
                         }
@@ -1147,7 +1159,7 @@ namespace Call_Break_Card_Game
                             Canvas.SetTop(image, canvasGame.Height / 2);
                         }
                     }
-                   
+
                 }
 
                 canvasGame.Children.Add(image);
@@ -1169,7 +1181,7 @@ namespace Call_Break_Card_Game
 
 
 
-                if (animate)
+                if (animateTrickWin)
                 {
                     AnimateCardTranslation(image, canvasGame.Width / 2 - 25,
                         canvasGame.Height / 2 - 170, directionX, directionY, animateSpeed);
@@ -1191,7 +1203,7 @@ namespace Call_Break_Card_Game
                         Canvas.SetLeft(image, canvasGame.Width / 2 - 25);
                         Canvas.SetTop(image, canvasGame.Height / 2 - 170);
                     }
-                    
+
                 }
                 canvasGame.Children.Add(image);
             }
@@ -1210,7 +1222,7 @@ namespace Call_Break_Card_Game
                 //Random rand = new Random(rndm * 3);
                 //int angle = rand.Next(70, 111) * (-1);//rest positoin is -90 degree, with -70 to -110 range
 
-                if (animate)
+                if (animateTrickWin)
                 {
                     AnimateCardTranslation(image, canvasGame.Width / 2 - 150,
                         canvasGame.Height / 2 - 20, directionX, directionY, animateSpeed);
@@ -1249,7 +1261,10 @@ namespace Call_Break_Card_Game
             Image image = sender as Image;
 
             Game.Players[Game.HumanPlayerID].PlayCard(ImageToCardID(image));
-            Show_PlayedCards_Table(Game.HumanPlayerID, Game.CardsInTable[Game.CardsInTable.Count - 1]);
+
+            Refresh_Canvas(Game.HumanPlayerID, true);
+
+            Game.Players[Game.HumanPlayerID].HasPlayed = true;
 
             //Refresh canvas for next player
             //Refresh_Canvas((Game.HumanPlayerID + 1) % 4);

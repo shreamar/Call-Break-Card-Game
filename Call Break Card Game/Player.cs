@@ -154,9 +154,7 @@ namespace Call_Break_Card_Game
                 Game.CardsInTable.Add(LastPlayedCard);
 
                 var itemToRemove = Cards.Where(card => card.ID == cardIndex).ToList();
-                Cards.Remove(itemToRemove[0]);
-
-               
+                Cards.Remove(itemToRemove[0]);               
 
                 HasPlayed = true;
                 return true;
@@ -165,6 +163,124 @@ namespace Call_Break_Card_Game
             {
                 return false;
             }
+        }
+
+       /// <summary>
+       /// Counts and returns the number of each suits in player's cards as an array
+       /// </summary>
+        public int[] SuitCount
+        {
+            get
+            {
+                int[] suitCount = new int[4];// counts each suits in the cards the player has. suitCount[0] is diamond,..., suitCount[3] is spade
+
+                foreach (Card card in Cards)//counts the number of each suits in the player's cards
+                {
+                    if (card.Suit == Card.CardSuit.Diamond)
+                    {
+                        suitCount[0]++;
+                    }
+                    else if (card.Suit == Card.CardSuit.Club)
+                    {
+                        suitCount[1]++;
+                    }
+                    else if (card.Suit == Card.CardSuit.Heart)
+                    {
+                        suitCount[2]++;
+                    }
+                    else if (card.Suit == Card.CardSuit.Spade)
+                    {
+                        suitCount[3]++;
+                    }
+                }
+
+                return suitCount;
+            }
+        }
+
+        /// <summary>
+        /// Strategically gives a bidding number for the given player
+        /// </summary>
+        /// <returns></returns>
+        public int Bid_AI()
+        {
+            Random rnd = new Random();
+            int r = rnd.Next(99999);
+
+            int bid = 0;
+
+            if (SuitCount[3] != 0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Random rand = new Random(r + i + 100);
+
+                    //adds 1 to bid if any other suits have 1 or 2, or less cards
+                    if (SuitCount[i] <= rand.Next(1,3))
+                    {
+                        bid++;
+                    }
+                }
+
+                //if number of spades is less than the bid then bid is set to be the count of spades
+                if (SuitCount[3] < bid)
+                {
+                    bid = SuitCount[3];
+                }
+            }
+
+            int countFaceCards = 0;
+            foreach(Card card in Cards)
+            {
+                if((int)card.Number >= 9) //facecards
+                {
+                    countFaceCards++;
+                }
+            }
+
+            //add half the number of face cards in bid
+            bid += countFaceCards % 4 == 0 ? countFaceCards / 2 : (countFaceCards + 1) / 2;
+
+            bid += SuitCount[3] / (rnd.Next(2, 4));//divides spade count by either 2 or 3, adds to bids and adds either 1 or 0
+
+            
+            if (bid > 5)
+            {
+                if (countFaceCards >= 4)
+                {
+                    int count = 0;
+                    foreach (Card card in Cards)
+                    {
+                        if (card.Suit == Card.CardSuit.Spade && (int)card.Number > 9)//counts number of face cards in spades
+                        {
+                            count++;
+                        }
+                    }
+
+                    if (count < 2)
+                    {
+                        bid--;
+                    }
+                }
+                else
+                {
+                    bid -= 2;
+                }
+            }
+
+            if (bid > 6)
+            {
+                if (!(SuitCount[3] >= 5 && countFaceCards>=5))
+                {
+                    bid--;
+                }
+            }
+
+            bid = bid > 8 ? 8 : bid;//if bid is greater than 8, sets it to 8
+
+            bid = bid < 1 ? 1 : bid;//if bid is less than 1, sets it to 1
+
+            return bid;
         }
 
         /// <summary>
@@ -386,6 +502,7 @@ namespace Call_Break_Card_Game
             
             return list;
         }
+
 
         /// <summary>
         /// Player type human or computer
