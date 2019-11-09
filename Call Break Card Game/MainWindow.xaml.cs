@@ -45,6 +45,8 @@ namespace Call_Break_Card_Game
                 //updates current hand data in Game class
                 //Game.CurrentHand = currentHand;
 
+                Refresh_Canvas(Game.CurrentDealer, false, false,false);
+
                 //Reinitialize components to restart hand
                 Game.ReinitializeHand();
                 //TestWindow();
@@ -84,15 +86,15 @@ namespace Call_Break_Card_Game
 
                     int currentBidder = i % 4;
                     TestWindow();
-                    if (currentBidder == Game.HumanPlayerID)//human player
-                    {
-                        //creates pause effect
-                        await Task.Delay(TimeSpan.FromMilliseconds(500));
+                    //if (currentBidder == Game.HumanPlayerID)//human player
+                    //{
+                    //    //creates pause effect
+                    //    await Task.Delay(TimeSpan.FromMilliseconds(500));
 
-                        frmPlaceBid frmPlaceBid = new frmPlaceBid();
-                        frmPlaceBid.ShowDialog();
-                    }
-                    else
+                    //    frmPlaceBid frmPlaceBid = new frmPlaceBid();
+                    //    frmPlaceBid.ShowDialog();
+                    //}
+                    //else
                     {
                         //PlaceBids_Auto(currentBidder);
                         Game.PlaceBid(currentBidder, Game.Players[currentBidder].Bid_AI());
@@ -278,7 +280,7 @@ namespace Call_Break_Card_Game
             }
         }
 
-        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false)
+        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true)
         {
             //First clear the canvas
             canvasGame.Children.Clear();
@@ -289,8 +291,11 @@ namespace Call_Break_Card_Game
             //Add the current player pointer
             PointCurrentPlayer_Canvas(currentPlayer);
 
-            //Add bids and win counts for players
-            Show_PlayersBids_WinCounts();
+            if (showBids)
+            {
+                //Add bids and win counts for players
+                Show_PlayersBids_WinCounts();
+            }
 
             //Add bot players cards
             if (showCardsOnTable)
@@ -346,7 +351,7 @@ namespace Call_Break_Card_Game
         {
             //Randomly selects a card from playables
             Random rnd = new Random();
-            int cardID = Game.Players[currentPlayer].PlayableIDs[rnd.Next(Game.Players[currentPlayer].PlayableIDs.Count)];
+            int cardID = Game.Players[currentPlayer].SelectPlayingCard_AI();
 
             //Play the randomly selected card
             Game.Players[currentPlayer].PlayCard(cardID);
