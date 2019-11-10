@@ -257,7 +257,7 @@ namespace Call_Break_Card_Game
                         }
                     }
 
-                    if (count < 2)
+                    if (count < 3)
                     {
                         bid--;
                     }
@@ -270,7 +270,7 @@ namespace Call_Break_Card_Game
 
             if (bid > 6)
             {
-                if (!(SuitCount[3] >= 5 && countFaceCards >= 5))
+                if (!(SuitCount[3] >= 6 && countFaceCards >= 5))
                 {
                     bid--;
                 }

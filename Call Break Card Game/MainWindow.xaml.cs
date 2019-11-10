@@ -146,7 +146,7 @@ namespace Call_Break_Card_Game
                         playables += "\r\nLead: " + (Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--") +
                             "\r\nPower: " + (Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--");
                         int a = 0;
-                        MessageBox.Show(playables);
+                        //MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
                         //await Task.Delay(TimeSpan.FromMilliseconds(2000));
@@ -224,9 +224,12 @@ namespace Call_Break_Card_Game
                 //Updates Scoreboard at the end of the hand
                 Game.UpdateScoreBoard();
 
-                //Shows score board
-                frmScoreBoard scoreBoard = new frmScoreBoard();
-                scoreBoard.ShowDialog();
+                //if (currentHand+1 == Game.MaxHandsToPlay)
+                {
+                    //Shows score board
+                    frmScoreBoard scoreBoard = new frmScoreBoard();
+                    scoreBoard.ShowDialog();
+                }
             }
         }
 
