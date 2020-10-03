@@ -24,6 +24,8 @@ namespace Call_Break_Card_Game
     /// </summary>
     public partial class MainWindow : Window
     {
+        TaskCompletionSource<bool> hasHumanPlayed_Flag;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -46,6 +48,8 @@ namespace Call_Break_Card_Game
                 //Game.CurrentHand = currentHand;
 
                 Refresh_Canvas(Game.CurrentDealer, false, false,false);
+
+                PointCurrentPlayer_Canvas(Game.CurrentDealer);
 
                 //Reinitialize components to restart hand
                 Game.ReinitializeHand();
@@ -86,15 +90,15 @@ namespace Call_Break_Card_Game
 
                     int currentBidder = i % 4;
                     TestWindow();
-                    //if (currentBidder == Game.HumanPlayerID)//human player
-                    //{
-                    //    //creates pause effect
-                    //    await Task.Delay(TimeSpan.FromMilliseconds(500));
+                    if (currentBidder == Game.HumanPlayerID)//human player
+                    {
+                        //creates pause effect
+                        await Task.Delay(TimeSpan.FromMilliseconds(700));
 
-                    //    frmPlaceBid frmPlaceBid = new frmPlaceBid();
-                    //    frmPlaceBid.ShowDialog();
-                    //}
-                    //else
+                        frmPlaceBid frmPlaceBid = new frmPlaceBid();
+                        frmPlaceBid.ShowDialog();
+                    }
+                    else
                     {
                         //PlaceBids_Auto(currentBidder);
                         Game.PlaceBid(currentBidder, Game.Players[currentBidder].Bid_AI());
@@ -121,14 +125,19 @@ namespace Call_Break_Card_Game
                     {
                         int currentPlayer = i % 4;
 
+                        PointCurrentPlayer_Canvas(currentPlayer);
+
                         //Update Current Player
                         Game.CurrentPlayer = currentPlayer;
 
                         //creates pause effect
-                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                        if (currentPlayer != Game.HumanPlayerID)
+                        {
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                        }
 
                         //Point Current Player
-                        //PointCurrentPlayer_Canvas(currentPlayer);
+                        PointCurrentPlayer_Canvas(currentPlayer);
 
                         ///testing
                         string playables = Game.Players[currentPlayer].Name;
@@ -149,36 +158,25 @@ namespace Call_Break_Card_Game
                         //MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
-                        //await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                        if (currentPlayer != Game.HumanPlayerID)
+                        {
+                            await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                        }
 
-                        //if (currentPlayer == Game.HumanPlayerID)
-                        //{
-                        //    Refresh_Canvas(currentPlayer, true);
+                        if (currentPlayer == Game.HumanPlayerID)
+                        {
+                            Game.Players[Game.HumanPlayerID].HasPlayed = false;
 
-                        //    CancellationTokenSource cancelTokenSrc = new CancellationTokenSource();
+                            Refresh_Canvas(currentPlayer, true);
 
-                        //    Task task = Task.Delay(-1, cancelTokenSrc.Token);
+                            PointCurrentPlayer_Canvas(currentPlayer);
 
-                        //    Thread thread = new Thread(new ThreadStart(DoWork));
-                        //    thread.Start(task);
-                        //    //thread.Abort();
-
-                        //    void DoWork()
-                        //    {
-                        //        //do some work
-                        //        //when something else needed from user then popup message
-                        //        MessageBox.Show("say whatever you need to say");
-                        //        while (!Game.Players[Game.HumanPlayerID].HasPlayed)
-                        //        {
-                        //            //note: this loop doesn't stop until gotResponse = true; 
-                        //        }
-                        //        cancelTokenSrc.Cancel();
-                        //    }
-                        //    await task;
-                          
-                        //    MessageBox.Show("Booyah!");
-                        //}
-                        //else
+                            //await for human player to play his turn
+                            hasHumanPlayed_Flag = new TaskCompletionSource<bool>();
+                            await hasHumanPlayed_Flag.Task;
+                            
+                        }
+                        else
                         {
                             PlayCard_Bots(currentPlayer);
 
@@ -232,6 +230,7 @@ namespace Call_Break_Card_Game
                 }
             }
         }
+
 
         /// <summary>
         /// Deals card to all players and show relevant information on canvas
@@ -292,7 +291,7 @@ namespace Call_Break_Card_Game
             Show_PlayersName_Icon();
 
             //Add the current player pointer
-            PointCurrentPlayer_Canvas(currentPlayer);
+            //PointCurrentPlayer_Canvas(currentPlayer);
 
             if (showBids)
             {
@@ -311,7 +310,7 @@ namespace Call_Break_Card_Game
             }
 
             //Add human player's cards
-            if (currentPlayer == Game.HumanPlayerID)
+            if (currentPlayer == Game.HumanPlayerID && !Game.Players[Game.HumanPlayerID].HasPlayed)
             {
                 ShowCardsOnCanvas_Human(true, true, true, true);              //if current player is human then enable card
             }
@@ -1270,9 +1269,11 @@ namespace Call_Break_Card_Game
 
             Game.Players[Game.HumanPlayerID].PlayCard(ImageToCardID(image));
 
-            Refresh_Canvas(Game.HumanPlayerID, true);
-
             Game.Players[Game.HumanPlayerID].HasPlayed = true;
+
+            Refresh_Canvas(Game.HumanPlayerID, true);            
+
+            hasHumanPlayed_Flag.SetResult(true);
 
             //Refresh canvas for next player
             //Refresh_Canvas((Game.HumanPlayerID + 1) % 4);
