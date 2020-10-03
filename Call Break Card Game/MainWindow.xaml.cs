@@ -24,6 +24,7 @@ namespace Call_Break_Card_Game
     /// </summary>
     public partial class MainWindow : Window
     {
+        //used to flag wether human player has played their turn via UI
         TaskCompletionSource<bool> hasHumanPlayed_Flag;
 
         public MainWindow()
@@ -49,7 +50,7 @@ namespace Call_Break_Card_Game
 
                 Refresh_Canvas(Game.CurrentDealer, false, false,false);
 
-                PointCurrentPlayer_Canvas(Game.CurrentDealer);
+                PointCurrentPlayer_Canvas(Game.CurrentPlayer);
 
                 //Reinitialize components to restart hand
                 Game.ReinitializeHand();
@@ -67,11 +68,11 @@ namespace Call_Break_Card_Game
 
                 //shows top bar
                 Show_Info_TopBar();
-                //TestWindow();
+                ///TestWindow();
                 lblTopBar.IsEnabled = false;
 
                 //creates pause effect
-                await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                await Task.Delay(TimeSpan.FromMilliseconds(1200));
 
                 //Deals cards to all players
                 DealCards();
@@ -93,7 +94,7 @@ namespace Call_Break_Card_Game
                     if (currentBidder == Game.HumanPlayerID)//human player
                     {
                         //creates pause effect
-                        await Task.Delay(TimeSpan.FromMilliseconds(700));
+                        await Task.Delay(TimeSpan.FromMilliseconds(1000));
 
                         frmPlaceBid frmPlaceBid = new frmPlaceBid();
                         frmPlaceBid.ShowDialog();
@@ -111,7 +112,7 @@ namespace Call_Break_Card_Game
                     Show_PlayersBids_WinCounts(true, true, currentBidder);
                 }
                 //creates pause effect of 2000ms
-                await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
 
                 //hides the placing bids label
                 lblBigInfo_Center.Visibility = Visibility.Hidden;
@@ -133,7 +134,7 @@ namespace Call_Break_Card_Game
                         //creates pause effect
                         if (currentPlayer != Game.HumanPlayerID)
                         {
-                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
+                            //await Task.Delay(TimeSpan.FromMilliseconds(300));
                         }
 
                         //Point Current Player
@@ -158,23 +159,23 @@ namespace Call_Break_Card_Game
                         //MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
-                        if (currentPlayer != Game.HumanPlayerID)
+                        if (currentPlayer != Game.HumanPlayerID || Game.CurrentTrickWinner == Game.HumanPlayerID)
                         {
-                            await Task.Delay(TimeSpan.FromMilliseconds(2000));
+                            await Task.Delay(TimeSpan.FromMilliseconds(1000));
                         }
 
                         if (currentPlayer == Game.HumanPlayerID)
                         {
                             Game.Players[Game.HumanPlayerID].HasPlayed = false;
 
-                            Refresh_Canvas(currentPlayer, true);
+                            Refresh_Canvas(currentPlayer, true,false,true,true);
 
                             PointCurrentPlayer_Canvas(currentPlayer);
 
                             //await for human player to play his turn
                             hasHumanPlayed_Flag = new TaskCompletionSource<bool>();
                             await hasHumanPlayed_Flag.Task;
-                            
+
                         }
                         else
                         {
@@ -282,7 +283,7 @@ namespace Call_Break_Card_Game
             }
         }
 
-        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true)
+        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true, bool humanPlayersTurn = false)
         {
             //First clear the canvas
             canvasGame.Children.Clear();
@@ -312,7 +313,8 @@ namespace Call_Break_Card_Game
             //Add human player's cards
             if (currentPlayer == Game.HumanPlayerID && !Game.Players[Game.HumanPlayerID].HasPlayed)
             {
-                ShowCardsOnCanvas_Human(true, true, true, true);              //if current player is human then enable card
+                //if current player is human and they haven't played yet then enable card
+                ShowCardsOnCanvas_Human(true, true, true, true);              
             }
             else
             {
@@ -321,8 +323,9 @@ namespace Call_Break_Card_Game
 
             if (showCardsOnTable)//show cards on table while the trick is being played
             {
-                int i = (4 + currentPlayer - Game.CardsInTable.Count + 1) % 4;
-                for (int j = 0; j < Game.CardsInTable.Count; j++)
+                int i = humanPlayersTurn? (4 + currentPlayer - Game.CardsInTable.Count) % 4
+                    :(4 + currentPlayer - Game.CardsInTable.Count + 1) % 4;
+                for (int j = 0; j < Game.CardsInTable.Count; j++,i++)
                 {
                     int id = i % 4;
 
@@ -335,14 +338,13 @@ namespace Call_Break_Card_Game
                     {
                         Show_PlayedCards_Table(id, Game.CardsInTable[j], true);
                     }
-
-                    i++;
                 }
+                if (showTrickAnimation) System.Threading.Thread.Sleep(700);
             }
 
             //Refresh top bar
             Show_Info_TopBar();
-            //TestWindow();
+            ///TestWindow();
         }
 
         /// <summary>
@@ -1271,7 +1273,7 @@ namespace Call_Break_Card_Game
 
             Game.Players[Game.HumanPlayerID].HasPlayed = true;
 
-            Refresh_Canvas(Game.HumanPlayerID, true);            
+            Refresh_Canvas(Game.HumanPlayerID, true);
 
             hasHumanPlayed_Flag.SetResult(true);
 
