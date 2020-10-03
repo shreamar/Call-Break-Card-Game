@@ -98,7 +98,7 @@ namespace Call_Break_Card_Game
                     }
                     else if (row < Game.MaxHandsToPlay + 1)//rows excluding the first and last
                     {
-                        label.Foreground = Game.ScoreBoard[row - 1, col] < 0 ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.White);
+                        label.Foreground = Game.ScoreBoard[row - 1, col] < 0 ? new SolidColorBrush(Colors.Crimson) : new SolidColorBrush(Colors.White);
                         label.Background = (row % 2 == 0) ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.ForestGreen);//alternating row colors
                         label.FontFamily = new FontFamily("Time");
                         label.FontSize = 15;
@@ -107,7 +107,7 @@ namespace Call_Break_Card_Game
                     }
                     else
                     {
-                        label.Foreground = Game.CumulativeScore[col] < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.LawnGreen);
+                        label.Foreground = Game.CumulativeScore[col] < 0 ? new SolidColorBrush(Colors.DarkOrange) : new SolidColorBrush(Colors.LawnGreen);
                         label.Background = new SolidColorBrush(Colors.DarkCyan);
                         label.FontFamily = new FontFamily("Courier New");
                         label.FontSize = 15;
