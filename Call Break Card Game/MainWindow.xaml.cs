@@ -48,7 +48,7 @@ namespace Call_Break_Card_Game
                 //updates current hand data in Game class
                 //Game.CurrentHand = currentHand;
 
-                Refresh_Canvas(Game.CurrentDealer, false, false,false);
+                Refresh_Canvas(Game.CurrentDealer, false, false, false);
 
                 PointCurrentPlayer_Canvas(Game.CurrentPlayer);
 
@@ -171,7 +171,7 @@ namespace Call_Break_Card_Game
                             //humanPlayersTurn should be set to true bc the canvas is refreshed before the turn is played
                             //otherwise, the thrown cards in the middle of table will have logical problem (cards thrown will be misaligned 
                             //bc of miscalculation)
-                            Refresh_Canvas(currentPlayer, true,false,true,true);
+                            Refresh_Canvas(currentPlayer, true, false, true, true);
 
                             PointCurrentPlayer_Canvas(currentPlayer);
 
@@ -317,7 +317,7 @@ namespace Call_Break_Card_Game
             if (currentPlayer == Game.HumanPlayerID && !Game.Players[Game.HumanPlayerID].HasPlayed)
             {
                 //if current player is human and they haven't played yet then enable card
-                ShowCardsOnCanvas_Human(true, true, true, true);              
+                ShowCardsOnCanvas_Human(true, true, true, true);
             }
             else
             {
@@ -326,14 +326,14 @@ namespace Call_Break_Card_Game
 
             if (showCardsOnTable)//show cards on table while the trick is being played
             {
-                int i = humanPlayersTurn? (4 + currentPlayer - Game.CardsInTable.Count) % 4
-                    :(4 + currentPlayer - Game.CardsInTable.Count + 1) % 4;
-                for (int j = 0; j < Game.CardsInTable.Count; j++,i++)
+                int i = humanPlayersTurn ? (4 + currentPlayer - Game.CardsInTable.Count) % 4
+                    : (4 + currentPlayer - Game.CardsInTable.Count + 1) % 4;
+                for (int j = 0; j < Game.CardsInTable.Count; j++, i++)
                 {
                     int id = i % 4;
 
                     if (showTrickAnimation)
-                    {     
+                    {
                         //shows card translation animation at the end of the trick
                         Show_PlayedCards_Table(id, Game.CardsInTable[j], false, true, Game.CurrentTrickWinner);
                     }
@@ -1513,6 +1513,37 @@ namespace Call_Break_Card_Game
 
                 }
             }
+        }
+
+        /// <summary>
+        /// Override close button
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            //Display warning dialogue
+            string sMessageBoxText = "Are you sure you want to quit?";
+            string sCaption = "Exit Game";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                //closes the whole application
+                case MessageBoxResult.Yes:
+                    System.Windows.Application.Current.Shutdown();
+                    break;
+
+                //cancels the close
+                case MessageBoxResult.No:
+                    e.Cancel = true;
+                    base.OnClosing(e);
+                    break;
+            }
+
         }
     }
 }
