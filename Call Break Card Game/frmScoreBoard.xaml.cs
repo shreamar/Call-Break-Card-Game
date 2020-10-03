@@ -98,7 +98,7 @@ namespace Call_Break_Card_Game
                     }
                     else if (row < Game.MaxHandsToPlay + 1)//rows excluding the first and last
                     {
-                        label.Foreground = Game.ScoreBoard[row - 1, col] < 0 ? new SolidColorBrush(Colors.Crimson) : new SolidColorBrush(Colors.White);
+                        label.Foreground = Game.ScoreBoard[row - 1, col] < 0 ? new SolidColorBrush(Colors.Maroon) : new SolidColorBrush(Colors.White);
                         label.Background = (row % 2 == 0) ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.ForestGreen);//alternating row colors
                         label.FontFamily = new FontFamily("Time");
                         label.FontSize = 15;

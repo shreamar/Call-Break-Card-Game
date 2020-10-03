@@ -25,7 +25,7 @@
         <Label x:Name="lblMaxHandsToPlay" Content="5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="177,91,165.8,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D" Height="37"/>
 
         <Slider x:Name="sliderMaxHandsToPlay" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="15" Minimum="1" Value="5" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" ValueChanged="sliderMaxHandsToPlay_ValueChanged" IsSnapToTickEnabled="False" Height="23"/>
-        <Label Content="Developed by: Amar Shrestha" HorizontalAlignment="Left" Margin="127,195,0,0" VerticalAlignment="Top" Width="139" FontSize="8" Height="19" FontFamily="Courier New" Foreground="LawnGreen"/>
+        <Label Content="Developed by: Amar Shrestha" HorizontalAlignment="Left" Margin="129,195,0,0" VerticalAlignment="Top" Width="139" FontSize="8" Height="19" FontFamily="Courier New" Foreground="LawnGreen"/>
 
     </Grid>
 </Window>

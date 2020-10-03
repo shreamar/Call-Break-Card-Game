@@ -215,7 +215,7 @@ namespace Call_Break_Card_Game
                     Game.CurrentPlayer = Game.CurrentTrickWinner;
 
                     //Refresh Canvas and show trick winner animation
-                    Refresh_Canvas(Game.CurrentTrickWinner, true, true);
+                    Refresh_Canvas(Game.CurrentTrickWinner, true, true,true,false,true);
 
                     //Clear cards from table in code
                     Game.CardsInTable.Clear();
@@ -286,7 +286,8 @@ namespace Call_Break_Card_Game
             }
         }
 
-        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true, bool humanPlayersTurn = false)
+        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true, 
+            bool humanPlayersTurn = false, bool disableHumanPlayerCard = false)
         {
             //First clear the canvas
             canvasGame.Children.Clear();
@@ -314,7 +315,7 @@ namespace Call_Break_Card_Game
             }
 
             //Add human player's cards
-            if (currentPlayer == Game.HumanPlayerID && !Game.Players[Game.HumanPlayerID].HasPlayed)
+            if (currentPlayer == Game.HumanPlayerID && !Game.Players[Game.HumanPlayerID].HasPlayed && !disableHumanPlayerCard)
             {
                 //if current player is human and they haven't played yet then enable card
                 ShowCardsOnCanvas_Human(true, true, true, true);
