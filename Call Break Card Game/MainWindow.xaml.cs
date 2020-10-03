@@ -168,6 +168,9 @@ namespace Call_Break_Card_Game
                         {
                             Game.Players[Game.HumanPlayerID].HasPlayed = false;
 
+                            //humanPlayersTurn should be set to true bc the canvas is refreshed before the turn is played
+                            //otherwise, the thrown cards in the middle of table will have logical problem (cards thrown will be misaligned 
+                            //bc of miscalculation)
                             Refresh_Canvas(currentPlayer, true,false,true,true);
 
                             PointCurrentPlayer_Canvas(currentPlayer);
@@ -339,7 +342,6 @@ namespace Call_Break_Card_Game
                         Show_PlayedCards_Table(id, Game.CardsInTable[j], true);
                     }
                 }
-                if (showTrickAnimation) System.Threading.Thread.Sleep(700);
             }
 
             //Refresh top bar
@@ -1410,7 +1412,7 @@ namespace Call_Break_Card_Game
         {
             Label arrow = new Label();
             arrow.Content = "⮚";
-            arrow.Foreground = Brushes.BurlyWood;
+            arrow.Foreground = Brushes.Yellow;
             arrow.FontSize = 45;
             if (playerID == (Game.HumanPlayerID + 1) % 4)//player on the right side
             {
@@ -1466,18 +1468,18 @@ namespace Call_Break_Card_Game
 
         private void TestWindow()
         {
-            lblTopBar.FontSize = 12;
-            lblTopBar.Content = "";
+            //lblTopBar.FontSize = 12;
+            //lblTopBar.Content = "";
 
-            foreach (Player player in Game.Players)
-            {
-                lblTopBar.Content += player.Name + ": ";
-                foreach (Card card in player.Cards)
-                {
-                    lblTopBar.Content += card.Name + " ";
-                }
-                lblTopBar.Content += " | ";
-            }
+            //foreach (Player player in Game.Players)
+            //{
+            //    lblTopBar.Content += player.Name + ": ";
+            //    foreach (Card card in player.Cards)
+            //    {
+            //        lblTopBar.Content += card.Name + " ";
+            //    }
+            //    lblTopBar.Content += " | ";
+            //}
         }
 
         /// <summary>

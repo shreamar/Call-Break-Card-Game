@@ -8,10 +8,10 @@
         Title="Call Break" Height="248.484" Width="391.355" WindowStyle="ToolWindow" ResizeMode="NoResize" Icon="cards/ace_of_spades.png" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="73*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.2,0.4" Grid.ColumnSpan="2"/>
+        <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.2,0" Grid.ColumnSpan="2"/>
         <Label Content="Call Break" HorizontalAlignment="Left" VerticalAlignment="Top" Height="59" Margin="0,0,-0.2,0" Width="385" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Broadway" FontSize="45" FontWeight="Bold" Grid.ColumnSpan="2">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -20,11 +20,12 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Button x:Name="btnStartGame" Content="Start Game" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Click="btnDealCards_Click" Margin="133,158,112.6,10.4" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5"/>
-        <Label Content="Maximum number of hands to play:" HorizontalAlignment="Left" Margin="53,69,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="18" FontStyle="Italic" FontWeight="Bold"/>
-        <Label x:Name="lblMaxHandsToPlay" Content="5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="168,91,154.6,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D"/>
+        <Button x:Name="btnStartGame" Content="Start Game" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Click="btnDealCards_Click" Margin="142,167,123.8,19" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5"/>
+        <Label Content="Maximum number of hands to play:" HorizontalAlignment="Left" Margin="53,69,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="18" FontStyle="Italic" FontWeight="Bold" Height="30"/>
+        <Label x:Name="lblMaxHandsToPlay" Content="5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="177,91,165.8,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D" Height="37"/>
 
-        <Slider x:Name="sliderMaxHandsToPlay" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="15" Minimum="1" Value="5" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" ValueChanged="sliderMaxHandsToPlay_ValueChanged" IsSnapToTickEnabled="False"/>
+        <Slider x:Name="sliderMaxHandsToPlay" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="15" Minimum="1" Value="5" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" ValueChanged="sliderMaxHandsToPlay_ValueChanged" IsSnapToTickEnabled="False" Height="23"/>
+        <Label Content="Developed by: &#xD;&#xA;Amar Shrestha" HorizontalAlignment="Left" Margin="322,186,0,0" VerticalAlignment="Top" Width="59" FontSize="8" Height="29" FontFamily="Times New Roman"/>
 
     </Grid>
 </Window>
