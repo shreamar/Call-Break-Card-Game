@@ -11,9 +11,9 @@ namespace Call_Break_Card_Game
         private CardNumber _Number;
         private CardSuit _Suit;
         private bool _IsPlayed = false;
-        private int _Angle;
-        private int _XPos;
-        private int _Ypos;
+        private double _Angle;
+        private double _XPos;
+        private double _Ypos;
 
         public Card()
         {
@@ -41,13 +41,13 @@ namespace Call_Break_Card_Game
             set { _Suit = value; }
         }
 
-        public int XPos
+        public double XPos
         {
             get { return _XPos; }
             set { _XPos = value; }
         }
 
-        public int YPos
+        public double YPos
         {
             get { return _Ypos; }
             set { _Ypos = value; }
@@ -81,7 +81,7 @@ namespace Call_Break_Card_Game
             set { _IsPlayed = value; }
         }
 
-        public int Angle
+        public double Angle
         {
             get { return _Angle; }
             set { _Angle = value; }

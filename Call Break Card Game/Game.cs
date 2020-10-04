@@ -228,7 +228,7 @@ namespace Call_Break_Card_Game
             _Players[0] = new Player(playerName, Player.PlayerType.Human);
             for (int i = 1; i <= 3; i++)
             {
-                _Players[i] = new Player(i == 1 ? "Zion" : (i == 2 ? "Eren" : "Navy"), Player.PlayerType.Bot);
+                _Players[i] = new Player(i == 1 ? "Zion" : (i == 2 ? "Eren" : "Sage"), Player.PlayerType.Bot);
             }
 
             Random random = new Random();
