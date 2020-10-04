@@ -25,7 +25,7 @@ namespace Call_Break_Card_Game
     public partial class MainWindow : Window
     {
         //used to flag wether human player has played their turn via UI
-        TaskCompletionSource<bool> hasHumanPlayed_Flag;        
+        TaskCompletionSource<bool> hasHumanPlayed_Flag;
 
         public MainWindow()
         {
@@ -36,7 +36,7 @@ namespace Call_Break_Card_Game
             canvasGame.Width = System.Windows.SystemParameters.PrimaryScreenWidth / 1.003921568627451; //(1536/1530)
 
             //Dynamically set canvas margin based on window size
-            canvasGame.Margin = new Thickness(0,(System.Windows.SystemParameters.PrimaryScreenHeight / 14.89655172413793),0,0);
+            canvasGame.Margin = new Thickness(0, (System.Windows.SystemParameters.PrimaryScreenHeight / 14.89655172413793), 0, 0);
             //Margin="0,58,0,0"
 
             //Dynamically set font size of big info label based on screen resolution/window size
@@ -49,7 +49,7 @@ namespace Call_Break_Card_Game
 
             //Initializes game
             Game.InitializeGame("You", Game.MaxHandsToPlay);
-           /// MessageBox.Show(System.Windows.SystemParameters.PrimaryScreenHeight + " " + System.Windows.SystemParameters.PrimaryScreenWidth);
+            /// MessageBox.Show(System.Windows.SystemParameters.PrimaryScreenHeight + " " + System.Windows.SystemParameters.PrimaryScreenWidth);
             _ = GamePlayAsync(this, new EventArgs());
         }
 
@@ -231,7 +231,7 @@ namespace Call_Break_Card_Game
                     Game.CurrentPlayer = Game.CurrentTrickWinner;
 
                     //Refresh Canvas and show trick winner animation
-                    Refresh_Canvas(Game.CurrentTrickWinner, true, true,true,false,true);
+                    Refresh_Canvas(Game.CurrentTrickWinner, true, true, true, false, true);
 
                     //Clear cards from table in code
                     Game.CardsInTable.Clear();
@@ -302,7 +302,7 @@ namespace Call_Break_Card_Game
             }
         }
 
-        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true, 
+        private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true,
             bool humanPlayersTurn = false, bool disableHumanPlayerCard = false)
         {
             //First clear the canvas
@@ -556,8 +556,8 @@ namespace Call_Break_Card_Game
                 if (inGameAnimation)//animation of reducing card when a card is played
                 {
                     AnimateCardTranslation(image, card.XPos, card.YPos, ((canvasGame.Width - (image.Width +
-                   (Game.Players[Game.HumanPlayerID].CardCount - 1) * (System.Windows.SystemParameters.PrimaryScreenWidth/ 13.96363636363636))) / 2) //110
-                   + 110 * counter, (canvasGame.Height - image.Height) + (System.Windows.SystemParameters.PrimaryScreenHeight/ 66.46153846153846), 0.25); //13
+                   (Game.Players[Game.HumanPlayerID].CardCount - 1) * (System.Windows.SystemParameters.PrimaryScreenWidth / 13.96363636363636))) / 2)
+                   + (System.Windows.SystemParameters.PrimaryScreenWidth / 13.96363636363636) * counter, (canvasGame.Height - image.Height) + (System.Windows.SystemParameters.PrimaryScreenHeight / 66.46153846153846), 0.25); //110  // 110 //13
                 }
                 else
                 {
