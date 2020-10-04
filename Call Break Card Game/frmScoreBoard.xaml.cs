@@ -41,19 +41,6 @@ namespace Call_Break_Card_Game
             ScoreBoard();
         }
 
-        private void btnPlaceBid_Click(object sender, RoutedEventArgs e)
-        {
-            if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
-            {
-                App.Current.Windows[0].Close();
-
-                frmStartGame startGame = new frmStartGame();
-                startGame.Show();
-            }
-            this.Close();
-
-        }
-
         private void ScoreBoard()
         {
             grdScoreboard.RowDefinitions.Clear();
@@ -130,6 +117,18 @@ namespace Call_Break_Card_Game
         private void btnExitGame_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
+            {
+                App.Current.Windows[0].Close();
+
+                frmStartGame startGame = new frmStartGame();
+                startGame.Show();
+            }
+            this.Close();
         }
     }
 }

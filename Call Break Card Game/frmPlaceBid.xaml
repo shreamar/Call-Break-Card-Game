@@ -8,11 +8,11 @@
         Title="Place Your Bid" Height="248.484" Width="391.355" WindowStyle="ToolWindow" ResizeMode="NoResize" Icon="cards/ace_of_spades.png" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="73*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.2,0.4" Grid.ColumnSpan="2"/>
-        <Label Content="Call Break" HorizontalAlignment="Left" VerticalAlignment="Top" Height="59" Margin="0,0,-0.2,0" Width="385" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Broadway" FontSize="45" FontWeight="Bold" Grid.ColumnSpan="2">
+        <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.2,0" Grid.ColumnSpan="2"/>
+        <Label Content="Call Break" HorizontalAlignment="Center" VerticalAlignment="Top" Height="59" Margin="0,0,-0.2,0" Width="385" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Broadway" FontSize="45" FontWeight="Bold" Grid.ColumnSpan="2">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -20,11 +20,11 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Button x:Name="btnPlaceBid" Content="Place Bid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="133,158,112.6,10.4" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnPlaceBid_Click"/>
-        <Label Content="Place your bid:" HorizontalAlignment="Left" Margin="53,49,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="35" FontStyle="Italic" FontWeight="Bold" HorizontalContentAlignment="Center"/>
-        <Label x:Name="lblBid" Content="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="168,91,154.6,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D"/>
+        <Button x:Name="btnPlaceBid" Content="Place Bid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="0,167,0,19" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnPlaceBid_Click"/>
+        <Label Content="Place your bid:" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="35" FontStyle="Italic" FontWeight="Bold" HorizontalContentAlignment="Center" Height="50"/>
+        <Label x:Name="lblBid" Content="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,91,0,0" FontFamily="Algerian" FontWeight="Bold" FontSize="20" Width="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="#FF05371D" Height="37"/>
 
-        <Slider x:Name="sliderPlaceBid" HorizontalAlignment="Left" Margin="53,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="8" Minimum="1" Value="1" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" IsSnapToTickEnabled="False" ValueChanged="sliderPlaceBid_ValueChanged"/>
+        <Slider x:Name="sliderPlaceBid" HorizontalAlignment="Center" Margin="0,125,0,0" VerticalAlignment="Top" Width="279" Foreground="#FF06371D" Maximum="8" Minimum="1" Value="1" TickPlacement="BottomRight" TickFrequency="1" SmallChange="1" IsSnapToTickEnabled="False" ValueChanged="sliderPlaceBid_ValueChanged" Height="23"/>
 
     </Grid>
 </Window>

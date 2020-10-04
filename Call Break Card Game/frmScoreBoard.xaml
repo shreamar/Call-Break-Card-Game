@@ -8,7 +8,7 @@
         Title="Call Break" Height="654.409" Width="548.71" WindowStyle="ToolWindow" ResizeMode="NoResize" Icon="cards/ace_of_spades.png" WindowStartupLocation="CenterScreen" Topmost="True">
     <Grid>
         <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.4,0.6" Grid.ColumnSpan="2"/>
-        <Label Content="Call Break" HorizontalAlignment="Left" VerticalAlignment="Top" Height="59" Margin="0,0,-0.4,0" Width="534" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Broadway" FontSize="45" FontWeight="Bold" Grid.ColumnSpan="2">
+        <Label Content="Call Break" HorizontalAlignment="Center" VerticalAlignment="Top" Height="59" Margin="0,0,0,0" Width="534" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Broadway" FontSize="45" FontWeight="Bold" Grid.ColumnSpan="2">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -16,7 +16,7 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Label x:Name="lblTopBar" Content="Score Board" HorizontalAlignment="Left" Margin="0,69,-0.4,0" VerticalAlignment="Top" Width="534" Foreground="#FF033119" FontFamily="Engravers MT" FontSize="20" FontWeight="Bold" Grid.ColumnSpan="2" Height="34" HorizontalContentAlignment="Center"/>
+        <Label x:Name="lblTopBar" Content="Score Board" HorizontalAlignment="Center" Margin="0,69,0,0" VerticalAlignment="Top" Width="534" Foreground="#FF033119" FontFamily="Engravers MT" FontSize="20" FontWeight="Bold" Grid.ColumnSpan="2" Height="34" HorizontalContentAlignment="Center"/>
         <Label x:Name="lblBottomBar" Content="sample data" HorizontalAlignment="Left" Margin="10,560,0,0" VerticalAlignment="Top" Width="375" FontFamily="Segoe UI Semibold" FontSize="18" FontStyle="Italic" FontWeight="ExtraBold" Height="34" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -25,7 +25,7 @@
                 </LinearGradientBrush>
             </Label.Foreground>
         </Label>
-        <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="409,554,14.4,13.6" BorderBrush="#FF07A267" Background="#FF012510" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnPlaceBid_Click"/>
+        <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="409,554,14.4,13.6" BorderBrush="#FF07A267" Background="#FF012510" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnOK_Click" />
         <Grid x:Name="grdScoreboard" HorizontalAlignment="Left" Height="431" Margin="10,108,0,0" VerticalAlignment="Top" Width="514"/>
         <Button x:Name="btnExitGame" Content="Exit Game" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Margin="409,527,14.4,64.6" BorderBrush="#FF07A267" Background="#FF012510" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnExitGame_Click" Visibility="Hidden"/>
     </Grid>

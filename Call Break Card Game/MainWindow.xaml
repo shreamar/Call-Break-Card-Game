@@ -11,15 +11,15 @@
       WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         SizeToContent="WidthAndHeight"
-    ResizeMode="CanMinimize" Icon="cards/ace_of_spades.png">
+    ResizeMode="CanMinimize" Icon="card-game.ico">
     <Grid x:Name="grdWindow">
 
         <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.4,0.4"/>
         <Image x:Name="imgMandala" Source="/cards/extras/green_mandala.png" Stretch="Uniform" HorizontalAlignment="Center"  Width="259" Margin="635,-20,635.6,20.4" Visibility="Hidden"/>
         <Button x:Name="btnDealCards" Content="Deal Cards" HorizontalAlignment="Left" VerticalAlignment="Top" Width="119" Click="btnDealCards_Click" Canvas.Left="10" Canvas.Top="10" Margin="10,10,0,0" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Visibility="Hidden"/>
         <Canvas x:Name="canvasGame" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="lblTopBar" Content="label" HorizontalAlignment="Center" VerticalAlignment="Top" Height="53" Margin="0,0,0,0" Width="1260" Foreground="#FF1DC249" FontSize="25" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
+        <Label x:Name="lblTopBar" Content="label" HorizontalAlignment="Center" VerticalAlignment="Top" Height="38" Margin="0,0,0,0" Width="{Binding SystemParameters.PrimaryScreenWidth}" Foreground="#FF1DC249" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
         <Label x:Name="lblBigInfo_Center" Content="Dealing Cards..." HorizontalAlignment="Center" VerticalAlignment="Center" Width="700" Height="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  FontWeight="Bold" FontFamily="Perpetua" Foreground="#FF063D26" FontStyle="Italic" Visibility="Hidden"/>
-        
+
     </Grid>
 </Window>

@@ -44,7 +44,7 @@ namespace Call_Break_Card_Game
 
             //Dynamically change top bar properties based on screen resolution/window size
             lblTopBar.Height = System.Windows.SystemParameters.PrimaryScreenHeight / 16.30188679245283;//Height="53"
-            lblTopBar.Width = System.Windows.SystemParameters.PrimaryScreenWidth / 1.219047619047619;//Width="1260" 
+            //lblTopBar.Width = System.Windows.SystemParameters.PrimaryScreenWidth / 1.219047619047619;//Width="1260" 
             lblTopBar.FontSize = System.Windows.SystemParameters.PrimaryScreenHeight / 34.56;//FontSize="25" based on height
 
             //Initializes game
@@ -1480,7 +1480,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         private void Show_Info_TopBar()
         {
-            lblTopBar.Content = String.Format("Current Player: [{0}]          Current Hand: [{1}/{2}]          Tricks Won: [{3}]          Score: [{4}]",
+            lblTopBar.Content = String.Format("Current Player: [{0}]            Current Hand: [{1}/{2}]            Tricks Won: [{3}]            Score: [{4}]",
                 Game.Players[Game.CurrentPlayer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay,
                 Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID]);
         }
@@ -1541,28 +1541,12 @@ namespace Call_Break_Card_Game
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             //Display warning dialogue
-            string sMessageBoxText = "Are you sure you want to quit?";
-            string sCaption = "Exit Game";
+            frmCloseConfirm frmClose = new frmCloseConfirm();
+            frmClose.ShowDialog();
 
-            MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
-            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
-
-            MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
-
-            switch (rsltMessageBox)
-            {
-                //closes the whole application
-                case MessageBoxResult.Yes:
-                    System.Windows.Application.Current.Shutdown();
-                    break;
-
-                //cancels the close
-                case MessageBoxResult.No:
-                    e.Cancel = true;
-                    base.OnClosing(e);
-                    break;
-            }
-
+            //cancel close
+            e.Cancel = true;
+            base.OnClosing(e);
         }
     }
 }
