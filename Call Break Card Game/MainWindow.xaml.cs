@@ -156,7 +156,7 @@ namespace Call_Break_Card_Game
                         //Point Current Player
                         PointCurrentPlayer_Canvas(currentPlayer);
 
-                        ///testing
+                        // for testing purpose only
                         string playables = Game.Players[currentPlayer].Name;
                         foreach (Card card in Game.Players[currentPlayer].Cards)
                         {

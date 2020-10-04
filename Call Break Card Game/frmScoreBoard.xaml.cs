@@ -123,12 +123,18 @@ namespace Call_Break_Card_Game
         {
             if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
             {
-                App.Current.Windows[0].Close();
+                //App.Current.Windows[0].Close();
 
-                frmStartGame startGame = new frmStartGame();
-                startGame.Show();
+                Application.Current.Shutdown();
+                System.Windows.Forms.Application.Restart();
+
+                //frmStartGame startGame = new frmStartGame();
+                //startGame.Show();
             }
-            this.Close();
+            else
+            {
+                this.Close();
+            }
         }
     }
 }
