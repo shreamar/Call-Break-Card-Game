@@ -1502,7 +1502,7 @@ namespace Call_Break_Card_Game
         {
             lblTopBar.Content = String.Format("Current Player: [{0}]            Current Hand: [{1}/{2}]            Tricks Won: [{3}]            Score: [{4}]",
                 Game.Players[Game.CurrentPlayer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay,
-                Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID]);
+                Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID].ToString("0.0"));
         }
 
         private void TestWindow()
