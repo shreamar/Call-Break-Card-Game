@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Call_Break_Card_Game
 {
@@ -21,12 +15,12 @@ namespace Call_Break_Card_Game
     public partial class frmStartGame : Window
     {
         //Define music player and plath
-        public MediaPlayer backgroundMusicPlayer = new MediaPlayer();
-        Uri backgroundMusicFilePath = new Uri("../../sfx/DeerPortal-GamePlay.mp3", UriKind.Relative);
+        public MediaPlayer backgroundMusicPlayer = new MediaPlayer();       
+        Uri backgroundMusicFilePath = new Uri("resources/sfx/DeerPortal-GamePlay.mp3", UriKind.Relative);
 
         public frmStartGame()
         {
-            PlaybackMusic();
+            //PlaybackMusic();
 
             InitializeComponent();
         }
@@ -55,7 +49,7 @@ namespace Call_Break_Card_Game
             {
                 backgroundMusicPlayer.Open(backgroundMusicFilePath);
                 backgroundMusicPlayer.Position = TimeSpan.FromMilliseconds(100);
-                backgroundMusicPlayer.Volume = 0.1;
+                backgroundMusicPlayer.Volume = 1;
                 backgroundMusicPlayer.MediaEnded += new EventHandler(Media_Ended);//this line makes it play on loop
                 backgroundMusicPlayer.Play();
             }
@@ -69,11 +63,26 @@ namespace Call_Break_Card_Game
 
         private void PlaySound(string fileName)
         {
-            Uri uri = new Uri("../../sfx/" + fileName, UriKind.Relative);
-            SoundPlayer player = new SoundPlayer("../../sfx/" + fileName);
-
+            Uri uri = new Uri("/sfx/" + fileName, UriKind.Relative);
+            SoundPlayer player = new SoundPlayer(GetResourceStream(uri.ToString()));
+          
             //player.LoadAsync();
             player.Play();
+        }
+
+        //gets the path stream for files flagged as embedded resources
+        protected static Stream GetResourceStream(string resourcePath)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<string> resourceNames = new List<string>(assembly.GetManifestResourceNames());
+
+            resourcePath = resourcePath.Replace(@"/", ".");
+            resourcePath = resourceNames.FirstOrDefault(r => r.Contains(resourcePath));
+
+            if (resourcePath == null)
+                throw new FileNotFoundException("Resource not found");
+
+            return assembly.GetManifestResourceStream(resourcePath);
         }
     }
 }

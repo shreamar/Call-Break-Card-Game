@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
@@ -299,7 +297,7 @@ namespace Call_Break_Card_Game
                     id = id % 3;
                     if (SuitCount[minSuitCount] == 0)//if there are no cards of suit change suit
                     {
-                        minSuitCount = id%3;
+                        minSuitCount = id % 3;
                         id = (id + 1) % 3;
                     }
                     if (SuitCount[id] < SuitCount[minSuitCount] && SuitCount[id] > 0)//check suits with least card but 1 is the allowed minimum
@@ -347,7 +345,7 @@ namespace Call_Break_Card_Game
                 }
                 else//when there are no consequitive cards play the minimum among the list
                 {
-                    Card min = Cards[CardCount-1];//last on the list be the minimum
+                    Card min = Cards[CardCount - 1];//last on the list be the minimum
 
                     foreach (Card card in Cards)
                     {
@@ -363,7 +361,7 @@ namespace Call_Break_Card_Game
             else
             {
                 //last in the list is the minimum
-                int minPlayable = PlayableIDs[PlayableIDs.Count-1];
+                int minPlayable = PlayableIDs[PlayableIDs.Count - 1];
 
                 return minPlayable;//return the min among playable cards
             }

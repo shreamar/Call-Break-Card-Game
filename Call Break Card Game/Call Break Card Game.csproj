@@ -148,6 +148,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="sfx\cardFan2.wav" />
+    <EmbeddedResource Include="sfx\cardSlide1.wav" />
+    <EmbeddedResource Include="sfx\cardSlide7.wav" />
+    <EmbeddedResource Include="sfx\cardSlide8.wav" />
+    <EmbeddedResource Include="sfx\chipLay1.wav" />
+    <EmbeddedResource Include="sfx\chipsHandle2.wav" />
+    <EmbeddedResource Include="sfx\DeerPortal-GamePlay.mp3" />
+    <EmbeddedResource Include="sfx\Digital Accept Button.wav" />
+    <EmbeddedResource Include="sfx\error.wav" />
+    <EmbeddedResource Include="sfx\misc_menu_4.wav" />
+    <EmbeddedResource Include="sfx\playcard.wav" />
+    <EmbeddedResource Include="sfx\switch5.wav" />
+    <EmbeddedResource Include="sfx\tap.wav" />
+    <EmbeddedResource Include="sfx\tick.wav" />
+    <EmbeddedResource Include="sfx\untap.wav" />
     <Resource Include="card-game.ico" />
     <Content Include="Cards.Dll" />
     <Resource Include="cards\extras\green_mandala2.png" />

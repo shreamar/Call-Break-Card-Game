@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Call_Break_Card_Game
+﻿namespace Call_Break_Card_Game
 {
     public class Card
     {
@@ -141,7 +135,7 @@ namespace Call_Break_Card_Game
 
         public enum CardSuit { Diamond, Club, Heart, Spade };
 
-        public enum CardNumber { Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace};
+        public enum CardNumber { Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
 
     }
 }

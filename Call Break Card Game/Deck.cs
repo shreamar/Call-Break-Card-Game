@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
@@ -66,13 +63,13 @@ namespace Call_Break_Card_Game
                 _Shuffled = true;
             }
         }
-        
+
         public void SwapCards(List<Card> deck, int i, int j)
         {
             Card temp = deck[i];
             deck[i] = deck[j];
             deck[j] = temp;
         }
-        
+
     }
 }

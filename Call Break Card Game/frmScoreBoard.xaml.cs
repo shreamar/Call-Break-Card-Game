@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Call_Break_Card_Game
 {
@@ -133,7 +128,7 @@ namespace Call_Break_Card_Game
             if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
             {
                 //App.Current.Windows[0].Close();
-                
+
                 Application.Current.Shutdown();
                 System.Windows.Forms.Application.Restart();
 
@@ -148,11 +143,26 @@ namespace Call_Break_Card_Game
 
         private void PlaySound(string fileName)
         {
-            Uri uri = new Uri("../../sfx/" + fileName, UriKind.Relative);
-            SoundPlayer player = new SoundPlayer("../../sfx/" + fileName);
+            Uri uri = new Uri("/sfx/" + fileName, UriKind.Relative);
+            SoundPlayer player = new SoundPlayer(GetResourceStream(uri.ToString()));
 
             //player.LoadAsync();
             player.Play();
+        }
+
+        //gets the path stream for files flagged as embedded resources
+        protected static Stream GetResourceStream(string resourcePath)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<string> resourceNames = new List<string>(assembly.GetManifestResourceNames());
+
+            resourcePath = resourcePath.Replace(@"/", ".");
+            resourcePath = resourceNames.FirstOrDefault(r => r.Contains(resourcePath));
+
+            if (resourcePath == null)
+                throw new FileNotFoundException("Resource not found");
+
+            return assembly.GetManifestResourceStream(resourcePath);
         }
     }
 }

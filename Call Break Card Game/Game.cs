@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Call_Break_Card_Game
 {
@@ -187,7 +184,7 @@ namespace Call_Break_Card_Game
                 {
                     for (int j = 0; j <= ScoreBoard.GetUpperBound(0); j++)//hands
                     {
-                        scores[i] += ScoreBoard[j,i];
+                        scores[i] += ScoreBoard[j, i];
                     }
                 }
                 return scores;

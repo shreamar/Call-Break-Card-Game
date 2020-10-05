@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace Call_Break_Card_Game
 {
@@ -31,7 +26,7 @@ namespace Call_Break_Card_Game
         public MainWindow()
         {
             //PlaybackMusic();
-
+            
             InitializeComponent();
 
             //Dynamically set canvas width and height based on the window size/screen resolution
@@ -308,15 +303,6 @@ namespace Call_Break_Card_Game
                 }
                 counter++;
             }
-        }
-
-        private void PlaySound(string fileName)
-        {
-            //Uri uri = new Uri("../../sfx/" + fileName, UriKind.Relative);
-            SoundPlayer player = new SoundPlayer("../../sfx/" + fileName);
-
-            //player.LoadAsync();
-            player.Play();
         }
 
         private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true,
@@ -1604,6 +1590,30 @@ namespace Call_Break_Card_Game
         {
             backgroundMusicPlayer.Position = TimeSpan.FromMilliseconds(1);
             backgroundMusicPlayer.Play();
+        }
+
+        private void PlaySound(string fileName)
+        {
+            Uri uri = new Uri("/sfx/" + fileName, UriKind.Relative);
+            SoundPlayer player = new SoundPlayer(GetResourceStream(uri.ToString()));
+
+            //player.LoadAsync();
+            player.Play();
+        }
+
+        //gets the path stream for files flagged as embedded resources
+        protected static Stream GetResourceStream(string resourcePath)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<string> resourceNames = new List<string>(assembly.GetManifestResourceNames());
+
+            resourcePath = resourcePath.Replace(@"/", ".");
+            resourcePath = resourceNames.FirstOrDefault(r => r.Contains(resourcePath));
+
+            if (resourcePath == null)
+                throw new FileNotFoundException("Resource not found");
+
+            return assembly.GetManifestResourceStream(resourcePath);
         }
     }
 }
