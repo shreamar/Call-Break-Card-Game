@@ -33,7 +33,7 @@ namespace Call_Break_Card_Game
             }
 
             lblBottomBar.Content = String.Format("Hands Played: [{0}/{1}]         Winner: [{2}]",
-                Game.CurrentHand, Game.MaxHandsToPlay, Game.Players[Game.CumulativeWinner].Name);
+                Game.CurrentHand, Game.MaxHandsToPlay, Game.isTied()?"Tied":Game.Players[Game.CumulativeWinner].Name);
 
             //Scoreboard
             ScoreBoard();

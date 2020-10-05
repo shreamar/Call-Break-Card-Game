@@ -567,5 +567,23 @@ namespace Call_Break_Card_Game
 
             return index;
         }
+
+        /// <summary>
+        /// Checks if one or maore player has same max cumulative score to decide if the game is tied
+        /// </summary>
+        /// <returns></returns>
+        public static bool isTied()
+        {
+            int tie = 0;
+            foreach(Player player in Game.Players)
+            {
+                if(CumulativeScore[player.ID] == CumulativeScore[Players[CumulativeWinner].ID])
+                {
+                    tie++;
+                }
+            }
+            //only one player must have highest cumulative score to be winner otherwise its a tie
+            return (tie > 1 ? true : false);
+        }
     }
 }
