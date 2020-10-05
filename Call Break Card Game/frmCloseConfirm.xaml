@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Call_Break_Card_Game"
-        mc:Ignorable="d"
+        mc:Ignorable="d" 
         Title="Exit Game" Height="248.484" Width="391.355" WindowStyle="ToolWindow" ResizeMode="NoResize" Icon="cards/ace_of_spades.png" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
             </Label.Foreground>
         </Label>
         <Button x:Name="btnYes" Content="Yes" HorizontalAlignment="Left" VerticalAlignment="Center" Width="119" Margin="60,167,0,20" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnYes_Click"/>
-        <Label Content="  Are you sure you &#xA;want to exit game?" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" Width="350" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="35" FontStyle="Italic" FontWeight="Bold" HorizontalContentAlignment="Center" Height="102"/>
+        <Label Content="  Are you sure you &#xA;want to exit game?" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" Width="350" Foreground="#FF044322" FontFamily="Times New Roman" FontSize="25" FontStyle="Italic" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="102"/>
         <Button x:Name="btnNo" Content="No" HorizontalAlignment="Right" VerticalAlignment="Center" Width="119" Margin="0,167,60,20" BorderBrush="#FF07A267" Background="#FF044C22" Foreground="#FF1DC249" FontWeight="Bold" Height="34" FontSize="20" BorderThickness="2.5" Click="btnNo_Click" />
 
     </Grid>

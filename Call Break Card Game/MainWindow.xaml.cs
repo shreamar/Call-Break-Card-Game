@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,8 @@ namespace Call_Break_Card_Game
 
         public MainWindow()
         {
+            //PlaybackMusic();
+
             InitializeComponent();
 
             //Dynamically set canvas width and height based on the window size/screen resolution
@@ -58,6 +61,7 @@ namespace Call_Break_Card_Game
         /// </summary>
         private async Task GamePlayAsync(object sender, EventArgs e)
         {
+            PlayBackGroundMusic();
 
             for (int currentHand = 0; currentHand < Game.MaxHandsToPlay; currentHand++)//Iteration of hands played
             {
@@ -93,6 +97,9 @@ namespace Call_Break_Card_Game
                 //Deals cards to all players
                 DealCards();
                 //TestWindow();
+
+                //create pause effect
+                await Task.Delay(1500);
 
                 //changes label to placing bids
                 lblBigInfo_Center.Content = "Placing Bids...";
@@ -171,7 +178,6 @@ namespace Call_Break_Card_Game
                         }
                         playables += "\r\nLead: " + (Game.CardIDtoCard(Game.LeadCardID) != null ? Game.CardIDtoCard(Game.LeadCardID).Name : "--") +
                             "\r\nPower: " + (Game.CardIDtoCard(Game.PowerCardID) != null ? Game.CardIDtoCard(Game.PowerCardID).Name : "--");
-                        int a = 0;
                         //MessageBox.Show(playables);
 
                         //creates pause effect of 2000ms
@@ -266,6 +272,8 @@ namespace Call_Break_Card_Game
             //show player icons, names, bids and win counts
             Show_PlayersName_Icon();
 
+            //play dealing sound
+            PlaySound("cardFan2.wav");
 
             //Show bots cards with dealing animation
             ShowCardsOnCanvas_Bots(true);
@@ -282,7 +290,7 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
-        /// Places automatic bid for selected player ID
+        /// Places random bid for selected player ID
         /// [Needs better algorithm to perform this task]
         /// </summary>
         private void PlaceBids_Auto(int PlayerID)
@@ -300,6 +308,15 @@ namespace Call_Break_Card_Game
                 }
                 counter++;
             }
+        }
+
+        private void PlaySound(string fileName)
+        {
+            //Uri uri = new Uri("../../sfx/" + fileName, UriKind.Relative);
+            SoundPlayer player = new SoundPlayer("../../sfx/" + fileName);
+
+            //player.LoadAsync();
+            player.Play();
         }
 
         private void Refresh_Canvas(int currentPlayer, bool showCardsOnTable = true, bool showTrickAnimation = false, bool showBids = true,
@@ -463,6 +480,7 @@ namespace Call_Break_Card_Game
 
         private void Image_MouseEnter(object sender, MouseEventArgs e)
         {
+            PlaySound("playcard.wav");
             Image image = sender as Image;
             //image.Source = (ImageSource)img.FindResource("ImgBtnLightbulbOn");
             Canvas.SetTop(image, -30);
@@ -885,6 +903,11 @@ namespace Call_Break_Card_Game
         /// </summary>
         private void Show_PlayersBids_WinCounts(bool animate = false, bool showOnlyOne = false, int playerID = 0)
         {
+            if (animate)
+            {
+                PlaySound("chipsHandle2.wav");
+            }
+
             for (int i = (Game.HumanPlayerID) % 4, j = -1; j < 3; i++, j++)
             {
                 //players id
@@ -1063,6 +1086,15 @@ namespace Call_Break_Card_Game
         /// <param name="cardID"></param>
         private void Show_PlayedCards_Table(int playerID, Card playedCard, bool showThrowAnimation = false, bool animateTrickWin = false, int winnerID = 0)
         {
+            if (showThrowAnimation && !playedCard.IsPlayed)
+            {
+                PlaySound("cardSlide8.wav");
+            }
+
+            if (animateTrickWin)
+            {
+                PlaySound("cardSlide7.wav");
+            }
             //playerID = Game.HumanPlayerID;//only for testing purpose
 
             Random rnd = new Random();
@@ -1287,6 +1319,8 @@ namespace Call_Break_Card_Game
         /// <param name="e"></param>
         private void Show_PlayedCards_Human(Object sender, MouseEventArgs e)
         {
+            PlaySound("cardSlide1.wav");
+
             Image image = sender as Image;
 
             Game.Players[Game.HumanPlayerID].PlayCard(ImageToCardID(image));
@@ -1547,6 +1581,29 @@ namespace Call_Break_Card_Game
             //cancel close
             e.Cancel = true;
             base.OnClosing(e);
+        }
+
+        //Define music player and plath
+        public MediaPlayer backgroundMusicPlayer = new MediaPlayer();
+        Uri backgroundMusicFilePath = new Uri("../../sfx/DeerPortal-GamePlay.mp3", UriKind.Relative);
+
+        public void PlayBackGroundMusic()
+        {
+            if (backgroundMusicFilePath != null)
+            {
+                backgroundMusicPlayer.Open(backgroundMusicFilePath);
+                backgroundMusicPlayer.Position = TimeSpan.FromMilliseconds(1);
+                backgroundMusicPlayer.Volume = 0.07;
+                backgroundMusicPlayer.MediaEnded += new EventHandler(Media_Ended);//this line makes it play on loop
+                backgroundMusicPlayer.Play();
+            }
+        }
+
+        //loops the music when the music ends
+        private void Media_Ended(object sender, EventArgs e)
+        {
+            backgroundMusicPlayer.Position = TimeSpan.FromMilliseconds(1);
+            backgroundMusicPlayer.Play();
         }
     }
 }

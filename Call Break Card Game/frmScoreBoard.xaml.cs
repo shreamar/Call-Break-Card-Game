@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,8 @@ namespace Call_Break_Card_Game
     {
         public frmScoreBoard()
         {
+            PlaySound("misc_menu_4.wav");
+
             InitializeComponent();
 
             if (Game.CurrentHand == Game.MaxHandsToPlay)//change button label at the end of the game
@@ -116,15 +119,21 @@ namespace Call_Break_Card_Game
 
         private void btnExitGame_Click(object sender, RoutedEventArgs e)
         {
+            PlaySound("tick.wav");
+            System.Threading.Thread.Sleep(1000);
+
             Application.Current.Shutdown();
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            PlaySound("Digital Accept Button.wav");
+            System.Threading.Thread.Sleep(1000);
+
             if (Game.CurrentHand == Game.MaxHandsToPlay)//if its the end of the game the button restarts the game
             {
                 //App.Current.Windows[0].Close();
-
+                
                 Application.Current.Shutdown();
                 System.Windows.Forms.Application.Restart();
 
@@ -135,6 +144,15 @@ namespace Call_Break_Card_Game
             {
                 this.Close();
             }
+        }
+
+        private void PlaySound(string fileName)
+        {
+            Uri uri = new Uri("../../sfx/" + fileName, UriKind.Relative);
+            SoundPlayer player = new SoundPlayer("../../sfx/" + fileName);
+
+            //player.LoadAsync();
+            player.Play();
         }
     }
 }

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Call_Break_Card_Game"
         mc:Ignorable="d"
         Title="Call Break" Height="654.409" Width="548.71" WindowStyle="ToolWindow" ResizeMode="NoResize" Icon="cards/ace_of_spades.png" WindowStartupLocation="CenterScreen" Topmost="True">
+    
     <Grid>
         <Image Source="/cards/extras/Background.jpg" Stretch="Fill" Margin="0,0,-0.4,0.6" Grid.ColumnSpan="2"/>
         <Label Content="Call Break" HorizontalAlignment="Center" VerticalAlignment="Top" Height="59" Margin="0,0,0,0" Width="534" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Broadway" FontSize="45" FontWeight="Bold" Grid.ColumnSpan="2">
