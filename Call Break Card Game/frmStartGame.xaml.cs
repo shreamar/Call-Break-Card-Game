@@ -20,7 +20,7 @@ namespace Call_Break_Card_Game
 
         public frmStartGame()
         {
-            //PlaybackMusic();
+            PlaybackMusic();
 
             InitializeComponent();
         }
@@ -83,6 +83,12 @@ namespace Call_Break_Card_Game
                 throw new FileNotFoundException("Resource not found");
 
             return assembly.GetManifestResourceStream(resourcePath);
+        }
+
+        private void btnInstruction_Click(object sender, RoutedEventArgs e)
+        {
+            frmInstruction frmInstruction = new frmInstruction();
+            frmInstruction.ShowDialog();
         }
     }
 }

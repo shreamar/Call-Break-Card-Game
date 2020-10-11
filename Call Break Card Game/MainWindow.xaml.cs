@@ -25,7 +25,7 @@ namespace Call_Break_Card_Game
 
         public MainWindow()
         {
-            //PlaybackMusic();
+            PlayBackGroundMusic();
             
             InitializeComponent();
 
