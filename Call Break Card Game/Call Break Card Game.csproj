@@ -155,6 +155,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="sfx\draw.wav" />
     <EmbeddedResource Include="sfx\cardFan2.wav" />
     <EmbeddedResource Include="sfx\cardSlide1.wav" />
     <EmbeddedResource Include="sfx\cardSlide7.wav" />
