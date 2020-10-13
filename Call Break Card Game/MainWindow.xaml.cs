@@ -499,11 +499,13 @@ namespace Call_Break_Card_Game
                 Direction = direction,
                 ShadowDepth = shadowdepth,
                 Opacity = opacity,
-                BlurRadius = blurradius
+                BlurRadius = blurradius,
+                RenderingBias = RenderingBias.Performance
             };
 
             //clears effect
             //image.ClearValue(EffectProperty);
+            
         }
 
         /// <summary>
@@ -530,6 +532,9 @@ namespace Call_Break_Card_Game
         private void Image_EmbossBitmapEffect(object sender, MouseEventArgs e)
         {
             Image image = sender as Image;
+            UIElement uie = image;
+
+            
         }
 
         /// <summary>
@@ -579,6 +584,9 @@ namespace Call_Break_Card_Game
 
                 //enables or disables human players cards
                 image.IsEnabled = enableCards;
+
+                //Drop shadow effect on cards
+                Image_DropShadowEffect(image);
 
                 if (activePlayer)//shows blurr effect only when human player is the active player
                 {
@@ -1161,6 +1169,9 @@ namespace Call_Break_Card_Game
                     //Vector offset = VisualTreeHelper.GetOffset(image);//position of the image in the container                    
                 }
 
+                //add drop shadow effect on played cards
+                Image_DropShadowEffect(image,0,0,0,0,320,0,10,5);
+
                 //image.IsEnabled = false;//disable card control after it's played
                 canvasGame.Children.Add(image);
             }
@@ -1209,6 +1220,9 @@ namespace Call_Break_Card_Game
 
                 }
 
+                //add drop shadow effect on played cards
+                Image_DropShadowEffect(image, 0, 0, 0, 0, 320, 0, 10, 5);
+
                 canvasGame.Children.Add(image);
             }
             else if ((Game.HumanPlayerID + 2) % 4 == playerID)//player over the top
@@ -1252,6 +1266,10 @@ namespace Call_Break_Card_Game
                     }
 
                 }
+
+                //add drop shadow effect on played cards
+                Image_DropShadowEffect(image, 0, 0, 0, 0, 320, 0, 10, 5);
+
                 canvasGame.Children.Add(image);
             }
             else if ((Game.HumanPlayerID + 3) % 4 == playerID)//player over the top
@@ -1293,6 +1311,10 @@ namespace Call_Break_Card_Game
                         Canvas.SetTop(image, canvasGame.Height / 2 - (System.Windows.SystemParameters.PrimaryScreenHeight / 43.2));   //20
                     }
                 }
+
+                //add drop shadow effect on played cards
+                Image_DropShadowEffect(image, 0, 0, 0, 0, 320, 0, 10, 5);
+
                 canvasGame.Children.Add(image);
             }
 
