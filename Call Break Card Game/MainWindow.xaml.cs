@@ -109,7 +109,7 @@ namespace Call_Break_Card_Game
                     Game.CurrentPlayer = Game.CurrentDealer;
 
                     int currentBidder = i % 4;
-                    TestWindow();
+                    //TestWindow();
                     if (currentBidder == Game.HumanPlayerID)//human player
                     {
                         //creates pause effect
