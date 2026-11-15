@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Call_Break_Card_Game
@@ -18,6 +20,7 @@ namespace Call_Break_Card_Game
         private static int _CurrentDealer;
         private static int _CurrentTrickWinner;
         private static int _CurrentPlayer;
+        private static string[] _BotNames;
 
         public static Player[] Players
         {
@@ -214,6 +217,32 @@ namespace Call_Break_Card_Game
         }
 
         /// <summary>
+        /// Generates 3 bots names from file
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
+        public static void BotNameGenerator()
+        {
+            //reads all bot names from file 
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = Path.GetFullPath(Path.Combine(baseDir, @"..\..\data\bot_names.txt"));
+
+            string[] namesList = File.ReadAllLines(filePath)
+                            .Where(line => !string.IsNullOrWhiteSpace(line))
+                            .Select(line => line.Trim())
+                            .ToArray();
+
+            if (namesList.Length < 3)
+                throw new ArgumentException("Requested more names than available in the file.");
+
+            //Shuffles the list and picks top 3 names
+            Random random = new Random();
+            _BotNames = namesList
+                .OrderBy(_ => random.Next())
+                .Take(3)
+                .ToArray();
+        }
+
+        /// <summary>
         /// Initializes all players and puts them in random order
         /// </summary>
         /// <param name="playerName"></param>
@@ -222,10 +251,13 @@ namespace Call_Break_Card_Game
             //Initialize Players
             _Players = new Player[4];
 
+            //Generate 3 random names for bots from file
+            BotNameGenerator();
+
             _Players[0] = new Player(playerName, Player.PlayerType.Human);
             for (int i = 1; i <= 3; i++)
             {
-                _Players[i] = new Player(i == 1 ? "Zion" : (i == 2 ? "Eren" : "Sage"), Player.PlayerType.Bot);
+                _Players[i] = new Player(_BotNames[i-1], Player.PlayerType.Bot);
             }
 
             Random random = new Random();
