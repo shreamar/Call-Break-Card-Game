@@ -9,7 +9,7 @@ using System.Windows;
 namespace Call_Break_Card_Game
 {
     /// <summary>
-    /// Interaction logic for frmPlaceBid.xaml
+    /// Interaction logic for frmCloseConfirm.xaml
     /// </summary>
     public partial class frmCloseConfirm : Window
     {

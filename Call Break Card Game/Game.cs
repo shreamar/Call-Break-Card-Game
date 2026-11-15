@@ -428,7 +428,7 @@ namespace Call_Break_Card_Game
                     ScoreBoard[CurrentHand, i] = Bidding[i] + ((0.1) * (TricksWon[i] - Bidding[i]));
                 }
 
-                if (Bidding[i] >= 8 && Bidding[i] >= TricksWon[i])//bonus call
+                if (Bidding[i] >= 8 && TricksWon[i] >= Bidding[i])//bonus call
                 {
                     ScoreBoard[CurrentDealer, i] = 13;
                 }

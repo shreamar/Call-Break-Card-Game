@@ -38,7 +38,7 @@ namespace Call_Break_Card_Game
             //Margin="0,58,0,0"
 
             //Dynamically set font size of big info label based on screen resolution/window size
-            lblBigInfo_Center.FontSize = System.Windows.SystemParameters.PrimaryScreenHeight / 8.64; //FontSize="100" based on height
+            lblBigInfo_Center.FontSize = System.Windows.SystemParameters.PrimaryScreenHeight / 12; //FontSize="100" based on height
 
             //Dynamically change top bar properties based on screen resolution/window size
             lblTopBar.Height = System.Windows.SystemParameters.PrimaryScreenHeight / 16.30188679245283;//Height="53"
