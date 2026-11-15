@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Documents;
 
 namespace Call_Break_Card_Game
 {
@@ -32,8 +33,44 @@ namespace Call_Break_Card_Game
                 btnExitGame.Margin = new Thickness(409, 553, 14.4, 38.6);
             }
 
-            lblBottomBar.Content = String.Format("Hands Played: [{0}/{1}]         Winner: [{2}]",
-                Game.CurrentHand, Game.MaxHandsToPlay, Game.isTied()?"Tied":Game.Players[Game.CumulativeWinner].Name);
+            TextBlock scoreText = new TextBlock();
+            Brush bracketBrush = Brushes.DarkGray;
+
+            // "Hands Played: "
+            scoreText.Inlines.Add(new Run("Hands Played: "));
+
+            // "["
+            scoreText.Inlines.Add(new Run("[") { Foreground = bracketBrush });
+
+            // "{0}/{1}"
+            scoreText.Inlines.Add(new Run($"{Game.CurrentHand} out of {Game.MaxHandsToPlay}")
+            {
+                Foreground = Brushes.Cyan,
+                FontWeight = FontWeights.Bold
+            });
+
+            // "]"
+            scoreText.Inlines.Add(new Run("]") { Foreground = bracketBrush });
+
+            // Spacing + "Winner: "
+            scoreText.Inlines.Add(new Run("         Winner: "));
+
+            // "["
+            scoreText.Inlines.Add(new Run("[") { Foreground = bracketBrush });
+
+            // Winner name (or "Tied")
+            string winnerText = Game.isTied() ? "Tied" : Game.Players[Game.CumulativeWinner].Name;
+            scoreText.Inlines.Add(new Run(winnerText)
+            {
+                Foreground = Game.isTied() ? Brushes.Orange : Brushes.Gold,
+                FontWeight = FontWeights.Bold
+            });
+
+            // "]"
+            scoreText.Inlines.Add(new Run("]") { Foreground = bracketBrush });
+
+            // Assign to lblBottomBar
+            lblBottomBar.Content = scoreText;
 
             //Scoreboard
             ScoreBoard();

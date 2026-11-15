@@ -18,7 +18,7 @@
             </Label.Foreground>
         </Label>
         <Label x:Name="lblTopBar" Content="Score Board" HorizontalAlignment="Center" Margin="0,69,0,0" VerticalAlignment="Top" Width="534" Foreground="#FF033119" FontFamily="Engravers MT" FontSize="20" FontWeight="Bold" Grid.ColumnSpan="2" Height="34" HorizontalContentAlignment="Center"/>
-        <Label x:Name="lblBottomBar" Content="sample data" HorizontalAlignment="Left" Margin="10,560,0,0" VerticalAlignment="Top" Width="375" FontFamily="Segoe UI Semibold" FontSize="18" FontStyle="Italic" FontWeight="ExtraBold" Height="34" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        <Label x:Name="lblBottomBar" Content="sample data" HorizontalAlignment="Left" Margin="10,560,0,0" VerticalAlignment="Top" Width="375" FontFamily="Segoe UI Semibold" FontSize="17" FontStyle="Italic" FontWeight="ExtraBold" Height="34" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <Label.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                     <GradientStop Color="#FF16E43D" Offset="0.272"/>

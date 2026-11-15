@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using System.Windows.Documents;
 
 namespace Call_Break_Card_Game
 {
@@ -1522,9 +1523,53 @@ namespace Call_Break_Card_Game
         /// </summary>
         private void Show_Info_TopBar()
         {
-            lblTopBar.Content = String.Format("Current Player: [{0}]            Current Hand: [{1}/{2}]            Tricks Won: [{3}]            Score: [{4}]",
-                Game.Players[Game.CurrentPlayer].Name, Game.CurrentHand + 1, Game.MaxHandsToPlay,
-                Game.TricksWon[Game.HumanPlayerID], Game.CumulativeScore[Game.HumanPlayerID].ToString("0.0"));
+            TextBlock topBarText = new TextBlock();
+            Brush bracketBrush = Brushes.DarkGray;
+
+            // Current Player: [{0}]
+            topBarText.Inlines.Add(new Run("Current Player: "));
+            topBarText.Inlines.Add(new Run("[") { Foreground = bracketBrush });
+            topBarText.Inlines.Add(new Run(Game.Players[Game.CurrentPlayer].Name)
+            {
+                Foreground = Brushes.Gold,
+                FontWeight = FontWeights.Bold
+            });
+            topBarText.Inlines.Add(new Run("]") { Foreground = bracketBrush });
+
+            // Current Hand: [{1}/{2}]
+            topBarText.Inlines.Add(new Run("            Current Hand: "));
+            topBarText.Inlines.Add(new Run("[") { Foreground = bracketBrush });
+            topBarText.Inlines.Add(new Run($"{Game.CurrentHand + 1} out of {Game.MaxHandsToPlay}")
+            {
+                Foreground = Brushes.Cyan,
+                FontWeight = FontWeights.Bold
+            });
+            topBarText.Inlines.Add(new Run("]") { Foreground = bracketBrush });
+
+            // Tricks Won: [{3}]
+            topBarText.Inlines.Add(new Run("            Tricks Won: "));
+            topBarText.Inlines.Add(new Run("[") { Foreground = bracketBrush });
+            topBarText.Inlines.Add(new Run(Game.TricksWon[Game.HumanPlayerID].ToString())
+            {
+                Foreground = Brushes.LightGreen,
+                FontWeight = FontWeights.Bold
+            });
+            topBarText.Inlines.Add(new Run("]") { Foreground = bracketBrush });
+
+            // Score: [{4}]
+            double cumulativeScore = Game.CumulativeScore[Game.HumanPlayerID];
+            topBarText.Inlines.Add(new Run("            Score: "));
+            topBarText.Inlines.Add(new Run("[") { Foreground = bracketBrush });
+            topBarText.Inlines.Add(new Run(cumulativeScore.ToString("0.0"))
+            {
+                Foreground = cumulativeScore < 0 ? Brushes.OrangeRed : Brushes.SkyBlue,
+                FontWeight = FontWeights.Bold
+            });
+            topBarText.Inlines.Add(new Run("]") { Foreground = bracketBrush });
+
+            // Assign to lblTopBar
+            lblTopBar.Content = topBarText;
+
         }
 
         private void TestWindow()
